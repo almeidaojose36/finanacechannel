@@ -1,0 +1,652 @@
+{
+  "slug": "south-korea",
+  "title": "20 Reasons South Korea's Economy Defies Expectations",
+  "titleCard": "KOREA INC.",
+  "titleCardSub": "20 Economic Surprises No One Talks About",
+  "series": "INC. Countdown",
+  "country": "South Korea",
+  "focus": {
+    "lat": 36.5,
+    "lon": 127.8
+  },
+  "links": [
+    {
+      "lat": 38,
+      "lon": -97
+    },
+    {
+      "lat": -25,
+      "lon": 134
+    },
+    {
+      "lat": 50,
+      "lon": 10
+    },
+    {
+      "lat": 1.3,
+      "lon": 103.8
+    }
+  ],
+  "thumbnail": {
+    "kicker": "KOREA INC.",
+    "headline": "POORER THAN GHANA TO $1.8 TRILLION",
+    "sub": "20 economic surprises",
+    "stat": "$158 → $36K",
+    "statLabel": "GDP per person, 1960 → 2024"
+  },
+  "youtube": {
+    "tags": [
+      "south korea economy",
+      "korean economy",
+      "samsung",
+      "sk hynix",
+      "chaebol",
+      "kospi",
+      "economics documentary",
+      "korea discount",
+      "jeonse",
+      "hbm"
+    ],
+    "descriptionIntro": "In 1960, South Korea was poorer than Ghana. Today it builds the memory inside the world's AI chips, a large share of the world's LNG tankers, and some of its best-selling cars. Here are 20 facts about South Korea's economy and finances that change the conversation."
+  },
+  "segments": [
+    {
+      "type": "intro",
+      "montage": [
+        "CONTAINER CRANES · BUSAN",
+        "MEMORY FABS · ICHEON",
+        "SHIPYARDS · GEOJE",
+        "CAR LINES · ULSAN"
+      ],
+      "onscreen": "A $1.8 Trillion Economy Built From Almost Nothing",
+      "visual": "Rapid montage: gantry cranes at Busan New Port; cleanroom workers in bunny suits at a memory fab; a 300-metre LNG carrier hull in a Geoje drydock; robots welding car bodies in Ulsan. Then dark screen, glowing map of East Asia, Korean peninsula lights up amber and emerald with trade lines to the US, Australia, Europe. Title card slams in.",
+      "voiceover": "When people picture an economic miracle, they usually think of Silicon Valley, or the oil kingdoms of the Gulf. Almost nobody thinks of a mountainous peninsula with no oil, no gas, and almost no natural resources, that sixty-five years ago was poorer than Ghana. Yet today, that same country builds the memory inside the world's AI chips, a large share of the giant tankers that move the world's natural gas, and some of the best-selling cars on American roads. It did it with a model that breaks almost every rule in the economics textbook. Starting from Fact 20, here are twenty reasons South Korea's economy and finances are not what you expect."
+    },
+    {
+      "type": "chapter",
+      "number": 1,
+      "title": "The Miracle Machine",
+      "range": "Facts 20 – 16"
+    },
+    {
+      "type": "fact",
+      "number": 20,
+      "title": "Poorer Than Ghana",
+      "onscreen": "1960: ~$158 per person. 2024: ~$36,000.",
+      "visual": "Archival black-and-white footage of 1950s–60s Seoul, ox carts and shanty housing. Hard cut to the Seoul skyline at night. Log-scale line chart of GDP per capita rising.",
+      "module": {
+        "type": "timeline",
+        "label": "GDP per person (current US$)",
+        "scale": "log",
+        "prefix": "$",
+        "points": [
+          {
+            "x": "1960",
+            "y": 158
+          },
+          {
+            "x": "1970",
+            "y": 279
+          },
+          {
+            "x": "1980",
+            "y": 1715
+          },
+          {
+            "x": "1990",
+            "y": 6610
+          },
+          {
+            "x": "2000",
+            "y": 12260
+          },
+          {
+            "x": "2010",
+            "y": 23080
+          },
+          {
+            "x": "2024",
+            "y": 36000
+          }
+        ],
+        "note": "Approx. World Bank data"
+      },
+      "voiceover": "Fact 20. In 1960, the average South Korean earned roughly one hundred and fifty-eight dollars a year. That put the country in the same bracket as Ghana, and behind much of Latin America. The Korean War had flattened its cities, the industrial north had been lost, and its biggest export was raw materials like tungsten and wigs made from human hair. Today, income per person is above thirty-five thousand dollars, higher than in Spain, and in the same league as Japan. Going from war ruins to a rich industrial economy in about two generations is something almost no other country has done. Economists call it the Miracle on the Han River.",
+      "sources": [
+        "World Bank WDI: NY.GDP.PCAP.CD (Korea, Rep.)",
+        "IMF World Economic Outlook database"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 19,
+      "title": "The Nation That Melted Its Jewelry",
+      "onscreen": "1998: ~3.5 million citizens donated ~227 tonnes of gold",
+      "visual": "Archival news footage of long queues outside banks, citizens handing over wedding rings, medals and gold keys. Graphic of gold bars stacking up.",
+      "module": {
+        "type": "stat",
+        "value": 227,
+        "suffix": " tonnes",
+        "label": "of gold donated by ordinary citizens",
+        "sub": "to help repay the 1997 IMF bailout"
+      },
+      "voiceover": "Fact 19. When the Asian Financial Crisis hit in 1997, South Korea ran out of dollars almost overnight. The won collapsed, giant conglomerates went bankrupt, and the country needed a bailout package of around fifty-eight billion dollars led by the IMF. What happened next has no real parallel anywhere. Around three and a half million ordinary people lined up at banks to hand over their own gold. Wedding rings, baby rings, sports medals. Roughly two hundred and twenty-seven tonnes of it was collected and exported to raise foreign currency. It wasn't enough on its own to repay the debt, but it showed the markets something money can't buy. Korea paid back the IMF ahead of schedule, in 2001.",
+      "sources": [
+        "IMF: Korea stand-by arrangement 1997",
+        "Korea Herald / Yonhap retrospectives on the 1998 gold-collection campaign"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 18,
+      "title": "The Chaebol Economy",
+      "onscreen": "Samsung Group revenue ≈ one-fifth of Korea's GDP",
+      "visual": "Logo wall of Samsung, Hyundai, SK, LG, Lotte. Org-chart animation showing one family holding dozens of affiliates: electronics, insurance, shipbuilding, theme parks, hospitals.",
+      "module": {
+        "type": "list",
+        "heading": "Korea's big four groups",
+        "items": [
+          "Samsung — chips, phones, ships, insurance",
+          "SK — memory chips, energy, telecoms",
+          "Hyundai Motor — cars, steel, construction",
+          "LG — batteries, appliances, chemicals"
+        ]
+      },
+      "voiceover": "Fact 18. In most rich countries, companies specialize. In South Korea, a handful of family-run conglomerates called chaebol do almost everything. A Samsung affiliate can build your phone, your apartment, the ship that carries your oil, insure your life and treat you in its own hospital. Taken together, the revenues of the Samsung group have been estimated at close to a fifth of the national economy. The government created this system on purpose in the 1960s and 70s, sending cheap loans to a few chosen champions in return for hitting export targets. It built global giants at incredible speed. It also left a concentration of economic power that Korean politics is still arguing about today.",
+      "sources": [
+        "Company annual reports (Samsung affiliates)",
+        "KDI / Korea Fair Trade Commission: large business group data"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 17,
+      "title": "A Record $684 Billion in Exports",
+      "onscreen": "2024 exports: ~$684 billion — an all-time record",
+      "visual": "Drone shot over Busan New Port container stacks at dusk. Kinetic bar chart of top export categories.",
+      "module": {
+        "type": "stat",
+        "value": 684,
+        "prefix": "$",
+        "suffix": "B",
+        "label": "goods exported in 2024",
+        "sub": "a record — led by semiconductors, cars and ships"
+      },
+      "voiceover": "Fact 17. South Korea has around fifty-one million people, fewer than the state of California. Yet in 2024 it exported a record of about six hundred and eighty-four billion dollars of goods, putting it among the top ten exporters on the planet. Exports of goods and services are worth roughly forty percent of its entire economy, more than double the share in the United States. Semiconductors alone brought in more than a hundred and thirty billion dollars. That openness is Korea's superpower, and its biggest weakness. When global demand for chips or cars slows, Korea feels it first, which is why investors around the world watch Korean export numbers on the first day of every month as an early warning signal for the global economy.",
+      "sources": [
+        "Ministry of Trade, Industry and Energy (MOTIE) 2024 trade release",
+        "World Bank: exports of goods and services (% of GDP)"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 16,
+      "title": "One Car Plant, a Million Cars",
+      "onscreen": "Hyundai–Kia: the world's #3 carmaker by volume",
+      "visual": "Interior of Hyundai's Ulsan complex: robotic welding lines, a dedicated car-carrier ship docked at the factory's own pier. Bar chart of global carmakers by unit sales.",
+      "module": {
+        "type": "bars",
+        "label": "Global vehicle sales, 2024 (millions, approx.)",
+        "decimals": 1,
+        "items": [
+          {
+            "label": "Toyota Group",
+            "value": 10.8
+          },
+          {
+            "label": "Volkswagen Group",
+            "value": 9.0
+          },
+          {
+            "label": "Hyundai–Kia",
+            "value": 7.2,
+            "highlight": true
+          },
+          {
+            "label": "GM",
+            "value": 6.0
+          },
+          {
+            "label": "Stellantis",
+            "value": 5.5
+          }
+        ]
+      },
+      "voiceover": "Fact 16. In 1976 Hyundai built its first home-grown car, the Pony, and people laughed. Today Hyundai and its sister brand Kia together sell more than seven million vehicles a year, making the group the third-largest carmaker on Earth, behind only Toyota and Volkswagen. Their complex in the city of Ulsan is one of the largest car factories ever built, with capacity for around one and a half million vehicles a year and its own private port, where finished cars roll straight onto ships. And Hyundai's newest plant isn't in Korea at all. It's in Georgia, in the United States, part of tens of billions of dollars Korean companies have poured into American manufacturing.",
+      "sources": [
+        "Hyundai Motor Group annual sales releases",
+        "Company data: Toyota, VW, GM, Stellantis 2024"
+      ]
+    },
+    {
+      "type": "chapter",
+      "number": 2,
+      "title": "The Chip & Steel Chokepoints",
+      "range": "Facts 15 – 11"
+    },
+    {
+      "type": "fact",
+      "number": 15,
+      "title": "Seven in Ten Memory Chips",
+      "onscreen": "Samsung + SK hynix ≈ 70% of the world's DRAM",
+      "visual": "Macro shots of silicon wafers and DRAM modules. Animated world map showing chip flows from Korea to data centers in the US, Taiwan and China.",
+      "module": {
+        "type": "donut",
+        "value": 70,
+        "label": "of global DRAM supply",
+        "sub": "Samsung + SK hynix (approx.)"
+      },
+      "voiceover": "Fact 15. Every phone, laptop, games console and data center on Earth needs memory chips. And roughly seven out of every ten DRAM memory chips in the world are made by just two Korean companies, Samsung and SK hynix. Their giant fabs in Pyeongtaek, Hwaseong and Icheon are some of the most advanced factories ever built, each costing tens of billions of dollars. That gives South Korea a quiet kind of power. When memory prices go up, Korea's trade surplus jumps. When they crash, as they did in 2023, Korea's whole economy wobbles. Few countries are so tied to the price of one product, and that product happens to be essential to modern life.",
+      "sources": [
+        "TrendForce / Counterpoint DRAM market share reports",
+        "Korea International Trade Association semiconductor export data"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 14,
+      "title": "The Shipyards of the World",
+      "onscreen": "Korean yards build a large share of the world's LNG carriers",
+      "visual": "Aerial shot over a Geoje shipyard: Goliath cranes lifting entire hull blocks. Cross-section animation of an LNG tank cooled to −162°C.",
+      "module": {
+        "type": "list",
+        "heading": "Korea's shipbuilding giants",
+        "items": [
+          "HD Hyundai Heavy Industries",
+          "Samsung Heavy Industries",
+          "Hanwha Ocean",
+          "Hanwha Philly Shipyard (USA, bought 2024)"
+        ]
+      },
+      "voiceover": "Fact 14. The giant tankers that carry liquefied natural gas across oceans are among the hardest machines on Earth to build. The gas is shipped at minus one hundred and sixty-two degrees Celsius, inside tanks that cannot leak. For years, most of the world's big LNG carriers have come out of a few Korean shipyards on the southeast coast, run by HD Hyundai, Samsung Heavy Industries and Hanwha Ocean. Each ship sells for more than two hundred million dollars. And as Washington tries to rebuild America's own shipbuilding industry, it has turned to Korea. In 2024, Hanwha bought the Philly Shipyard in Pennsylvania, and Korean shipbuilders have since pledged major investment in US yards.",
+      "sources": [
+        "Clarksons Research: LNG carrier orderbook",
+        "Hanwha press release: Philly Shipyard acquisition (2024)"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 13,
+      "title": "The Battery Bet on America",
+      "onscreen": "LG Energy Solution, SK On, Samsung SDI: building across the US",
+      "visual": "Map of the US lighting up with Korean battery plants: Michigan, Ohio, Tennessee, Kentucky, Georgia, Arizona, Indiana. Footage of electrode coating lines.",
+      "module": {
+        "type": "list",
+        "heading": "The 'K-battery' trio",
+        "items": [
+          "LG Energy Solution",
+          "SK On",
+          "Samsung SDI",
+          "Plants across 7+ US states"
+        ]
+      },
+      "voiceover": "Fact 13. If you drive an electric vehicle in America, there's a good chance its battery cells came from a Korean company. LG Energy Solution, SK On and Samsung SDI have committed tens of billions of dollars to factories across the American Midwest and South, often in joint ventures with GM, Ford, Stellantis, Honda and Hyundai. That bet has not been smooth. EV demand slowed, US subsidies changed, and in September 2025 an immigration raid at the Hyundai and LG battery site in Georgia detained hundreds of workers, many of them Korean, causing a diplomatic storm. But the strategic logic remains. As the world electrifies, Korea wants to be the one country that isn't China making the cells.",
+      "sources": [
+        "Company announcements: LGES, SK On, Samsung SDI US plants",
+        "Reuters/AP coverage of the September 2025 Georgia raid"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 12,
+      "title": "The Arsenal of Democracy, Made in Korea",
+      "onscreen": "2022 defense export deals: ~$17 billion — a record",
+      "visual": "K2 Black Panther tanks and K9 Thunder howitzers rolling off rail cars in Poland. Map of Europe with Poland highlighted.",
+      "module": {
+        "type": "stat",
+        "value": 17,
+        "prefix": "$",
+        "suffix": "B",
+        "label": "in defense export deals in 2022",
+        "sub": "led by tanks, howitzers and jets for Poland"
+      },
+      "voiceover": "Fact 12. For decades, South Korea had to build its own weapons, because its neighbor to the north never stopped being a threat. That turned out to be a business advantage. When war returned to Europe in 2022, Poland needed tanks, artillery and jets fast, and Western factories had long waiting lists. Korea could deliver in months, not years. The deals for K2 tanks, K9 howitzers and FA-50 fighter jets helped push Korea's defense export contracts to around seventeen billion dollars in 2022, a record. Hanwha Aerospace and Hyundai Rotem became stock market stars. Korea's government now openly aims to become one of the world's four largest arms exporters.",
+      "sources": [
+        "Defense Acquisition Program Administration (DAPA) export figures",
+        "SIPRI arms transfer database"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 11,
+      "title": "Five Percent on the Future",
+      "onscreen": "R&D spending ≈ 5% of GDP — #2 in the world",
+      "visual": "Researchers in labs at KAIST and Samsung's Suwon campus. Animated comparison bars of R&D intensity.",
+      "module": {
+        "type": "bars",
+        "label": "R&D spending, % of GDP (approx., OECD)",
+        "decimals": 1,
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Israel",
+            "value": 6.0
+          },
+          {
+            "label": "South Korea",
+            "value": 4.9,
+            "highlight": true
+          },
+          {
+            "label": "United States",
+            "value": 3.5
+          },
+          {
+            "label": "Japan",
+            "value": 3.4
+          },
+          {
+            "label": "Germany",
+            "value": 3.1
+          },
+          {
+            "label": "OECD average",
+            "value": 2.7
+          }
+        ]
+      },
+      "voiceover": "Fact 11. South Korea spends close to five percent of its entire economy on research and development every single year. That's second in the world, behind only Israel, and well ahead of the United States, Japan and Germany. Around four-fifths of that money comes from companies, not the government, with Samsung alone spending more on R&D each year than many countries do in total. It's a deliberate strategy. A country with no oil, no gas and few minerals has only one resource it can grow, and that is what its people know. Korea also files more patent applications per person than almost anywhere else on Earth.",
+      "sources": [
+        "OECD Main Science and Technology Indicators (GERD % of GDP)",
+        "WIPO statistics"
+      ]
+    },
+    {
+      "type": "chapter",
+      "number": 3,
+      "title": "Money, Markets & Mortgages",
+      "range": "Facts 10 – 6"
+    },
+    {
+      "type": "fact",
+      "number": 10,
+      "title": "Jeonse: The Rent You Get Back",
+      "onscreen": "Jeonse: a giant deposit instead of monthly rent",
+      "visual": "Explainer animation: tenant hands landlord a stack of cash worth 60% of the apartment; two years later, the stack comes back. Seoul apartment towers in background.",
+      "module": {
+        "type": "versus",
+        "left": {
+          "label": "Monthly rent",
+          "value": "Pay every month",
+          "sub": "money is gone"
+        },
+        "right": {
+          "label": "Jeonse",
+          "value": "50–80% deposit",
+          "sub": "returned when you leave"
+        }
+      },
+      "voiceover": "Fact 10. In most of the world, renting a home means paying every month. In South Korea, millions of people use a system called jeonse instead. You hand your landlord a single lump-sum deposit, often half to eighty percent of the apartment's value, and then you live there rent-free for two years. When you move out, you get the whole deposit back. The landlord makes money by investing that cash, or by using it to buy another property. It worked brilliantly when interest rates and house prices were rising. But when prices fell in 2022 and 2023, some landlords couldn't return the deposits, and a wave of jeonse fraud cases left thousands of young tenants losing their life savings.",
+      "sources": [
+        "Bank of Korea research on jeonse",
+        "Ministry of Land, Infrastructure and Transport: jeonse fraud victim support data"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 9,
+      "title": "The Trillion-Dollar Pension Fund",
+      "onscreen": "National Pension Service: one of the world's 3 largest pension funds",
+      "visual": "Exterior of the NPS headquarters in Jeonju. Bar chart of the world's largest pension funds. Graphic of Korean investments in US equities and real estate.",
+      "module": {
+        "type": "bars",
+        "label": "World's largest pension funds (US$ trillions, approx.)",
+        "decimals": 1,
+        "prefix": "$",
+        "suffix": "T",
+        "items": [
+          {
+            "label": "Norway GPFG",
+            "value": 1.8
+          },
+          {
+            "label": "Japan GPIF",
+            "value": 1.7
+          },
+          {
+            "label": "Korea NPS",
+            "value": 0.9,
+            "highlight": true
+          },
+          {
+            "label": "US Federal TSP",
+            "value": 0.9
+          }
+        ]
+      },
+      "voiceover": "Fact 9. Headquartered in the small city of Jeonju is one of the largest pools of money on the planet. South Korea's National Pension Service manages well over one thousand trillion won, close to a trillion dollars, putting it among the three largest pension funds in the world. It's one of the largest shareholders in Samsung, and it owns stakes in hundreds of American and European companies, plus office towers from New York to London. But there's a catch. Korea is ageing so fast that the fund was projected to run dry in the 2050s. In 2025, lawmakers passed a reform raising contributions from nine to thirteen percent of wages, buying the system more time.",
+      "sources": [
+        "NPS Investment Management fund size disclosures",
+        "Thinking Ahead Institute Global Top 300 Pension Funds",
+        "Korea National Assembly pension reform (March 2025)"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 8,
+      "title": "The Korea Discount",
+      "onscreen": "Korean stocks have long traded cheaper than peers — the 'Korea Discount'",
+      "visual": "Trading floor screens in Yeouido, Seoul's financial district. Animated price-to-book comparison, then KOSPI chart breaking out in 2025.",
+      "module": {
+        "type": "list",
+        "heading": "Why Korean stocks traded cheap",
+        "items": [
+          "Family control over minority shareholders",
+          "Low dividends & buybacks",
+          "Geopolitical risk from the North",
+          "2024: 'Value-Up' reform program launched"
+        ]
+      },
+      "voiceover": "Fact 8. For decades, investors have talked about something called the Korea Discount. Korean companies with world-class products have often traded at lower valuations than similar companies in Japan, Taiwan or the US. The reasons? Founding families controlling groups with small stakes, stingy dividends, complex cross-shareholdings, and the ever-present risk from North Korea. In 2024, the government launched a Value-Up program, borrowing ideas from Japan's stock market reforms, to push companies to return more cash to shareholders. Then in 2025, driven by the AI chip boom and governance reforms, the KOSPI rallied by more than half and smashed through four thousand points for the first time in its history.",
+      "sources": [
+        "Financial Services Commission: Corporate Value-Up Program (2024)",
+        "Korea Exchange KOSPI index data"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 7,
+      "title": "An Army of 'Ants'",
+      "onscreen": "Over 14 million individual stock investors",
+      "visual": "Young office workers checking trading apps on the Seoul subway. Graphic of capital flowing from Seoul to Nasdaq tickers: Tesla, Nvidia, Apple.",
+      "module": {
+        "type": "stat",
+        "value": 14,
+        "suffix": "M+",
+        "label": "individual stock investors",
+        "sub": "more than a quarter of the population"
+      },
+      "voiceover": "Fact 7. Korea has one of the most enthusiastic retail investing cultures in the world. More than fourteen million people, over a quarter of the entire population, own stocks directly. Locally they're called gaemi, or ants, small investors who move together in huge numbers. And they don't just trade at home. A whole generation of Korean investors, nicknamed Seohak Gaemi, or western-learning ants, now hold more than a hundred billion dollars of US stocks, and have been among the biggest foreign retail buyers of Tesla and Nvidia. When Korean retail money moves, it can shift prices on Nasdaq, and on crypto exchanges too.",
+      "sources": [
+        "Korea Securities Depository annual shareholder statistics",
+        "Korea Securities Depository: foreign securities custody data"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 6,
+      "title": "Among the Most Indebted Households on Earth",
+      "onscreen": "Household debt ≈ 90% of GDP — among the highest in the world",
+      "visual": "Night shot of Seoul apartment towers, lights on. Animated bars comparing household debt to GDP across countries.",
+      "module": {
+        "type": "bars",
+        "label": "Household debt, % of GDP (approx., BIS)",
+        "decimals": 0,
+        "suffix": "%",
+        "items": [
+          {
+            "label": "South Korea",
+            "value": 90,
+            "highlight": true
+          },
+          {
+            "label": "United Kingdom",
+            "value": 77
+          },
+          {
+            "label": "United States",
+            "value": 70
+          },
+          {
+            "label": "Japan",
+            "value": 65
+          },
+          {
+            "label": "Euro area",
+            "value": 53
+          }
+        ]
+      },
+      "voiceover": "Fact 6. Here's the side of the Korean miracle you rarely hear about. South Korean households carry some of the heaviest debt loads in the world, equal to roughly ninety percent of the entire economy. That's higher than in the US, the UK or Japan. Most of it is tied to housing. Seoul apartment prices became so high that young couples borrow huge sums, often with help from parents and jeonse deposits, just to get on the ladder. It's a big reason the Bank of Korea has to move so carefully with interest rates. Cut too fast, and housing speculation explodes. Raise too fast, and millions of families feel the squeeze.",
+      "sources": [
+        "Bank for International Settlements: credit to households (% of GDP)",
+        "Bank of Korea Financial Stability Report"
+      ]
+    },
+    {
+      "type": "chapter",
+      "number": 4,
+      "title": "Soft Power & Future Bets",
+      "range": "Facts 5 – 1"
+    },
+    {
+      "type": "fact",
+      "number": 5,
+      "title": "Hallyu: Culture as an Export",
+      "onscreen": "Korean content exports: $13B+ (2022)",
+      "visual": "Montage: K-pop stadium concert, scenes evoking global streaming hits, crowds in Seoul's Myeongdong. Graph of cultural content exports rising.",
+      "module": {
+        "type": "stat",
+        "value": 13,
+        "prefix": "$",
+        "suffix": "B+",
+        "label": "in cultural content exports, 2022",
+        "sub": "more than home appliances or EV batteries that year"
+      },
+      "voiceover": "Fact 5. South Korea treats culture like an export industry, because it is one. K-pop, K-dramas, films, webtoons and video games brought in more than thirteen billion dollars of exports in 2022, more than the country earned from home appliances. One research institute estimated that BTS alone was worth several billion dollars a year to the Korean economy at its peak. But the real value is indirect. Every global hit makes people want Korean cosmetics, Korean food, Korean cars and trips to Seoul. Korean beauty products are now among the fastest-growing imports into the United States. Few governments have turned soft power into hard cash so deliberately.",
+      "sources": [
+        "Ministry of Culture, Sports and Tourism / KOCCA content export statistics",
+        "Hyundai Research Institute (2018) BTS economic impact estimate"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 4,
+      "title": "The Country Google Couldn't Conquer",
+      "onscreen": "Naver, Kakao & Coupang: Korea built its own internet economy",
+      "visual": "Naver search page and KakaoTalk chat bubbles on phone screens. Coupang rocket-delivery trucks at dawn. NYSE bell-ringing for Coupang's 2021 IPO.",
+      "module": {
+        "type": "list",
+        "heading": "Korea's homegrown digital giants",
+        "items": [
+          "Naver — search & payments",
+          "Kakao — messaging, banking, mobility",
+          "Coupang — e-commerce, NYSE listed 2021",
+          "Toss — fintech super-app"
+        ]
+      },
+      "voiceover": "Fact 4. Almost everywhere in the world, Google dominates search. South Korea is one of the very few places where a homegrown company, Naver, held off Google for decades. Koreans message on KakaoTalk, not WhatsApp, and bank with apps like Kakao Bank and Toss. And when e-commerce company Coupang listed on the New York Stock Exchange in 2021, it raised more than four and a half billion dollars, one of the largest US listings by an Asian company since Alibaba. Korea is one of the only countries outside the US and China to build a complete internet economy of its own, from search to shopping to payments.",
+      "sources": [
+        "StatCounter / InternetTrend Korea search share",
+        "Coupang IPO filing (NYSE: CPNG, March 2021)"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 3,
+      "title": "The Lowest Birth Rate in the World",
+      "onscreen": "Fertility rate: 0.72 in 2023 — the lowest in the world",
+      "visual": "Empty school classrooms and closed maternity wards. Line chart of births per woman falling from 4.5 to below 1.",
+      "module": {
+        "type": "timeline",
+        "label": "Births per woman",
+        "decimals": 2,
+        "points": [
+          {
+            "x": "1970",
+            "y": 4.53
+          },
+          {
+            "x": "1983",
+            "y": 2.06
+          },
+          {
+            "x": "2000",
+            "y": 1.48
+          },
+          {
+            "x": "2015",
+            "y": 1.24
+          },
+          {
+            "x": "2018",
+            "y": 0.98
+          },
+          {
+            "x": "2023",
+            "y": 0.72
+          },
+          {
+            "x": "2024",
+            "y": 0.75
+          }
+        ],
+        "note": "Statistics Korea"
+      },
+      "voiceover": "Fact 3. This is the biggest threat to everything you've just heard. In 2023, South Korea's fertility rate fell to about zero point seven two children per woman, the lowest of any country in the world. A stable population needs about two point one. If nothing changes, Korea's working-age population will shrink dramatically within a few decades, while the number of retirees surges. That means fewer workers, fewer consumers, and more pressure on the pension fund. There was a small rebound in 2024, the first in nine years, but the government now treats it as a national emergency. The country that beat poverty must now beat demographics.",
+      "sources": [
+        "Statistics Korea (KOSTAT) birth statistics 2023–2024",
+        "UN World Population Prospects"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 2,
+      "title": "Exporting Nuclear Power Plants",
+      "onscreen": "From the UAE to the Czech Republic: Korea sells nuclear plants",
+      "visual": "Aerial footage of the four Barakah reactors in the UAE desert. Map highlighting the Czech Republic's Dukovany site.",
+      "module": {
+        "type": "list",
+        "heading": "Korea's nuclear export wins",
+        "items": [
+          "Barakah, UAE — 4 reactors, completed 2024",
+          "Dukovany, Czech Republic — contract signed 2025",
+          "On time, on budget: a rare record"
+        ]
+      },
+      "voiceover": "Fact 2. Building a nuclear power plant on time and on budget is so rare that many Western projects have become cautionary tales, years late and billions over cost. South Korea has built a reputation for doing the opposite. In the United Arab Emirates, Korean state-owned KEPCO built the four-reactor Barakah plant, the first nuclear power station in the Arab world, now supplying around a quarter of the UAE's electricity. And in 2025, Korea Hydro and Nuclear Power signed a deal to build new reactors at Dukovany in the Czech Republic, beating French competition. As AI data centers drive new demand for clean power, Korea is positioning itself as the nuclear builder the world can count on.",
+      "sources": [
+        "Emirates Nuclear Energy Corporation (ENEC) Barakah data",
+        "KHNP / Czech government Dukovany contract announcement (2025)"
+      ]
+    },
+    {
+      "type": "fact",
+      "number": 1,
+      "title": "The Memory Inside Every AI Chip",
+      "onscreen": "SK hynix: the leading supplier of AI high-bandwidth memory",
+      "visual": "Close-up of an Nvidia AI accelerator with HBM stacks glowing around the GPU die. Exploded animation of 12 memory dies stacked vertically. Stock chart of SK hynix soaring.",
+      "module": {
+        "type": "list",
+        "heading": "Why HBM matters",
+        "items": [
+          "Every major AI accelerator needs it",
+          "Stacks of memory dies, thinner than paper",
+          "SK hynix: early leader, top Nvidia supplier",
+          "2025: SK hynix tops DRAM revenue for the first time"
+        ]
+      },
+      "voiceover": "Fact 1. The AI revolution runs on Nvidia chips. But sitting right beside every one of those chips are stacks of a special memory called HBM, high-bandwidth memory. Without it, the world's most powerful AI processors would be starved of data. And the company that bet earliest and biggest on HBM is Korea's SK hynix. Once seen as the underdog to Samsung, it became Nvidia's leading memory supplier, and in 2025 overtook Samsung in DRAM revenue for the first time ever. Its profits and share price soared. For all the talk of American software and Taiwanese chip foundries, the AI economy has a Korean chokepoint hiding in plain sight.",
+      "sources": [
+        "Counterpoint Research / TrendForce DRAM & HBM share reports (2025)",
+        "SK hynix quarterly earnings releases"
+      ]
+    },
+    {
+      "type": "outro",
+      "onscreen": "What's the economic story about YOUR country that the world gets wrong?",
+      "visual": "Camera pulls back from Seoul's nighttime skyline, highway light trails stretching across the Han River. Comment prompt and subscribe animation.",
+      "voiceover": "Those are twenty facts about South Korea's economy and finances that change the whole conversation. From gold rings handed over in a crisis, to the memory inside every AI chip, Korea shows that a country without natural resources can still become an industrial superpower, as long as it never stops betting on its people. If you're watching from Korea, or anywhere in Asia, tell me in the comments: what's one thing about your country's economy that foreign media always gets wrong? Hit subscribe, share this with someone who needs the real story, and I'll see you in the next deep dive."
+    }
+  ]
+}

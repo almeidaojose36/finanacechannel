@@ -1,0 +1,84 @@
+{
+  "slug": "texas",
+  "title": "20 Reasons Texas's Economy Defies Expectations",
+  "titleCard": "TEXAS INC.",
+  "titleCardSub": "20 Economic Surprises No One Talks About",
+  "series": "INC. Countdown",
+  "country": "Texas",
+  "focus": {
+    "lat": 31,
+    "lon": -99
+  },
+  "links": [
+    {
+      "lat": 19.4,
+      "lon": -99.1
+    },
+    {
+      "lat": 35.7,
+      "lon": 139.7
+    },
+    {
+      "lat": 51.5,
+      "lon": -0.1
+    }
+  ],
+  "thumbnail": {
+    "kicker": "TEXAS INC.",
+    "headline": "BIGGER THAN RUSSIA'S $2T ECONOMY",
+    "sub": "20 economic surprises",
+    "stat": "$2.6T",
+    "statLabel": "Texas GDP"
+  },
+  "youtube": {
+    "tags": [
+      "texas economy"
+    ],
+    "descriptionIntro": "..."
+  },
+  "segments": [
+    {
+      "type": "intro",
+      "montage": [
+        "OIL RIGS \u00b7 PERMIAN",
+        "CHIP FABS \u00b7 AUSTIN",
+        "PORTS \u00b7 HOUSTON",
+        "LAUNCH PADS \u00b7 STARBASE"
+      ],
+      "onscreen": "...",
+      "visual": "...",
+      "voiceover": "... Starting from Fact 20, here are twenty reasons ..."
+    },
+    {
+      "type": "chapter",
+      "number": 1,
+      "title": "...",
+      "range": "Facts 20 \u2013 16"
+    },
+    {
+      "type": "fact",
+      "number": 20,
+      "title": "...",
+      "onscreen": "...",
+      "visual": "...",
+      "module": {
+        "type": "stat",
+        "value": 0,
+        "prefix": "$",
+        "suffix": "B",
+        "label": "...",
+        "sub": "..."
+      },
+      "voiceover": "Fact 20. ...",
+      "sources": [
+        "..."
+      ]
+    },
+    {
+      "type": "outro",
+      "onscreen": "...",
+      "visual": "...",
+      "voiceover": "... Hit subscribe ..."
+    }
+  ]
+}

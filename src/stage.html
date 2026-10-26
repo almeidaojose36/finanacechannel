@@ -1,0 +1,456 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --navy: #0A1128; --navy2: #132045; --gold: #F5A623; --emerald: #10B981;
+    --parchment: #F8FAFC; --slate: #64748B; --red: #EF4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--navy); }
+  body { font-family: 'Inter', sans-serif; color: var(--parchment); -webkit-font-smoothing: antialiased; }
+  .display { font-family: 'Inter Display', 'Inter', sans-serif; }
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+  #bg, #broll, #scene, #hud { position: absolute; inset: 0; }
+  #broll { opacity: 0; }
+  #broll img { width: 100%; height: 100%; object-fit: cover; transform-origin: 60% 50%; }
+  #broll::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(10,17,40,.96) 0%, rgba(10,17,40,.82) 45%, rgba(10,17,40,.55) 100%); }
+  .abs { position: absolute; }
+
+  /* HUD */
+  #bug { left: 64px; top: 48px; display: flex; align-items: center; gap: 16px; opacity: .92; }
+  #bug .name { font-weight: 700; font-size: 22px; letter-spacing: .18em; text-transform: uppercase; }
+  #ticks { right: 64px; top: 62px; display: flex; gap: 6px; align-items: flex-end; }
+  #ticks i { display: block; width: 14px; height: 6px; border-radius: 3px; background: rgba(100,116,139,.45); }
+  #ticks i.done { background: var(--gold); opacity: .55; }
+  #ticks i.now { background: var(--gold); height: 14px; box-shadow: 0 0 14px var(--gold); }
+  #captions { left: 0; right: 0; bottom: 64px; display: flex; justify-content: center; }
+  #captions .pill { max-width: 1500px; padding: 14px 30px; border-radius: 14px; background: rgba(10,17,40,.78);
+    border: 1px solid rgba(248,250,252,.08); font-size: 40px; font-weight: 600; line-height: 1.25; text-align: center; }
+  #captions span { opacity: .5; }
+  #captions span.said { opacity: 1; }
+  #captions span.now { opacity: 1; color: var(--gold); }
+
+  /* Fact */
+  .kicker { font-size: 26px; font-weight: 700; letter-spacing: .32em; color: var(--gold); text-transform: uppercase; }
+  #num { left: 104px; top: 190px; font-size: 300px; font-weight: 900; line-height: 1; color: var(--gold);
+    letter-spacing: -.04em; text-shadow: 0 0 60px rgba(245,166,35,.25); }
+  #factKicker { left: 120px; top: 168px; }
+  #title { left: 120px; top: 520px; width: 800px; font-size: 72px; font-weight: 800; line-height: 1.04; letter-spacing: -.02em; }
+  #title span, #introLine span, #outroHead span { display: inline-block; margin-right: .22em; }
+  #onscreen { left: 120px; width: 780px; font-size: 30px; font-weight: 500; line-height: 1.35; color: #CBD5E1;
+    padding-left: 22px; border-left: 4px solid var(--emerald); }
+  #card { left: 1000px; top: 190px; width: 800px; height: 640px; border-radius: 24px; padding: 52px 56px;
+    background: linear-gradient(160deg, rgba(19,32,69,.92), rgba(10,17,40,.85));
+    border: 1px solid rgba(245,166,35,.22); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+  .mlabel { font-size: 22px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #94A3B8; margin-bottom: 36px; }
+  .stat-num { font-size: 190px; font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -.04em; margin-top: 40px; }
+  .stat-line { height: 6px; background: var(--emerald); border-radius: 3px; margin: 34px 0 30px; }
+  .stat-label { font-size: 44px; font-weight: 700; line-height: 1.15; }
+  .stat-sub { font-size: 28px; color: #94A3B8; margin-top: 18px; line-height: 1.35; }
+  .bar-row { margin-bottom: 26px; }
+  .bar-top { display: flex; justify-content: space-between; font-size: 28px; font-weight: 600; margin-bottom: 10px; }
+  .bar-top .v { font-weight: 800; }
+  .bar-track { height: 26px; border-radius: 13px; background: rgba(100,116,139,.18); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 13px; background: #475569; width: 0; }
+  .bar-row.hl .bar-fill { background: linear-gradient(90deg, #D98E12, var(--gold)); box-shadow: 0 0 22px rgba(245,166,35,.5); }
+  .bar-row.hl .bar-top { color: var(--gold); }
+  .list-item { display: flex; align-items: center; gap: 26px; font-size: 36px; font-weight: 600; line-height: 1.2; margin-bottom: 34px; }
+  .list-item b { flex: none; width: 58px; height: 58px; border-radius: 14px; display: grid; place-items: center;
+    background: var(--gold); color: var(--navy); font-size: 28px; font-weight: 900; }
+  .vs { display: flex; gap: 28px; align-items: stretch; margin-top: 30px; position: relative; }
+  .vs > div { flex: 1; border-radius: 18px; padding: 34px 30px; height: 400px; }
+  .vs .l { background: rgba(100,116,139,.18); }
+  .vs .r { background: rgba(245,166,35,.12); border: 2px solid var(--gold); }
+  .vs h4 { font-size: 26px; letter-spacing: .14em; text-transform: uppercase; color: #94A3B8; margin-bottom: 30px; }
+  .vs .r h4 { color: var(--gold); }
+  .vs p.v { font-size: 50px; font-weight: 800; line-height: 1.08; }
+  .vs p.s { font-size: 28px; color: #94A3B8; margin-top: 22px; }
+  .vs em { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%;
+    background: var(--navy); border: 2px solid var(--gold); display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 26px; color: var(--gold); }
+  .note { position: absolute; left: 56px; bottom: 30px; font-size: 18px; color: var(--slate); }
+
+  /* Intro / chapter / outro */
+  .center { left: 0; right: 0; text-align: center; }
+  #montage { top: 430px; font-size: 96px; font-weight: 900; letter-spacing: .04em; }
+  #montage small { display: block; font-size: 30px; letter-spacing: .4em; color: var(--gold); margin-top: 18px; font-weight: 700; }
+  #globe { left: 1060px; top: 120px; }
+  #introLine { left: 120px; top: 380px; width: 860px; font-size: 76px; font-weight: 800; line-height: 1.06; letter-spacing: -.02em; }
+  #titleCard { top: 300px; }
+  #titleCard .t { font-size: 230px; font-weight: 900; color: var(--gold); letter-spacing: -.03em; line-height: 1; text-shadow: 0 0 80px rgba(245,166,35,.35); }
+  #titleCard .s { font-size: 56px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-top: 28px; }
+  #flash { inset: 0; background: var(--parchment); opacity: 0; }
+  #chap { top: 340px; }
+  #chap .k { font-size: 32px; font-weight: 800; letter-spacing: .5em; color: var(--gold); }
+  #chap .t { font-size: 124px; font-weight: 900; letter-spacing: -.02em; margin: 26px 0; }
+  #chap .r { font-size: 34px; color: #94A3B8; letter-spacing: .2em; text-transform: uppercase; }
+  #chap .line { height: 4px; background: var(--gold); margin: 0 auto; }
+  #outroHead { left: 120px; top: 230px; width: 900px; font-size: 92px; font-weight: 900; line-height: 1.02; letter-spacing: -.02em; }
+  #comment { left: 120px; top: 560px; width: 860px; border-radius: 20px; padding: 32px 36px; background: rgba(19,32,69,.92);
+    border: 1px solid rgba(248,250,252,.1); display: flex; gap: 24px; }
+  #comment .av { flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--emerald); }
+  #comment .who { font-size: 24px; color: #94A3B8; margin-bottom: 10px; }
+  #comment .txt { font-size: 36px; font-weight: 600; line-height: 1.25; }
+  #sub { left: 1180px; top: 380px; width: 560px; text-align: center; }
+  #sub .btn { display: inline-flex; align-items: center; gap: 16px; padding: 26px 56px; border-radius: 60px; font-size: 40px; font-weight: 800;
+    letter-spacing: .06em; background: var(--red); color: white; }
+  #sub .btn.done { background: #334155; color: #CBD5E1; }
+  #sub .h { font-size: 30px; color: #94A3B8; margin-top: 30px; }
+  #cursor { width: 46px; height: 46px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="bg" width="1920" height="1080"></canvas>
+  <div id="broll"><img alt=""></div>
+  <div id="scene"></div>
+  <div id="hud">
+    <div id="bug" class="abs"></div>
+    <div id="ticks" class="abs"></div>
+    <div id="captions" class="abs"></div>
+  </div>
+</div>
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const prog = (t, start, dur) => clamp((t - start) / dur);
+const easeOut = (p) => 1 - Math.pow(1 - p, 3);
+const easeInOut = (p) => (p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+const easeBack = (p) => { const c = 1.70158; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const h = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstElementChild; };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = (v, d = 0) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const reveal = (el, p, dy = 30) => { el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * dy}px)`; };
+
+const EMBLEM = (size) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="31" fill="#132045" stroke="#F5A623" stroke-width="2"/>
+  <g fill="none" stroke="#F5A623" stroke-width="1.6" opacity=".7">
+    <circle cx="32" cy="32" r="20"/><ellipse cx="32" cy="32" rx="9" ry="20"/><path d="M12 32h40M15 22h34M15 42h34"/></g>
+  <path d="M18 44 L28 34 L35 39 L47 24" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M41 23h7v7" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+let S;            // init payload
+let update = () => {};
+let chunks = [];
+
+// ---------- background ----------
+const bg = $('#bg').getContext('2d');
+function drawBg(t) {
+  const W = 1920, H = 1080;
+  const g = bg.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, '#0A1128'); g.addColorStop(1, '#0D1733');
+  bg.fillStyle = g; bg.fillRect(0, 0, W, H);
+  const glow = (x, y, r, c) => { const rg = bg.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, c); rg.addColorStop(1, 'rgba(0,0,0,0)'); bg.fillStyle = rg; bg.fillRect(0, 0, W, H); };
+  glow(1500 + Math.sin(t * .15) * 120, 200 + Math.cos(t * .12) * 60, 900, 'rgba(245,166,35,.10)');
+  glow(300 + Math.cos(t * .1) * 100, 950, 800, 'rgba(16,185,129,.08)');
+  const sp = 48, off = (t * 8) % sp;
+  for (let y = -sp; y < H + sp; y += sp) for (let x = -sp; x < W + sp; x += sp) {
+    const px = x + off, py = y + off * .5;
+    const a = .05 + .07 * Math.max(0, Math.sin(px * .004 + py * .003 - t * .8));
+    bg.fillStyle = `rgba(148,163,184,${a})`; bg.fillRect(px, py, 2, 2);
+  }
+}
+
+// ---------- globe ----------
+function makeGlobe(size) {
+  const c = document.createElement('canvas'); c.width = c.height = size; c.id = 'globe'; c.className = 'abs';
+  const x = c.getContext('2d'), R = size / 2 - 10, C = size / 2, rad = Math.PI / 180;
+  function proj(lat, lon, lat0, lon0) {
+    const [p, l, p0] = [lat * rad, (lon - lon0) * rad, lat0 * rad];
+    const cosc = Math.sin(p0) * Math.sin(p) + Math.cos(p0) * Math.cos(p) * Math.cos(l);
+    return { x: C + R * Math.cos(p) * Math.sin(l), y: C - R * (Math.cos(p0) * Math.sin(p) - Math.sin(p0) * Math.cos(p) * Math.cos(l)), v: cosc > 0 };
+  }
+  function line(pts, lat0, lon0) {
+    let pen = false; x.beginPath();
+    for (const [la, lo] of pts) { const q = proj(la, lo, lat0, lon0); if (q.v) { pen ? x.lineTo(q.x, q.y) : x.moveTo(q.x, q.y); pen = true; } else pen = false; }
+    x.stroke();
+  }
+  function arc(a, b, n) { // great-circle interpolation
+    const v = ([la, lo]) => [Math.cos(la * rad) * Math.cos(lo * rad), Math.cos(la * rad) * Math.sin(lo * rad), Math.sin(la * rad)];
+    const A = v(a), B = v(b), d = Math.acos(clamp(A[0] * B[0] + A[1] * B[1] + A[2] * B[2], -1, 1)), out = [];
+    for (let i = 0; i <= n; i++) {
+      const f = i / n, s1 = Math.sin((1 - f) * d) / Math.sin(d), s2 = Math.sin(f * d) / Math.sin(d);
+      const P = [s1 * A[0] + s2 * B[0], s1 * A[1] + s2 * B[1], s1 * A[2] + s2 * B[2]];
+      out.push([Math.atan2(P[2], Math.hypot(P[0], P[1])) / rad, Math.atan2(P[1], P[0]) / rad]);
+    }
+    return out;
+  }
+  c.draw = (spin, focus, links, linkP, pulse) => {
+    x.clearRect(0, 0, size, size);
+    const lat0 = 20, lon0 = focus.lon - spin;
+    const rg = x.createRadialGradient(C - R * .3, C - R * .3, R * .1, C, C, R);
+    rg.addColorStop(0, '#1B2B57'); rg.addColorStop(1, '#0A1128');
+    x.fillStyle = rg; x.beginPath(); x.arc(C, C, R, 0, 7); x.fill();
+    x.strokeStyle = 'rgba(245,166,35,.55)'; x.lineWidth = 2; x.stroke();
+    x.strokeStyle = 'rgba(148,163,184,.22)'; x.lineWidth = 1.2;
+    for (let lo = -180; lo < 180; lo += 20) line(Array.from({ length: 91 }, (_, i) => [-90 + i * 2, lo]), lat0, lon0);
+    for (let la = -60; la <= 60; la += 20) line(Array.from({ length: 181 }, (_, i) => [la, -180 + i * 2]), lat0, lon0);
+    x.strokeStyle = '#F5A623'; x.lineWidth = 3; x.shadowColor = '#F5A623'; x.shadowBlur = 12;
+    for (const L of links) { const pts = arc([focus.lat, focus.lon], [L.lat, L.lon], 80); line(pts.slice(0, Math.max(1, Math.round(pts.length * linkP))), lat0, lon0); }
+    x.shadowBlur = 0;
+    const f = proj(focus.lat, focus.lon, lat0, lon0);
+    if (f.v) {
+      x.fillStyle = `rgba(16,185,129,${.35 * (1 - pulse)})`; x.beginPath(); x.arc(f.x, f.y, 10 + pulse * 46, 0, 7); x.fill();
+      x.fillStyle = '#10B981'; x.beginPath(); x.arc(f.x, f.y, 11, 0, 7); x.fill();
+    }
+  };
+  return c;
+}
+
+// ---------- modules ----------
+const modules = {
+  stat(m) {
+    const el = h(`<div><div class="mlabel">${esc(m.heading || 'By the numbers')}</div>
+      <div class="stat-num display"></div><div class="stat-line"></div>
+      <div class="stat-label">${esc(m.label)}</div><div class="stat-sub">${esc(m.sub || '')}</div></div>`);
+    const num = $('.stat-num', el), lineEl = $('.stat-line', el);
+    const full = (m.prefix || '') + fmt(m.value, m.decimals || 0) + (m.suffix || '');
+    num.style.fontSize = `${Math.min(190, Math.floor(1250 / full.length))}px`;
+    return { el, update(t) {
+      const p = easeOut(prog(t, .2, 1.8));
+      num.textContent = (m.prefix || '') + fmt(m.value * p, m.decimals || 0) + (m.suffix || '');
+      lineEl.style.width = `${easeOut(prog(t, .8, 1)) * 100}%`;
+      reveal($('.stat-label', el), easeOut(prog(t, 1, .7)));
+      reveal($('.stat-sub', el), easeOut(prog(t, 1.4, .7)));
+    } };
+  },
+  bars(m) {
+    const max = Math.max(...m.items.map((i) => i.value));
+    const el = h(`<div><div class="mlabel">${esc(m.label)}</div>${m.items.map((i) => `<div class="bar-row ${i.highlight ? 'hl' : ''}">
+      <div class="bar-top"><span>${esc(i.label)}</span><span class="v"></span></div>
+      <div class="bar-track"><div class="bar-fill"></div></div></div>`).join('')}</div>`);
+    const rows = [...el.querySelectorAll('.bar-row')];
+    return { el, update(t) {
+      rows.forEach((r, k) => {
+        const p = easeOut(prog(t, .2 + k * .18, 1.3)), it = m.items[k];
+        reveal(r, easeOut(prog(t, k * .18, .5)), 20);
+        $('.bar-fill', r).style.width = `${(it.value / max) * 100 * p}%`;
+        $('.v', r).textContent = (m.prefix || '') + fmt(it.value * p, m.decimals || 0) + (m.suffix || '');
+      });
+    } };
+  },
+  donut(m) {
+    const r = 150, L = 2 * Math.PI * r;
+    const el = h(`<div><div class="mlabel">${esc(m.heading || 'Market share')}</div>
+      <div style="display:flex;justify-content:center;position:relative;margin-top:10px">
+        <svg width="360" height="360" viewBox="0 0 360 360" style="transform:rotate(-90deg)">
+          <circle cx="180" cy="180" r="${r}" fill="none" stroke="rgba(100,116,139,.25)" stroke-width="34"/>
+          <circle class="arc" cx="180" cy="180" r="${r}" fill="none" stroke="#F5A623" stroke-width="34" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L}"/>
+        </svg>
+        <div class="display pct" style="position:absolute;inset:0;display:grid;place-items:center;font-size:110px;font-weight:900;color:#F5A623"></div>
+      </div>
+      <div class="stat-label" style="text-align:center;margin-top:24px">${esc(m.label)}</div>
+      <div class="stat-sub" style="text-align:center">${esc(m.sub || '')}</div></div>`);
+    return { el, update(t) {
+      const p = easeOut(prog(t, .2, 1.8));
+      $('.arc', el).setAttribute('stroke-dashoffset', L * (1 - (m.value / 100) * p));
+      $('.pct', el).textContent = `${fmt(m.value * p)}%`;
+      reveal($('.stat-label', el), easeOut(prog(t, 1, .7)));
+      reveal($('.stat-sub', el), easeOut(prog(t, 1.3, .7)));
+    } };
+  },
+  timeline(m) {
+    const W = 688, H = 400, pad = { l: 10, r: 30, t: 50, b: 50 };
+    const ys = m.points.map((p) => p.y), lg = m.scale === 'log';
+    const f = (v) => (lg ? Math.log10(v) : v);
+    const lo = lg ? f(Math.min(...ys)) : 0, hi = f(Math.max(...ys));
+    const X = (i) => pad.l + (i / (m.points.length - 1)) * (W - pad.l - pad.r);
+    const Y = (v) => H - pad.b - ((f(v) - lo) / (hi - lo || 1)) * (H - pad.t - pad.b);
+    const pts = m.points.map((p, i) => [X(i), Y(p.y)]);
+    const d = pts.map((q, i) => `${i ? 'L' : 'M'}${q[0]},${q[1]}`).join(' ');
+    const val = (v) => (m.prefix || '') + fmt(v, m.decimals || 0) + (m.suffix || '');
+    const el = h(`<div><div class="mlabel">${esc(m.label)}</div>
+      <svg width="${W}" height="${H}" style="overflow:visible">
+        <defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F5A623" stop-opacity=".35"/><stop offset="1" stop-color="#F5A623" stop-opacity="0"/></linearGradient>
+        <clipPath id="clip"><rect class="clipr" x="0" y="0" width="0" height="${H}"/></clipPath></defs>
+        ${[0, .5, 1].map((k) => `<line x1="0" x2="${W}" y1="${pad.t + k * (H - pad.t - pad.b)}" y2="${pad.t + k * (H - pad.t - pad.b)}" stroke="rgba(148,163,184,.15)"/>`).join('')}
+        <path d="${d} L${pts.at(-1)[0]},${H - pad.b} L${pts[0][0]},${H - pad.b} Z" fill="url(#ar)" clip-path="url(#clip)"/>
+        <path class="ln" d="${d}" fill="none" stroke="#F5A623" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+        ${pts.map((q, i) => `<circle class="dot" cx="${q[0]}" cy="${q[1]}" r="9" fill="#0A1128" stroke="#F5A623" stroke-width="4" opacity="0"/>
+          <text x="${q[0]}" y="${H - 12}" text-anchor="middle" fill="#94A3B8" font-size="22" font-weight="600">${esc(m.points[i].x)}</text>`).join('')}
+        <text class="v0" x="${pts[0][0] + 6}" y="${pts[0][1] - 22}" fill="#F8FAFC" font-size="30" font-weight="800" opacity="0">${val(m.points[0].y)}</text>
+        <text class="v1" x="${pts.at(-1)[0]}" y="${pts.at(-1)[1] - 24}" text-anchor="end" fill="#F5A623" font-size="40" font-weight="900" opacity="0">${val(m.points.at(-1).y)}</text>
+      </svg>${m.note ? `<div class="note">${esc(m.note)}</div>` : ''}</div>`);
+    const ln = $('.ln', el);
+    let total = 0;
+    return { el, update(t) {
+      if (!total) total = ln.getTotalLength();
+      const p = easeInOut(prog(t, .4, 2.6));
+      ln.style.strokeDasharray = total; ln.style.strokeDashoffset = total * (1 - p);
+      $('.clipr', el).setAttribute('width', W * p + 20);
+      el.querySelectorAll('.dot').forEach((c, i) => c.setAttribute('opacity', p >= i / (pts.length - 1) - .001 ? 1 : 0));
+      $('.v0', el).setAttribute('opacity', easeOut(prog(t, .4, .5)));
+      $('.v1', el).setAttribute('opacity', easeOut(prog(t, 2.8, .6)));
+    } };
+  },
+  versus(m) {
+    const el = h(`<div><div class="mlabel">${esc(m.heading || 'How it works')}</div><div class="vs">
+      <div class="l"><h4>${esc(m.left.label)}</h4><p class="v">${esc(m.left.value)}</p><p class="s">${esc(m.left.sub || '')}</p></div>
+      <div class="r"><h4>${esc(m.right.label)}</h4><p class="v">${esc(m.right.value)}</p><p class="s">${esc(m.right.sub || '')}</p></div>
+      <em>VS</em></div></div>`);
+    return { el, update(t) {
+      reveal($('.l', el), easeOut(prog(t, .2, .7)), 40);
+      reveal($('.r', el), easeOut(prog(t, .9, .7)), 40);
+      const e = $('em', el), p = easeBack(prog(t, .6, .5)); e.style.transform = `scale(${p})`;
+    } };
+  },
+  list(m) {
+    const el = h(`<div><div class="mlabel">${esc(m.heading || '')}</div>${m.items.map((it, i) =>
+      `<div class="list-item"><b>${i + 1}</b><span>${esc(it)}</span></div>`).join('')}</div>`);
+    const items = [...el.querySelectorAll('.list-item')];
+    return { el, update(t) { items.forEach((it, i) => { const p = easeOut(prog(t, .2 + i * .45, .6)); it.style.opacity = p; it.style.transform = `translateX(${(1 - p) * 40}px)`; }); } };
+  },
+};
+
+// ---------- scenes ----------
+function wordsSpan(text) { return text.split(/\s+/).map((w) => `<span>${esc(w)}</span>`).join(''); }
+
+function factScene(seg) {
+  const sc = $('#scene');
+  sc.append(h(`<div id="factKicker" class="abs kicker">Fact</div>`));
+  sc.append(h(`<div id="num" class="abs display">${seg.number}</div>`));
+  const title = h(`<div id="title" class="abs display">${wordsSpan(seg.title)}</div>`); sc.append(title);
+  const os = h(`<div id="onscreen" class="abs">${esc(seg.onscreen || '')}</div>`); sc.append(os);
+  const card = h(`<div id="card" class="abs"></div>`); sc.append(card);
+  const mod = seg.module ? modules[seg.module.type](seg.module) : null;
+  if (mod) card.append(mod.el); else card.style.display = 'none';
+  // place on-screen text under the title once layout is known
+  os.style.top = `${title.offsetTop + title.offsetHeight + 40}px`;
+  const tw = [...title.children];
+  return (t) => {
+    reveal($('#factKicker'), easeOut(prog(t, .1, .5)), 20);
+    const pn = easeBack(prog(t, .15, .8));
+    const num = $('#num'); num.style.opacity = clamp(pn * 1.5); num.style.transform = `translateY(${(1 - pn) * 90}px) scale(${1 + t * .002})`;
+    tw.forEach((w, i) => reveal(w, easeOut(prog(t, .6 + i * .07, .5)), 36));
+    reveal(os, easeOut(prog(t, 1.4, .7)), 20);
+    const pc = easeOut(prog(t, 1.0, .9));
+    card.style.opacity = pc; card.style.transform = `translateX(${(1 - pc) * 80}px)`;
+    if (mod) mod.update(t - 1.2);
+  };
+}
+
+function introScene(seg) {
+  const sc = $('#scene');
+  const mont = h(`<div id="montage" class="abs center display"></div>`); sc.append(mont);
+  const globe = makeGlobe(760); sc.append(globe);
+  const line = h(`<div id="introLine" class="abs display">${wordsSpan(seg.onscreen || '')}</div>`); sc.append(line);
+  const tc = h(`<div id="titleCard" class="abs center"><div class="t display">${esc(S.episode.titleCard)}</div><div class="s display">${esc(S.episode.titleCardSub)}</div></div>`); sc.append(tc);
+  const flash = h(`<div id="flash" class="abs"></div>`); sc.append(flash);
+  const items = seg.montage || [], per = 2.2, mEnd = items.length * per;
+  const startWord = S.words.find((w) => /^Starting/i.test(w.w));
+  const titleAt = startWord ? startWord.start + S.leadIn : S.duration * .82;
+  const lw = [...line.children];
+  return (t) => {
+    // montage
+    const i = Math.floor(t / per);
+    if (t < mEnd) {
+      const [a, b] = items[i].split('·').map((s) => s.trim());
+      mont.innerHTML = `${esc(a)}${b ? `<small>${esc(b)}</small>` : ''}`;
+      const lt = t - i * per, p = easeOut(prog(lt, 0, .35)), q = prog(lt, per - .3, .3);
+      mont.style.opacity = p * (1 - q); mont.style.transform = `scale(${1.15 - .15 * p + lt * .02})`;
+    } else mont.style.opacity = 0;
+    // globe + line
+    const gIn = easeOut(prog(t, mEnd, 1.2)), gOut = prog(t, titleAt - .6, .5);
+    globe.style.opacity = gIn * (1 - gOut);
+    globe.style.transform = `scale(${.85 + .15 * gIn})`;
+    globe.draw((1 - easeOut(prog(t, mEnd, 6))) * 120, S.episode.focus, S.episode.links || [], easeInOut(prog(t, mEnd + 3, 4)), (t % 1.6) / 1.6);
+    lw.forEach((w, k) => reveal(w, easeOut(prog(t, mEnd + 1 + k * .08, .5)) * (1 - gOut), 30));
+    // title slam
+    const ps = prog(t, titleAt, .55);
+    tc.style.opacity = t >= titleAt ? 1 : 0;
+    tc.style.transform = `scale(${1.6 - .6 * easeBack(ps) + Math.max(0, t - titleAt) * .006})`;
+    flash.style.opacity = t >= titleAt ? .55 * (1 - prog(t, titleAt, .35)) : 0;
+  };
+}
+
+function chapterScene(seg) {
+  const sc = $('#scene');
+  const el = h(`<div id="chap" class="abs center"><div class="k">Chapter ${String(seg.number).padStart(2, '0')}</div>
+    <div class="t display">${esc(seg.title)}</div><div class="line"></div><div class="r" style="margin-top:26px">${esc(seg.range)}</div></div>`);
+  sc.append(el);
+  return (t) => {
+    reveal($('.k', el), easeOut(prog(t, .1, .5)), 20);
+    const p = easeBack(prog(t, .25, .7)); const tt = $('.t', el); tt.style.opacity = clamp(p * 1.4); tt.style.transform = `scale(${.9 + .1 * p + t * .01})`;
+    $('.line', el).style.width = `${easeOut(prog(t, .5, .9)) * 900}px`;
+    reveal($('.r', el), easeOut(prog(t, .9, .6)), 20);
+  };
+}
+
+function outroScene(seg) {
+  const sc = $('#scene');
+  const head = h(`<div id="outroHead" class="abs display">${wordsSpan('20 facts. One economy. Your turn.')}</div>`); sc.append(head);
+  const cm = h(`<div id="comment" class="abs"><div class="av"></div><div><div class="who">Pinned · ${esc(S.channel.handle)}</div><div class="txt">${esc(seg.onscreen || '')}</div></div></div>`); sc.append(cm);
+  const sub = h(`<div id="sub" class="abs"><div style="margin-bottom:40px">${EMBLEM(150)}</div><div class="btn">SUBSCRIBE</div><div class="h">${esc(S.channel.tagline)}</div></div>`); sc.append(sub);
+  const cur = h(`<svg id="cursor" class="abs" viewBox="0 0 24 24"><path d="M4 2l16 10-7 1.5L9.5 21z" fill="#fff" stroke="#0A1128" stroke-width="1.2"/></svg>`); sc.append(cur);
+  const hw = [...head.children], btn = $('.btn', sub);
+  const subAt = S.words.find((w) => /^subscribe/i.test(w.w));
+  const clickAt = subAt ? subAt.start + S.leadIn + .2 : S.duration * .8;
+  return (t) => {
+    hw.forEach((w, i) => reveal(w, easeOut(prog(t, .3 + i * .1, .5)), 36));
+    reveal(cm, easeOut(prog(t, 1.4, .8)), 40);
+    reveal(sub, easeOut(prog(t, 2, .8)), 40);
+    const pc = easeInOut(prog(t, clickAt - 1.4, 1.2));
+    cur.style.left = `${1700 - 200 * pc}px`; cur.style.top = `${900 - 400 * pc}px`;
+    cur.style.opacity = prog(t, clickAt - 1.6, .3) * (1 - prog(t, clickAt + 1.2, .4));
+    const clicked = t >= clickAt;
+    btn.classList.toggle('done', clicked); btn.textContent = clicked ? 'SUBSCRIBED ✓' : 'SUBSCRIBE';
+    btn.style.transform = `scale(${1 - .08 * Math.sin(Math.PI * prog(t, clickAt - .1, .25))})`;
+  };
+}
+
+// ---------- captions ----------
+function buildChunks(words) {
+  const out = []; let cur = [];
+  words.forEach((w, i) => {
+    cur.push(w);
+    const next = words[i + 1];
+    const punct = /[.,!?;:]["')]?$/.test(w.w);
+    if (!next || cur.length >= 8 || (punct && cur.length >= 3) || (next && next.start - w.end > .5)) { out.push(cur); cur = []; }
+  });
+  return out;
+}
+function drawCaptions(t) {
+  const box = $('#captions');
+  const tt = t - S.leadIn;
+  let c = null;
+  for (let i = 0; i < chunks.length; i++) {
+    const next = chunks[i + 1];
+    if (tt >= chunks[i][0].start - .05 && (!next || tt < next[0].start - .05) && tt <= chunks[i].at(-1).end + .7) { c = chunks[i]; break; }
+  }
+  if (!c) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="pill">${c.map((w) => `<span class="${tt >= w.end ? 'said' : tt >= w.start ? 'now' : ''}">${esc(w.w)}</span>`).join(' ')}</div>`;
+}
+
+// ---------- entry points ----------
+window.init = (payload) => {
+  S = payload;
+  const root = document.documentElement.style;
+  Object.entries(S.channel.colors).forEach(([k, v]) => root.setProperty(`--${k}`, v));
+  $('#bug').innerHTML = `${EMBLEM(44)}<span class="name">${esc(S.channel.name)}</span>`;
+  const seg = S.segment;
+  if (seg.type === 'fact') {
+    $('#ticks').innerHTML = Array.from({ length: 20 }, (_, i) => { const n = 20 - i; return `<i class="${n > seg.number ? 'done' : n === seg.number ? 'now' : ''}"></i>`; }).join('');
+  }
+  if (S.broll) { $('#broll img').src = S.broll; }
+  chunks = S.captions === false ? [] : buildChunks(S.words || []);
+  update = { fact: factScene, intro: introScene, chapter: chapterScene, outro: outroScene }[seg.type](seg);
+  return document.fonts.ready.then(() => (S.broll ? $('#broll img').decode().catch(() => {}) : null)).then(() => true);
+};
+
+window.renderFrame = (t) => {
+  drawBg(t);
+  const fade = Math.min(prog(t, 0, .3), 1 - prog(t, S.duration - .35, .35));
+  $('#scene').style.opacity = fade;
+  $('#captions').style.opacity = fade;
+  if (S.broll) {
+    const b = $('#broll'); b.style.opacity = fade;
+    $('#broll img').style.transform = `scale(${1.05 + .1 * (t / S.duration)})`;
+  }
+  update(t);
+  drawCaptions(t);
+};
+</script>
+</body>
+</html>

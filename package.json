@@ -1,0 +1,12 @@
+{
+  "name": "finance-channel-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node src/render.mjs",
+    "thumbnail": "node src/thumbnail.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
