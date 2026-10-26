@@ -2,7 +2,8 @@
 // Render an episode: ElevenLabs voiceover -> animated frames (headless Chromium) -> MP4.
 //
 //   node src/render.mjs episodes/south-korea [--preview] [--only 0,2,3] [--workers 3]
-//                       [--music path/to/bed.mp3] [--silent]
+//                       [--music path/to/bed.mp3] [--silent] [--metadata]
+//   --metadata rewrites youtube.txt only (uses cached voiceovers, renders no video)
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -79,6 +80,8 @@ for (const i of picks) {
 }
 if (chars) console.log(`ElevenLabs characters used this run: ${chars}`);
 
+const partial = picks.length !== episode.segments.length;
+if (!flag('metadata')) {
 // 2. Per-segment audio bed (silence + whoosh + voice), exact segment length
 async function segmentAudio(item, out) {
   const argv = ['-y', '-f', 'lavfi', '-t', item.duration.toFixed(3), '-i', 'anullsrc=r=44100:cl=stereo', '-i', whoosh];
@@ -137,7 +140,6 @@ await browser.close();
 // 4. Concatenate (+ optional ducked music bed)
 const list = join(build, 'concat.txt');
 writeFileSync(list, plan.map((p) => `file '${files[p.i]}'`).join('\n'));
-const partial = picks.length !== episode.segments.length;
 const finalName = `${episode.slug}${partial ? '-preview' : ''}.mp4`;
 const joined = join(build, 'joined.mp4');
 await run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', joined]);
@@ -150,6 +152,8 @@ const mixArgs = opt('music')
   : ['-af', loud];
 await run('ffmpeg', ['-y', '-i', joined, ...mixArgs, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
   '-shortest', '-movflags', '+faststart', join(build, finalName)]);
+
+}
 
 // 5. YouTube description with chapter timestamps (chapter cards fold into the next fact)
 let t = 0, pendingCard = null;
@@ -165,11 +169,11 @@ for (const p of plan) {
 }
 const sources = [...new Set(plan.flatMap((p) => p.seg.sources || []))];
 const yt = episode.youtube || {};
-writeFileSync(join(build, 'youtube.txt'), [
+writeFileSync(join(build, partial ? 'youtube-preview.txt' : 'youtube.txt'), [
   `TITLE: ${episode.title}`, '', yt.descriptionIntro || '', '', 'CHAPTERS', ...stamps, '',
   'SOURCES', ...sources.map((s) => `• ${s}`), '',
   'Figures are approximate and drawn from the public sources above at the time of production.', '',
   `TAGS: ${(yt.tags || []).join(', ')}`,
 ].join('\n'));
 
-console.log(`\nDone: ${join(build, finalName)}  (${ts(t)})`);
+console.log(`\nDone: ${flag('metadata') ? 'metadata' : join(build, `${episode.slug}${partial ? '-preview' : ''}.mp4`)}  (${ts(t)})`);

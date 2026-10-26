@@ -46,6 +46,7 @@ Useful flags:
 | `--silent` | No ElevenLabs calls (timing is estimated). For testing layouts for free |
 | `--workers N` | Segments rendered in parallel (default 3) |
 | `--music file` | Background music, ducked under the voice |
+| `--metadata` | Rewrite `youtube.txt` only (cached voice, no video render) |
 
 ## Making a new episode
 
