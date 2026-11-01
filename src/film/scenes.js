@@ -241,7 +241,7 @@ export const scenes = {
           b.m.scale.set(1, h, 1); b.m.position.set(b.x, 0, 0);
           b.top.position.set(b.x, h + .02, 0);
           setOpacity(b.m, appear); b.top.material.opacity = .9 * appear;
-          b.lv.set(val(spec, cur[i])); b.lv.place(v3(b.x, h + 2.2, 0), appear, 0, 0);
+          b.lv.set(val(spec, cur[i])); b.lv.place(v3(b.x, h + 2.2, 0), appear * clamp(cur[i] / (b.it.value * .08 || 1)), 0, 0); // no '0%' before growth
           b.ln.place(v3(b.x, 0, 5.5), appear, 0, 0);
         });
         const p = ease.inOut(prog(lt, 0, dur));
