@@ -207,7 +207,7 @@ export const scenes = {
     const g = new THREE.Group();
     const items = spec.items, n = items.length;
     const max = Math.max(...items.map((i) => i.value), ...items.map((i) => i.from || 0));
-    const gap = 9, Hmax = 34;
+    const gap = n > 5 ? 11.5 : 9, Hmax = 34; // wider spacing so six names don't collide
     const bars = items.map((it, i) => {
       const col = it.highlight ? C.gold : new THREE.Color('#3B5998');
       const m = holo(new THREE.BoxGeometry(5.5, 1, 5.5).translate(0, .5, 0), { color: col, fill: it.highlight ? new THREE.Color('#3a2a08') : new THREE.Color('#16244a'), fillOpacity: .92, edge: it.highlight ? 3 : 2.6 });
