@@ -50,6 +50,8 @@ Voiceovers are cached in `.cache/tts`, so re-rendering after a visual tweak cost
 | `--music file` | Use your own music track instead of the generated bed |
 | `--no-music` | Voice and sound effects only |
 | `--metadata` | Rewrite `youtube.txt` only (cached voice, no video render) |
+| `--reuse` | Keep already-rendered segment videos (cues and audio are rebuilt) |
+| `--redo 9,10` | With `--reuse`: re-render just these segments |
 | `--flat` | The original 2D slide style |
 
 `channel.json → video.renderScale` sets the 3D layer's internal resolution (0.75 = 1440×810, upscaled;

@@ -7,6 +7,7 @@
 //   --metadata  rewrites youtube.txt only (uses cached voiceovers, renders no video)
 //   --flat      uses the original 2D slide stage instead of the 3D film stage
 //   --stills    writes PNG stills at the given fractions of each picked segment instead of video
+//   --reuse     keeps already-rendered segment videos; --redo 9,10 re-renders just those segments
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, resolve } from 'node:path';
@@ -22,7 +23,7 @@ const CHAPTER_LEN = 3.2;
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(`--${name}`);
 const opt = (name, def) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : def; };
-const VALUE_FLAGS = ['--only', '--workers', '--music', '--stills'];
+const VALUE_FLAGS = ['--only', '--workers', '--music', '--stills', '--redo'];
 const epDir = resolve(args.find((a, i) => !a.startsWith('--') && !VALUE_FLAGS.includes(args[i - 1])) || '');
 if (!existsSync(join(epDir, 'episode.json'))) {
   console.error('usage: node src/render.mjs <episode-dir> [--preview] [--only 0,1] [--workers N] [--music file] [--no-music] [--silent] [--metadata] [--flat] [--stills 0.3,0.7]');
@@ -41,6 +42,8 @@ if (flag('preview')) picks = picks.slice(0, 4);
 if (opt('only')) picks = opt('only').split(',').map(Number);
 const workers = Number(opt('workers', 3));
 const partial = picks.length !== episode.segments.length;
+const reuse = flag('reuse');
+const redo = new Set((opt('redo') || '').split(',').filter(Boolean).map(Number));
 
 const run = (cmd, argv, input) => new Promise((ok, fail) => {
   const p = spawn(cmd, argv, { stdio: [input ? 'pipe' : 'ignore', 'inherit', 'pipe'] });
@@ -111,6 +114,13 @@ if (!flag('metadata')) {
     const name = `seg_${String(item.i).padStart(2, '0')}`;
     const page = await openStage(item, browser);
     item.cues = await page.evaluate(() => (window.getCues ? window.getCues() : [{ t: 0, type: 'whoosh' }]));
+    const existing = join(build, 'segments', `${name}.mp4`);
+    if (reuse && !redo.has(item.i) && existsSync(existing) && Math.abs((await probe(existing)) - item.duration) < .2) {
+      await page.close();
+      item.mp4 = existing;
+      console.log(`reuse  #${item.i}`);
+      return;
+    }
     if (stills) {
       for (const f of stills) {
         const t = f <= 1 ? f * item.duration : f;
