@@ -1,33 +1,37 @@
 # Finance Channel Video Studio
 
 Turns a structured episode script into a finished, upload-ready YouTube video in the
-"20 Reasons [Country]'s Economy Defies Expectations" countdown format:
+"20 Reasons [Country]'s Economy Defies Expectations" countdown format, styled as a 3D motion film:
 
 - **Voiceover** from ElevenLabs, with word-level timing
-- **Motion graphics** rendered frame by frame: fact numbers, kinetic headlines, count-up stats,
-  bar/line/donut charts, a rotating data globe, chapter cards and a subscribe outro
-- **Word-synced captions** (the spoken word is highlighted in gold)
-- **Loudness-normalised audio** at −14 LUFS (YouTube's target), with an optional ducked music bed
-- **YouTube metadata**: title, description, chapter timestamps, sources and tags
-- **Thumbnail** at 1280×720
+- **3D motion graphics** (Three.js, rendered frame by frame): a dot-matrix globe with trade arcs, a 3D terrain
+  map of the country, extruded bar towers and bar races, a camera that rides 3D line charts, particle flows,
+  bullion stacks, exploded models (chips, ships, cars, tanks, reactors), population pyramids, glass cards
+  in depth, a night skyline. Every fact is split into **3–5 beats** that cut on specific narration phrases,
+  so the picture changes every 8–12 seconds and the camera never stops moving
+- **Whip-pan transitions** with motion blur, bloom, film grain, vignette and drifting particles
+- **Sound design**: a generated documentary music bed (pads, sub-bass pulse, arpeggio), whooshes on cuts,
+  data ticks on count-ups, sub-bass rumbles on camera moves, risers and impacts on titles and chapters,
+  all ducked under the voice and normalised to −14 LUFS. Everything is synthesised, so nothing needs licensing
+- **Word-synced captions**, **YouTube metadata** (chapters, sources, tags) and a **thumbnail**
 
-Brand settings (name, colors, voice) live in [`channel.json`](channel.json).
+Brand settings (name, colors, voice, render resolution) live in [`channel.json`](channel.json).
 
 ## Quick start
 
-Requirements: Node 22+, ffmpeg, and Playwright with Chromium (`npm i && npx playwright install chromium`).
+Requirements: Node 22+, Python 3 with numpy, ffmpeg, and Playwright with Chromium (`npm i && npx playwright install chromium`).
 
 ```bash
 export ELEVENLABS_API_KEY=...            # not needed inside Claude cloud sessions
 
-# Fast check: intro + first 3 segments, about 3 minutes to render
+# Check a few frames of specific segments in seconds (PNG stills at 20%/60% of each segment)
+node src/render.mjs episodes/south-korea --only 0,3 --stills 0.2,0.6
+
+# Preview: intro + chapter 1 + facts 20 and 19
 node src/render.mjs episodes/south-korea --preview
 
-# Full episode (~16 min of video, roughly 20 min to render on 4 cores)
-node src/render.mjs episodes/south-korea --workers 4
-
-# Add background music (any royalty-free track; it loops and ducks under the voice)
-node src/render.mjs episodes/south-korea --music assets/music/bed.mp3
+# Full episode (~16 min of video). Without a GPU this takes ~2 hours on 4 cores; with a GPU, minutes.
+node src/render.mjs episodes/south-korea
 
 # Thumbnail (optionally put a photo on the left side)
 node src/thumbnail.mjs episodes/south-korea [--image path/to/photo.jpg]
@@ -35,41 +39,61 @@ node src/thumbnail.mjs episodes/south-korea [--image path/to/photo.jpg]
 
 Output goes to `episodes/<slug>/build/`: `<slug>.mp4`, `youtube.txt` and `thumbnail.png`.
 Voiceovers are cached in `.cache/tts`, so re-rendering after a visual tweak costs no ElevenLabs credits.
-Only segments whose `voiceover` text changed are re-voiced.
-
-Useful flags:
 
 | Flag | Effect |
 |---|---|
 | `--preview` | First 4 segments only |
 | `--only 3,4,5` | Specific segment indexes |
+| `--stills 0.2,0.6` | PNG stills at those fractions (or seconds, if > 1) of each segment, no video |
 | `--silent` | No ElevenLabs calls (timing is estimated). For testing layouts for free |
-| `--workers N` | Segments rendered in parallel (default 3) |
-| `--music file` | Background music, ducked under the voice |
+| `--workers N` | Segments rendered in parallel, one browser each (default 3) |
+| `--music file` | Use your own music track instead of the generated bed |
+| `--no-music` | Voice and sound effects only |
 | `--metadata` | Rewrite `youtube.txt` only (cached voice, no video render) |
+| `--flat` | The original 2D slide style |
+
+`channel.json → video.renderScale` sets the 3D layer's internal resolution (0.75 = 1440×810, upscaled;
+text and captions are always drawn at full 1080p). Use 1 on a machine with a GPU.
 
 ## Making a new episode
 
 1. Copy `episodes/_template/episode.json` to `episodes/<country>/episode.json`.
-2. Fill in the segments. The order is `intro`, then `chapter` cards, `fact` 20…1, then `outro`.
-   Aim for **100–120 words per fact**: 20 facts ≈ 15–16 minutes.
-3. Choose a `module` (on-screen graphic) for each fact:
+2. Fill in the segments: `intro`, `chapter` cards, `fact` 20…1, `outro`. Aim for **100–120 words per fact**.
+3. Give each fact a `beats` list. The first beat starts with the fact; each later beat starts when the
+   narrator says its `at` phrase (copied word for word from the voiceover):
 
-| type | Use it for | Fields |
+```json
+"beats": [
+  { "scene": "plunge", "heading": "Asian Financial Crisis", "points": [...] },
+  { "at": "Around three and a half million", "scene": "flow", "value": 3.5, "suffix": "M", "label": "citizens queued to give their gold" },
+  { "at": "Roughly two hundred and twenty-seven tonnes", "scene": "stack", "value": 227, "suffix": " t", "stamp": "IMF REPAID · 2001", "stampAt": "Korea paid back" }
+]
+```
+
+| scene | Use it for | Key fields |
 |---|---|---|
-| `stat` | One headline number | `value`, `prefix`, `suffix`, `decimals`, `label`, `sub` |
-| `bars` | Comparing countries or companies | `label`, `items[{label, value, highlight}]`, `prefix`, `suffix`, `decimals` |
-| `timeline` | Change over time (`"scale": "log"` for growth stories) | `label`, `points[{x, y}]`, `prefix`, `decimals`, `note` |
-| `donut` | A share or percentage | `value` (0–100), `label`, `sub` |
-| `versus` | Explaining a system by contrast | `left{label,value,sub}`, `right{...}` |
-| `list` | 3–4 named players or reasons | `heading`, `items[]` |
+| `globe` | Trade routes, investment flows, "where in the world" | `focus`, `look`, `spin`, `dist`, `arcs[{to,label,sub}]`, `pins[{at,label}]`, `highlight` |
+| `terrain` | The country itself, cities, industrial clusters | `focus`, `markers[{at,label,sub,color}]`, `badges[]`, `highlight` |
+| `towers` | Comparisons; `"race": true` animates from `from` values and re-ranks | `label`, `items[{label,value,from,highlight}]`, `prefix`, `suffix`, `decimals` |
+| `ride` | Change over time; the camera chases the line | `label`, `points[{x,y}]`, `scale: "log"`, `threshold{value,label,color}` |
+| `plunge` | A crash: line plus fracturing towers | `points`, `labels[]`, `crackAt` |
+| `stat` | One headline number in 3D space | `value`, `prefix`, `suffix`, `label`, `sub`, `object` (a model name) |
+| `flow` | Millions of people or units converging | `value`, `suffix`, `label`, `targetLabel`, `target` |
+| `stack` | Gold or reserves piling up | `value`, `suffix`, `label`, `stamp`, `stampAt` |
+| `network` | Conglomerates, ecosystems | `hubs[]` |
+| `orbit` | One company doing many things | `center`, `items[{model,label,at}]` |
+| `pie` | A share of the whole | `value`, `wedgeLabel`, `restLabel` |
+| `model` | Hero object; `explode` for chips | `model`, `labels[{text,pos,at}]`, `cam{}`, `options` |
+| `pyramid` | Demographics over time | `bands[]`, `years[{year,v[]}]` |
+| `cards` | Lists of reasons or steps | `items[{title,text,at}]` |
+| `jeonse`, `plant`, `skyline`, `flythrough` | Explainer, factory-to-port, city, montage | see `episodes/south-korea` |
 
-4. Optional `broll`: an image path (relative to the episode folder) that appears behind the fact with a slow zoom.
-   Use stock or AI images that match the `visual` direction text.
-5. Set `focus` (lat/lon of the country) and `links` (trade partners) for the intro globe.
-6. **Fact-check before rendering.** Every fact has a `sources` list. Verify each number against it,
-   because finance audiences notice errors and YouTube favours accuracy in this category. The sources are
-   printed into the YouTube description automatically.
+Models: `crane`, `wafer`, `ship` (`kind: lng`, `cutaway`), `roro`, `car`, `robotArm`, `chip`, `tower`,
+`phone`, `shield`, `hospital`, `reactor`, `tank`, `battery`, `fab`, `vault`, `arrow`.
+
+4. Every beat can have a `kicker` and `heading` (top-left text). The fact's `onscreen` line appears as
+   a lower third during beat 2.
+5. **Fact-check before rendering.** Every fact has a `sources` list; they print into the YouTube description.
 
 ### Prompt for drafting a new script with an AI assistant
 

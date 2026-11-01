@@ -60,7 +60,131 @@
       ],
       "onscreen": "A $1.8 Trillion Economy Built From Almost Nothing",
       "visual": "Rapid montage: gantry cranes at Busan New Port; cleanroom workers in bunny suits at a memory fab; a 300-metre LNG carrier hull in a Geoje drydock; robots welding car bodies in Ulsan. Then dark screen, glowing map of East Asia, Korean peninsula lights up amber and emerald with trade lines to the US, Australia, Europe. Title card slams in.",
-      "voiceover": "When people picture an economic miracle, they usually think of Silicon Valley, or the oil kingdoms of the Gulf. Almost nobody thinks of a mountainous peninsula with no oil, no gas, and almost no natural resources, that sixty-five years ago was poorer than Ghana. Yet today, that same country builds the memory inside the world's AI chips, a large share of the giant tankers that move the world's natural gas, and some of the best-selling cars on American roads. It did it with a model that breaks almost every rule in the economics textbook. Starting from Fact 20, here are twenty reasons South Korea's economy and finances are not what you expect."
+      "voiceover": "When people picture an economic miracle, they usually think of Silicon Valley, or the oil kingdoms of the Gulf. Almost nobody thinks of a mountainous peninsula with no oil, no gas, and almost no natural resources, that sixty-five years ago was poorer than Ghana. Yet today, that same country builds the memory inside the world's AI chips, a large share of the giant tankers that move the world's natural gas, and some of the best-selling cars on American roads. It did it with a model that breaks almost every rule in the economics textbook. Starting from Fact 20, here are twenty reasons South Korea's economy and finances are not what you expect.",
+      "beats": [
+        {
+          "scene": "flythrough",
+          "per": 1.75,
+          "items": [
+            {
+              "model": "crane",
+              "label": "CONTAINER CRANES",
+              "sub": "BUSAN",
+              "scale": 0.8,
+              "labelY": 34
+            },
+            {
+              "model": "wafer",
+              "label": "MEMORY FABS",
+              "sub": "ICHEON",
+              "scale": 1.3,
+              "labelY": 6
+            },
+            {
+              "model": "ship",
+              "label": "SHIPYARDS",
+              "sub": "GEOJE",
+              "scale": 0.7,
+              "options": {
+                "kind": "lng"
+              },
+              "labelY": 16
+            },
+            {
+              "model": "car",
+              "label": "CAR LINES",
+              "sub": "ULSAN",
+              "scale": 4,
+              "labelY": 10
+            }
+          ]
+        },
+        {
+          "at": "Almost nobody thinks",
+          "scene": "terrain",
+          "kicker": "The peninsula",
+          "heading": "No oil. No gas. Few resources.",
+          "badges": [
+            "0% OIL",
+            "0% GAS"
+          ],
+          "markers": [
+            {
+              "at": [
+                37.56,
+                126.98
+              ],
+              "label": "Seoul",
+              "delay": 2.8
+            }
+          ]
+        },
+        {
+          "at": "Yet today",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            80,
+            52
+          ],
+          "spin": 70,
+          "look": [
+            30,
+            160
+          ],
+          "kicker": "Today",
+          "heading": "Wired into the world economy",
+          "arcs": [
+            {
+              "to": [
+                37.4,
+                -122.1
+              ],
+              "label": "Silicon Valley",
+              "sub": "AI memory"
+            },
+            {
+              "to": [
+                25.3,
+                51.5
+              ],
+              "label": "The Gulf",
+              "sub": "LNG tankers"
+            },
+            {
+              "to": [
+                50.1,
+                8.7
+              ],
+              "label": "Europe"
+            },
+            {
+              "to": [
+                33.7,
+                -84.4
+              ],
+              "label": "US car plants"
+            },
+            {
+              "to": [
+                -33.9,
+                151.2
+              ],
+              "label": "Australia"
+            }
+          ]
+        },
+        {
+          "at": "It did it with a model",
+          "scene": "skyline",
+          "kicker": "A different model",
+          "heading": "Breaking the textbook rules",
+          "seed": 12
+        }
+      ]
     },
     {
       "type": "chapter",
@@ -115,6 +239,134 @@
       "sources": [
         "World Bank WDI: NY.GDP.PCAP.CD (Korea, Rep.)",
         "IMF World Economic Outlook database"
+      ],
+      "beats": [
+        {
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "highlight": [
+            {
+              "at": [
+                36.5,
+                127.8
+              ],
+              "r": 2.6
+            },
+            {
+              "at": [
+                7.9,
+                -1.0
+              ],
+              "r": 3.5
+            }
+          ],
+          "look": [
+            25,
+            128
+          ],
+          "spin": 125,
+          "dist": [
+            80,
+            62
+          ],
+          "pins": [
+            {
+              "at": [
+                36.5,
+                127.8
+              ],
+              "label": "South Korea, 1960",
+              "sub": "≈ $158 per person",
+              "delay": 5
+            },
+            {
+              "at": [
+                7.9,
+                -1.0
+              ],
+              "label": "Ghana, 1960",
+              "sub": "a similar income",
+              "delay": 0.6
+            }
+          ]
+        },
+        {
+          "at": "The Korean War",
+          "scene": "terrain",
+          "highlight": "all",
+          "kicker": "1950–53",
+          "heading": "War ruins",
+          "focus": [
+            38,
+            127.5
+          ],
+          "markers": [
+            {
+              "at": [
+                40.2,
+                127.3
+              ],
+              "label": "Industrial north",
+              "sub": "lost after partition",
+              "color": "red"
+            },
+            {
+              "at": [
+                37.56,
+                126.98
+              ],
+              "label": "Seoul",
+              "sub": "flattened by war",
+              "color": "red"
+            }
+          ]
+        },
+        {
+          "at": "Today, income per person",
+          "scene": "ride",
+          "label": "GDP per person (US$, log scale)",
+          "scale": "log",
+          "prefix": "$",
+          "points": [
+            {
+              "x": "1960",
+              "y": 158
+            },
+            {
+              "x": "1970",
+              "y": 279
+            },
+            {
+              "x": "1980",
+              "y": 1715
+            },
+            {
+              "x": "1990",
+              "y": 6610
+            },
+            {
+              "x": "2000",
+              "y": 12260
+            },
+            {
+              "x": "2010",
+              "y": 23080
+            },
+            {
+              "x": "2024",
+              "y": 36000
+            }
+          ]
+        },
+        {
+          "at": "Going from war ruins",
+          "scene": "skyline",
+          "kicker": "Seoul",
+          "heading": "The Miracle on the Han River"
+        }
       ]
     },
     {
@@ -134,6 +386,77 @@
       "sources": [
         "IMF: Korea stand-by arrangement 1997",
         "Korea Herald / Yonhap retrospectives on the 1998 gold-collection campaign"
+      ],
+      "beats": [
+        {
+          "scene": "plunge",
+          "kicker": "1997",
+          "heading": "Asian Financial Crisis",
+          "label": "Value of ₩1,000 in US$",
+          "prefix": "$",
+          "decimals": 2,
+          "crackAt": 3,
+          "points": [
+            {
+              "x": "Jan '97",
+              "y": 1.17
+            },
+            {
+              "x": "Jul '97",
+              "y": 1.12
+            },
+            {
+              "x": "Oct '97",
+              "y": 1.05
+            },
+            {
+              "x": "Nov '97",
+              "y": 0.88
+            },
+            {
+              "x": "Dec '97",
+              "y": 0.55
+            }
+          ],
+          "labels": [
+            "Hanbo Steel",
+            "Kia Motors",
+            "Jinro",
+            "Haitai",
+            "Sammi"
+          ],
+          "towers": 5
+        },
+        {
+          "at": "the country needed a bailout package",
+          "scene": "stat",
+          "value": 58,
+          "prefix": "$",
+          "suffix": "B",
+          "label": "IMF-led bailout package",
+          "sub": "one of the largest ever at the time",
+          "kicker": "December 1997"
+        },
+        {
+          "at": "Around three and a half million",
+          "scene": "flow",
+          "value": 3.5,
+          "decimals": 1,
+          "suffix": "M",
+          "label": "citizens queued to give their gold",
+          "sub": "wedding rings · medals · keys",
+          "targetLabel": "Bank vaults"
+        },
+        {
+          "at": "Roughly two hundred and twenty-seven tonnes",
+          "scene": "stack",
+          "value": 227,
+          "suffix": " t",
+          "label": "of gold collected",
+          "sub": "melted down and exported for dollars",
+          "stamp": "IMF REPAID · 2001",
+          "stampAt": "Korea paid back"
+        }
       ]
     },
     {
@@ -156,6 +479,90 @@
       "sources": [
         "Company annual reports (Samsung affiliates)",
         "KDI / Korea Fair Trade Commission: large business group data"
+      ],
+      "beats": [
+        {
+          "scene": "network",
+          "kicker": "Chaebol",
+          "heading": "A few family groups, thousands of affiliates",
+          "hubs": [
+            "Samsung",
+            "SK",
+            "Hyundai",
+            "LG"
+          ]
+        },
+        {
+          "at": "A Samsung affiliate",
+          "scene": "orbit",
+          "center": "SAMSUNG",
+          "items": [
+            {
+              "model": "phone",
+              "label": "Your phone",
+              "at": "build your phone"
+            },
+            {
+              "model": "tower",
+              "label": "Your apartment",
+              "at": "your apartment",
+              "scale": 0.35
+            },
+            {
+              "model": "ship",
+              "label": "Your oil tanker",
+              "at": "the ship that carries",
+              "scale": 0.14
+            },
+            {
+              "model": "shield",
+              "label": "Your insurance",
+              "at": "insure your life"
+            },
+            {
+              "model": "hospital",
+              "label": "Your hospital",
+              "at": "treat you in"
+            }
+          ]
+        },
+        {
+          "at": "Taken together",
+          "scene": "pie",
+          "value": 20,
+          "wedgeLabel": "Samsung Group revenue",
+          "restLabel": "Rest of the economy",
+          "label": "of national GDP",
+          "sub": "estimated, group-wide revenue"
+        },
+        {
+          "at": "The government created",
+          "scene": "cards",
+          "kicker": "How it was built",
+          "heading": "1960s–70s industrial policy",
+          "items": [
+            {
+              "title": "Cheap state loans",
+              "text": "steered to a few chosen champions",
+              "at": "sending cheap loans"
+            },
+            {
+              "title": "Export targets",
+              "text": "hit them, or lose the credit",
+              "at": "in return for hitting"
+            },
+            {
+              "title": "Global giants",
+              "text": "built at record speed",
+              "at": "It built global giants"
+            },
+            {
+              "title": "Concentrated power",
+              "text": "still debated today",
+              "at": "It also left"
+            }
+          ]
+        }
       ]
     },
     {
@@ -176,6 +583,135 @@
       "sources": [
         "Ministry of Trade, Industry and Energy (MOTIE) 2024 trade release",
         "World Bank: exports of goods and services (% of GDP)"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "crane",
+          "scale": 1,
+          "kicker": "Busan New Port",
+          "heading": "≈ 51 million people",
+          "cam": {
+            "a0": -0.9,
+            "a1": -0.2,
+            "d0": 80,
+            "d1": 60,
+            "y0": 34,
+            "y1": 24,
+            "lookY": 12
+          },
+          "labels": [
+            {
+              "text": "Fewer people than California",
+              "pos": [
+                0,
+                30,
+                8
+              ],
+              "delay": 1.5
+            }
+          ]
+        },
+        {
+          "at": "Yet in 2024",
+          "scene": "stat",
+          "value": 684,
+          "prefix": "$",
+          "suffix": "B",
+          "label": "goods exported in 2024",
+          "sub": "an all-time record",
+          "object": "ship",
+          "objectScale": 0.35
+        },
+        {
+          "at": "Exports of goods and services",
+          "scene": "towers",
+          "label": "Exports, % of GDP (approx., 2023)",
+          "suffix": "%",
+          "items": [
+            {
+              "label": "South Korea",
+              "value": 44,
+              "highlight": true
+            },
+            {
+              "label": "Japan",
+              "value": 22
+            },
+            {
+              "label": "China",
+              "value": 20
+            },
+            {
+              "label": "United States",
+              "value": 11
+            }
+          ]
+        },
+        {
+          "at": "That openness",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            70,
+            50
+          ],
+          "spin": 50,
+          "look": [
+            30,
+            140
+          ],
+          "kicker": "Global early-warning signal",
+          "heading": "Watched on the 1st of every month",
+          "arcs": [
+            {
+              "to": [
+                39.9,
+                116.4
+              ],
+              "label": "China"
+            },
+            {
+              "to": [
+                38.9,
+                -77.0
+              ],
+              "label": "United States"
+            },
+            {
+              "to": [
+                21.0,
+                105.8
+              ],
+              "label": "Vietnam"
+            },
+            {
+              "to": [
+                50.1,
+                8.7
+              ],
+              "label": "Europe"
+            },
+            {
+              "to": [
+                35.7,
+                139.7
+              ],
+              "label": "Japan"
+            }
+          ]
+        },
+        {
+          "at": "which is why investors",
+          "scene": "stat",
+          "value": 1,
+          "prefix": "Day ",
+          "label": "of each month: Korea's export data lands first",
+          "sub": "an early warning for the world economy"
+        }
       ]
     },
     {
@@ -216,6 +752,113 @@
       "sources": [
         "Hyundai Motor Group annual sales releases",
         "Company data: Toyota, VW, GM, Stellantis 2024"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "car",
+          "scale": 5,
+          "kicker": "1976",
+          "heading": "Hyundai Pony: Korea's first home-grown car",
+          "cam": {
+            "a0": -1.2,
+            "a1": -0.3,
+            "d0": 46,
+            "d1": 34,
+            "y0": 14,
+            "y1": 10,
+            "lookY": 4
+          },
+          "rays": 1,
+          "labels": [
+            {
+              "text": "Hyundai Pony",
+              "sub": "people laughed",
+              "pos": [
+                0,
+                2.6,
+                0
+              ],
+              "delay": 1.2
+            }
+          ]
+        },
+        {
+          "at": "Today Hyundai and its sister brand",
+          "scene": "towers",
+          "race": true,
+          "label": "Vehicles sold per year (millions)",
+          "decimals": 1,
+          "suffix": "M",
+          "items": [
+            {
+              "label": "Toyota",
+              "value": 10.8,
+              "from": 7.5
+            },
+            {
+              "label": "Volkswagen",
+              "value": 9.0,
+              "from": 8.5
+            },
+            {
+              "label": "Hyundai–Kia",
+              "value": 7.2,
+              "from": 1.0,
+              "highlight": true
+            },
+            {
+              "label": "GM",
+              "value": 6.0,
+              "from": 8.0
+            },
+            {
+              "label": "Stellantis",
+              "value": 5.5,
+              "from": 6.5
+            }
+          ]
+        },
+        {
+          "at": "Their complex in the city of Ulsan",
+          "scene": "plant",
+          "kicker": "Ulsan",
+          "heading": "One of the largest car plants ever built",
+          "plantLabel": "Ulsan complex",
+          "plantSub": "≈ 1.5M cars a year",
+          "portLabel": "Its own port",
+          "portSub": "cars roll straight onto ships"
+        },
+        {
+          "at": "And Hyundai's newest plant",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            72,
+            48
+          ],
+          "spin": 130,
+          "look": [
+            33,
+            -100
+          ],
+          "kicker": "Made in America",
+          "heading": "Hyundai Metaplant, Georgia",
+          "arcs": [
+            {
+              "to": [
+                32.1,
+                -81.4
+              ],
+              "label": "Georgia, USA",
+              "sub": "Hyundai Metaplant",
+              "delay": 2
+            }
+          ]
+        }
       ]
     },
     {
@@ -240,6 +883,117 @@
       "sources": [
         "TrendForce / Counterpoint DRAM market share reports",
         "Korea International Trade Association semiconductor export data"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "wafer",
+          "scale": 2.2,
+          "kicker": "Memory",
+          "heading": "Inside every phone, laptop and data center",
+          "spin": 0.25,
+          "cam": {
+            "a0": -0.4,
+            "a1": 0.4,
+            "d0": 70,
+            "d1": 48,
+            "y0": 40,
+            "y1": 26,
+            "lookY": 0
+          },
+          "rays": 1
+        },
+        {
+          "at": "And roughly seven out of every ten",
+          "scene": "pie",
+          "value": 70,
+          "wedgeLabel": "Samsung + SK hynix",
+          "restLabel": "Everyone else",
+          "label": "of the world's DRAM memory chips",
+          "sub": "approx. market share"
+        },
+        {
+          "at": "Their giant fabs",
+          "scene": "terrain",
+          "focus": [
+            37.1,
+            127.2
+          ],
+          "radius": [
+            74,
+            74
+          ],
+          "height": [
+            54,
+            40
+          ],
+          "kicker": "Tens of billions per fab",
+          "heading": "Korea's memory belt",
+          "rise": false,
+          "markers": [
+            {
+              "at": [
+                36.99,
+                127.11
+              ],
+              "label": "Pyeongtaek",
+              "sub": "Samsung"
+            },
+            {
+              "at": [
+                37.2,
+                126.83
+              ],
+              "label": "Hwaseong",
+              "sub": "Samsung"
+            },
+            {
+              "at": [
+                37.27,
+                127.44
+              ],
+              "label": "Icheon",
+              "sub": "SK hynix"
+            }
+          ]
+        },
+        {
+          "at": "When memory prices go up",
+          "scene": "ride",
+          "label": "Korea's chip exports (US$ billions)",
+          "prefix": "$",
+          "suffix": "B",
+          "points": [
+            {
+              "x": "2018",
+              "y": 127
+            },
+            {
+              "x": "2019",
+              "y": 94
+            },
+            {
+              "x": "2020",
+              "y": 99
+            },
+            {
+              "x": "2021",
+              "y": 128
+            },
+            {
+              "x": "2022",
+              "y": 129
+            },
+            {
+              "x": "2023",
+              "y": 99
+            },
+            {
+              "x": "2024",
+              "y": 142
+            }
+          ]
+        }
       ]
     },
     {
@@ -262,6 +1016,129 @@
       "sources": [
         "Clarksons Research: LNG carrier orderbook",
         "Hanwha press release: Philly Shipyard acquisition (2024)"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "ship",
+          "options": {
+            "kind": "lng",
+            "cutaway": true
+          },
+          "scale": 1,
+          "kicker": "LNG carrier",
+          "heading": "Cargo kept at −162°C",
+          "spin": 0.06,
+          "cam": {
+            "a0": -0.9,
+            "a1": -0.3,
+            "d0": 80,
+            "d1": 56,
+            "y0": 34,
+            "y1": 22,
+            "lookY": 6
+          },
+          "labels": [
+            {
+              "text": "−162°C",
+              "sub": "liquefied natural gas",
+              "pos": [
+                -3,
+                14,
+                0
+              ],
+              "delay": 1.5
+            },
+            {
+              "text": "Tanks that cannot leak",
+              "pos": [
+                19,
+                14,
+                0
+              ],
+              "delay": 3
+            }
+          ]
+        },
+        {
+          "at": "For years, most of the world's",
+          "scene": "terrain",
+          "focus": [
+            35.2,
+            128.9
+          ],
+          "radius": [
+            74,
+            74
+          ],
+          "height": [
+            56,
+            42
+          ],
+          "kicker": "Southeast coast",
+          "heading": "The LNG-carrier yards",
+          "rise": false,
+          "badges": [
+            "$200M+ PER SHIP"
+          ],
+          "badgeColor": "gold",
+          "markers": [
+            {
+              "at": [
+                35.51,
+                129.42
+              ],
+              "label": "HD Hyundai",
+              "sub": "Ulsan"
+            },
+            {
+              "at": [
+                34.89,
+                128.69
+              ],
+              "label": "Hanwha Ocean",
+              "sub": "Geoje"
+            },
+            {
+              "at": [
+                34.85,
+                128.52
+              ],
+              "label": "Samsung Heavy",
+              "sub": "Geoje"
+            }
+          ]
+        },
+        {
+          "at": "And as Washington",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            74,
+            50
+          ],
+          "spin": 120,
+          "look": [
+            38,
+            -105
+          ],
+          "kicker": "2024",
+          "heading": "Korean shipbuilders come to America",
+          "arcs": [
+            {
+              "to": [
+                39.9,
+                -75.15
+              ],
+              "label": "Philly Shipyard",
+              "sub": "bought by Hanwha, 2024",
+              "delay": 2
+            }
+          ]
+        }
       ]
     },
     {
@@ -284,6 +1161,174 @@
       "sources": [
         "Company announcements: LGES, SK On, Samsung SDI US plants",
         "Reuters/AP coverage of the September 2025 Georgia raid"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "battery",
+          "scale": 2.2,
+          "kicker": "K-battery",
+          "heading": "Cells inside America's EVs",
+          "cam": {
+            "a0": -0.7,
+            "a1": 0.2,
+            "d0": 60,
+            "d1": 42,
+            "y0": 34,
+            "y1": 22,
+            "lookY": 2
+          },
+          "rays": 1
+        },
+        {
+          "at": "LG Energy Solution, SK On",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            62,
+            42
+          ],
+          "spin": 60,
+          "look": [
+            38,
+            -92
+          ],
+          "kicker": "Tens of billions invested",
+          "heading": "Korean battery plants across the US",
+          "highlight": [
+            {
+              "at": [
+                36.5,
+                127.8
+              ],
+              "r": 2.6
+            }
+          ],
+          "pins": [
+            {
+              "at": [
+                42.7,
+                -84.5
+              ],
+              "label": "Michigan",
+              "delay": 1.5
+            },
+            {
+              "at": [
+                41.1,
+                -80.7
+              ],
+              "label": "Ohio",
+              "delay": 1.9
+            },
+            {
+              "at": [
+                37.7,
+                -85.9
+              ],
+              "label": "Kentucky",
+              "delay": 2.3
+            },
+            {
+              "at": [
+                35.6,
+                -87.0
+              ],
+              "label": "Tennessee",
+              "delay": 2.7
+            },
+            {
+              "at": [
+                34.2,
+                -83.5
+              ],
+              "label": "Georgia",
+              "delay": 3.1
+            },
+            {
+              "at": [
+                40.4,
+                -86.1
+              ],
+              "label": "Indiana",
+              "delay": 3.5
+            },
+            {
+              "at": [
+                33.4,
+                -112.0
+              ],
+              "label": "Arizona",
+              "delay": 3.9
+            }
+          ]
+        },
+        {
+          "at": "often in joint ventures",
+          "scene": "orbit",
+          "center": "K-BATTERY",
+          "items": [
+            {
+              "model": "car",
+              "label": "GM",
+              "scale": 2.2,
+              "at": "with GM"
+            },
+            {
+              "model": "car",
+              "label": "Ford",
+              "scale": 2.2,
+              "at": "Ford"
+            },
+            {
+              "model": "car",
+              "label": "Stellantis",
+              "scale": 2.2,
+              "at": "Stellantis"
+            },
+            {
+              "model": "car",
+              "label": "Honda",
+              "scale": 2.2,
+              "at": "Honda"
+            },
+            {
+              "model": "car",
+              "label": "Hyundai",
+              "scale": 2.2,
+              "at": "and Hyundai"
+            }
+          ]
+        },
+        {
+          "at": "That bet has not been smooth",
+          "scene": "cards",
+          "kicker": "Headwinds",
+          "heading": "Not a smooth ride",
+          "items": [
+            {
+              "title": "EV demand slowed",
+              "at": "EV demand slowed"
+            },
+            {
+              "title": "US subsidies changed",
+              "at": "US subsidies changed"
+            },
+            {
+              "title": "Sept 2025: Georgia raid",
+              "text": "hundreds of workers detained",
+              "at": "in September 2025"
+            },
+            {
+              "title": "The bet remains",
+              "text": "the cell maker that isn't China",
+              "at": "But the strategic logic"
+            }
+          ]
+        }
       ]
     },
     {
@@ -304,6 +1349,116 @@
       "sources": [
         "Defense Acquisition Program Administration (DAPA) export figures",
         "SIPRI arms transfer database"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "tank",
+          "scale": 2.4,
+          "kicker": "Built under threat",
+          "heading": "K2 Black Panther",
+          "cam": {
+            "a0": -1.0,
+            "a1": -0.1,
+            "d0": 64,
+            "d1": 44,
+            "y0": 22,
+            "y1": 14,
+            "lookY": 4
+          },
+          "rays": 1
+        },
+        {
+          "at": "When war returned to Europe",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            70,
+            50
+          ],
+          "spin": 60,
+          "look": [
+            48,
+            60
+          ],
+          "kicker": "2022",
+          "heading": "Delivered in months, not years",
+          "arcs": [
+            {
+              "to": [
+                52.2,
+                21.0
+              ],
+              "label": "Poland",
+              "sub": "K2 tanks · K9 howitzers · FA-50 jets",
+              "delay": 1.5
+            }
+          ]
+        },
+        {
+          "at": "Korea could deliver in months",
+          "scene": "cards",
+          "kicker": "The Poland deals",
+          "heading": "Months, not years",
+          "items": [
+            {
+              "title": "K2 tanks",
+              "at": "The deals for K2 tanks"
+            },
+            {
+              "title": "K9 howitzers",
+              "at": "K9 howitzers"
+            },
+            {
+              "title": "FA-50 jets",
+              "at": "FA-50 fighter jets"
+            }
+          ]
+        },
+        {
+          "at": "to around seventeen billion",
+          "scene": "towers",
+          "label": "Defense export contracts (US$ billions, approx.)",
+          "prefix": "$",
+          "suffix": "B",
+          "decimals": 1,
+          "items": [
+            {
+              "label": "2019",
+              "value": 3.1
+            },
+            {
+              "label": "2020",
+              "value": 3.0
+            },
+            {
+              "label": "2021",
+              "value": 7.3
+            },
+            {
+              "label": "2022",
+              "value": 17.3,
+              "highlight": true
+            },
+            {
+              "label": "2023",
+              "value": 13.5
+            }
+          ]
+        },
+        {
+          "at": "Korea's government now openly aims",
+          "scene": "stat",
+          "value": 4,
+          "prefix": "#",
+          "label": "global arms exporter",
+          "sub": "Korea's stated goal",
+          "object": "tank",
+          "objectScale": 1.2
+        }
       ]
     },
     {
@@ -349,6 +1504,79 @@
       "sources": [
         "OECD Main Science and Technology Indicators (GERD % of GDP)",
         "WIPO statistics"
+      ],
+      "beats": [
+        {
+          "scene": "stat",
+          "value": 4.9,
+          "decimals": 1,
+          "suffix": "%",
+          "label": "of GDP spent on R&D",
+          "sub": "every single year"
+        },
+        {
+          "at": "That's second in the world",
+          "scene": "towers",
+          "label": "R&D spending, % of GDP (approx., OECD)",
+          "decimals": 1,
+          "suffix": "%",
+          "items": [
+            {
+              "label": "Israel",
+              "value": 6.0
+            },
+            {
+              "label": "South Korea",
+              "value": 4.9,
+              "highlight": true
+            },
+            {
+              "label": "United States",
+              "value": 3.5
+            },
+            {
+              "label": "Japan",
+              "value": 3.4
+            },
+            {
+              "label": "Germany",
+              "value": 3.1
+            },
+            {
+              "label": "OECD avg",
+              "value": 2.7
+            }
+          ]
+        },
+        {
+          "at": "Around four-fifths",
+          "scene": "pie",
+          "value": 80,
+          "wedgeLabel": "Companies",
+          "restLabel": "Government & others",
+          "label": "of R&D paid for by business",
+          "sub": "Samsung alone outspends many countries"
+        },
+        {
+          "at": "A country with no oil",
+          "scene": "terrain",
+          "kicker": "The only resource it can grow",
+          "heading": "Its people",
+          "badges": [
+            "0% OIL",
+            "0% GAS",
+            "FEW MINERALS"
+          ],
+          "rise": false,
+          "radius": [
+            94,
+            78
+          ],
+          "height": [
+            70,
+            52
+          ]
+        }
       ]
     },
     {
@@ -380,6 +1608,35 @@
       "sources": [
         "Bank of Korea research on jeonse",
         "Ministry of Land, Infrastructure and Transport: jeonse fraud victim support data"
+      ],
+      "beats": [
+        {
+          "scene": "skyline",
+          "kicker": "Seoul",
+          "heading": "Renting, the Korean way"
+        },
+        {
+          "at": "You hand your landlord",
+          "scene": "jeonse",
+          "phase": "deposit",
+          "outAt": "When you move out",
+          "kicker": "Jeonse",
+          "heading": "One deposit. Two years. Zero rent."
+        },
+        {
+          "at": "The landlord makes money",
+          "scene": "jeonse",
+          "phase": "leverage",
+          "kicker": "The landlord's side",
+          "heading": "The deposit becomes leverage"
+        },
+        {
+          "at": "But when prices fell",
+          "scene": "jeonse",
+          "phase": "collapse",
+          "kicker": "2022–23",
+          "heading": "When prices fall, deposits vanish"
+        }
       ]
     },
     {
@@ -419,6 +1676,164 @@
         "NPS Investment Management fund size disclosures",
         "Thinking Ahead Institute Global Top 300 Pension Funds",
         "Korea National Assembly pension reform (March 2025)"
+      ],
+      "beats": [
+        {
+          "scene": "terrain",
+          "focus": [
+            35.82,
+            127.15
+          ],
+          "radius": [
+            74,
+            74
+          ],
+          "height": [
+            58,
+            40
+          ],
+          "kicker": "Jeonju",
+          "heading": "Home of a trillion-dollar fund",
+          "markers": [
+            {
+              "at": [
+                35.82,
+                127.15
+              ],
+              "label": "National Pension Service",
+              "sub": "Jeonju",
+              "color": "gold",
+              "delay": 2
+            }
+          ]
+        },
+        {
+          "at": "South Korea's National Pension Service",
+          "scene": "towers",
+          "label": "Largest pension funds (US$ trillions, approx.)",
+          "prefix": "$",
+          "suffix": "T",
+          "decimals": 1,
+          "items": [
+            {
+              "label": "Norway GPFG",
+              "value": 1.8
+            },
+            {
+              "label": "Japan GPIF",
+              "value": 1.7
+            },
+            {
+              "label": "Korea NPS",
+              "value": 0.9,
+              "highlight": true
+            },
+            {
+              "label": "US Federal TSP",
+              "value": 0.9
+            }
+          ]
+        },
+        {
+          "at": "It's one of the largest shareholders",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            72,
+            52
+          ],
+          "spin": 110,
+          "look": [
+            45,
+            -30
+          ],
+          "kicker": "Global portfolio",
+          "heading": "Samsung shares to New York towers",
+          "arcs": [
+            {
+              "to": [
+                40.7,
+                -74.0
+              ],
+              "label": "New York"
+            },
+            {
+              "to": [
+                51.5,
+                -0.1
+              ],
+              "label": "London"
+            },
+            {
+              "to": [
+                48.9,
+                2.35
+              ],
+              "label": "Paris"
+            },
+            {
+              "to": [
+                37.8,
+                -122.4
+              ],
+              "label": "San Francisco"
+            }
+          ]
+        },
+        {
+          "at": "But there's a catch",
+          "scene": "ride",
+          "label": "NPS fund, projected before the 2025 reform (₩ trillion)",
+          "prefix": "₩",
+          "suffix": "T",
+          "color": "red",
+          "points": [
+            {
+              "x": "2020",
+              "y": 834
+            },
+            {
+              "x": "2025",
+              "y": 1200
+            },
+            {
+              "x": "2030",
+              "y": 1500
+            },
+            {
+              "x": "2040",
+              "y": 1755
+            },
+            {
+              "x": "2050",
+              "y": 900
+            },
+            {
+              "x": "2055",
+              "y": 0
+            }
+          ]
+        },
+        {
+          "at": "In 2025, lawmakers",
+          "scene": "towers",
+          "label": "Pension contribution rate (% of wages)",
+          "suffix": "%",
+          "items": [
+            {
+              "label": "Before",
+              "value": 9
+            },
+            {
+              "label": "After 2025 reform",
+              "value": 13,
+              "highlight": true
+            }
+          ]
+        }
       ]
     },
     {
@@ -441,6 +1856,96 @@
       "sources": [
         "Financial Services Commission: Corporate Value-Up Program (2024)",
         "Korea Exchange KOSPI index data"
+      ],
+      "beats": [
+        {
+          "scene": "skyline",
+          "kicker": "Yeouido, Seoul",
+          "heading": "The Korea Discount",
+          "seed": 8
+        },
+        {
+          "scene": "towers",
+          "label": "Price-to-book ratio (approx., 2024)",
+          "decimals": 1,
+          "suffix": "x",
+          "items": [
+            {
+              "label": "Korea (KOSPI)",
+              "value": 0.9,
+              "highlight": true
+            },
+            {
+              "label": "Japan",
+              "value": 1.4
+            },
+            {
+              "label": "Taiwan",
+              "value": 2.3
+            },
+            {
+              "label": "US (S&P 500)",
+              "value": 4.5
+            }
+          ],
+          "at": "Korean companies with world-class"
+        },
+        {
+          "at": "The reasons?",
+          "scene": "cards",
+          "kicker": "Why Korean stocks traded cheap",
+          "heading": "The four reasons",
+          "items": [
+            {
+              "title": "Family control",
+              "text": "big groups run on small stakes",
+              "at": "Founding families"
+            },
+            {
+              "title": "Stingy dividends",
+              "at": "stingy dividends"
+            },
+            {
+              "title": "Cross-shareholdings",
+              "text": "complex webs of ownership",
+              "at": "complex cross-shareholdings"
+            },
+            {
+              "title": "North Korea risk",
+              "at": "the ever-present risk"
+            }
+          ]
+        },
+        {
+          "at": "In 2024, the government",
+          "scene": "ride",
+          "label": "KOSPI index",
+          "kicker": "Value-Up",
+          "color": "emerald",
+          "points": [
+            {
+              "x": "Jan '24",
+              "y": 2655
+            },
+            {
+              "x": "Dec '24",
+              "y": 2399
+            },
+            {
+              "x": "Jun '25",
+              "y": 3071
+            },
+            {
+              "x": "Oct '25",
+              "y": 4042
+            }
+          ],
+          "threshold": {
+            "value": 4000,
+            "label": "4,000 — first time ever",
+            "color": "emerald"
+          }
+        }
       ]
     },
     {
@@ -460,6 +1965,70 @@
       "sources": [
         "Korea Securities Depository annual shareholder statistics",
         "Korea Securities Depository: foreign securities custody data"
+      ],
+      "beats": [
+        {
+          "scene": "skyline",
+          "kicker": "Seoul",
+          "heading": "A nation of retail investors",
+          "seed": 55
+        },
+        {
+          "scene": "stat",
+          "value": 14,
+          "suffix": "M+",
+          "label": "Koreans own stocks directly",
+          "sub": "over a quarter of the population",
+          "at": "More than fourteen million"
+        },
+        {
+          "at": "Locally they're called gaemi",
+          "scene": "flow",
+          "value": 14,
+          "suffix": "M+",
+          "label": "gaemi — 'ants'",
+          "sub": "small investors moving together",
+          "targetLabel": "KOSPI"
+        },
+        {
+          "at": "And they don't just trade",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            74,
+            50
+          ],
+          "spin": 120,
+          "look": [
+            40,
+            -150
+          ],
+          "kicker": "Seohak Gaemi",
+          "heading": "'Western-learning ants'",
+          "arcs": [
+            {
+              "to": [
+                40.7,
+                -74.0
+              ],
+              "label": "Nasdaq",
+              "sub": "Tesla · Nvidia",
+              "delay": 1.5
+            }
+          ]
+        },
+        {
+          "at": "now hold more than",
+          "scene": "stat",
+          "value": 100,
+          "prefix": "$",
+          "suffix": "B+",
+          "label": "of US stocks held by Korean retail",
+          "sub": "moving prices on Nasdaq — and crypto"
+        }
       ]
     },
     {
@@ -501,6 +2070,111 @@
       "sources": [
         "Bank for International Settlements: credit to households (% of GDP)",
         "Bank of Korea Financial Stability Report"
+      ],
+      "beats": [
+        {
+          "scene": "skyline",
+          "kicker": "The other side",
+          "heading": "The miracle's hidden bill",
+          "seed": 33
+        },
+        {
+          "at": "South Korean households carry",
+          "scene": "towers",
+          "label": "Household debt, % of GDP (approx., BIS)",
+          "suffix": "%",
+          "items": [
+            {
+              "label": "South Korea",
+              "value": 90,
+              "highlight": true
+            },
+            {
+              "label": "United Kingdom",
+              "value": 77
+            },
+            {
+              "label": "United States",
+              "value": 70
+            },
+            {
+              "label": "Japan",
+              "value": 65
+            },
+            {
+              "label": "Euro area",
+              "value": 53
+            }
+          ]
+        },
+        {
+          "at": "Most of it is tied to housing",
+          "scene": "model",
+          "model": "tower",
+          "options": {
+            "h": 30,
+            "w": 9
+          },
+          "scale": 1,
+          "kicker": "Seoul apartments",
+          "heading": "Debt piled on housing",
+          "cam": {
+            "a0": -0.6,
+            "a1": 0.3,
+            "d0": 70,
+            "d1": 52,
+            "y0": 30,
+            "y1": 22,
+            "lookY": 14
+          },
+          "labels": [
+            {
+              "text": "Mortgages",
+              "pos": [
+                6,
+                26,
+                0
+              ],
+              "delay": 1
+            },
+            {
+              "text": "Jeonse deposits",
+              "pos": [
+                6,
+                16,
+                0
+              ],
+              "delay": 2.2
+            },
+            {
+              "text": "Help from parents",
+              "pos": [
+                6,
+                6,
+                0
+              ],
+              "delay": 3.4
+            }
+          ]
+        },
+        {
+          "at": "It's a big reason the Bank of Korea",
+          "scene": "cards",
+          "kicker": "Bank of Korea",
+          "heading": "A narrow path for rates",
+          "items": [
+            {
+              "title": "Cut too fast",
+              "text": "housing speculation explodes",
+              "at": "Cut too fast"
+            },
+            {
+              "title": "Raise too fast",
+              "text": "millions of families squeezed",
+              "at": "Raise too fast"
+            }
+          ]
+        }
       ]
     },
     {
@@ -527,6 +2201,108 @@
       "sources": [
         "Ministry of Culture, Sports and Tourism / KOCCA content export statistics",
         "Hyundai Research Institute (2018) BTS economic impact estimate"
+      ],
+      "beats": [
+        {
+          "scene": "network",
+          "kicker": "Hallyu",
+          "heading": "Culture as an export industry",
+          "hubs": [
+            "K-pop",
+            "K-dramas",
+            "Games",
+            "Webtoons"
+          ],
+          "nodes": 700
+        },
+        {
+          "scene": "stat",
+          "value": 13,
+          "prefix": "$",
+          "suffix": "B+",
+          "label": "in cultural content exports, 2022",
+          "sub": "K-pop · K-dramas · games · webtoons",
+          "at": "K-pop, K-dramas"
+        },
+        {
+          "at": "more than the country earned",
+          "scene": "towers",
+          "label": "2022 exports (US$ billions, approx.)",
+          "decimals": 1,
+          "prefix": "$",
+          "suffix": "B",
+          "items": [
+            {
+              "label": "Content",
+              "value": 13.2,
+              "highlight": true
+            },
+            {
+              "label": "EV batteries",
+              "value": 9.9
+            },
+            {
+              "label": "Home appliances",
+              "value": 8.0
+            }
+          ]
+        },
+        {
+          "at": "But the real value is indirect",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            76,
+            54
+          ],
+          "spin": 80,
+          "look": [
+            20,
+            60
+          ],
+          "kicker": "Soft power → hard cash",
+          "heading": "Every hit sells more Korea",
+          "arcs": [
+            {
+              "to": [
+                34.0,
+                -118.2
+              ],
+              "label": "Cosmetics"
+            },
+            {
+              "to": [
+                13.7,
+                100.5
+              ],
+              "label": "Food"
+            },
+            {
+              "to": [
+                -23.5,
+                -46.6
+              ],
+              "label": "Cars"
+            },
+            {
+              "to": [
+                51.5,
+                -0.1
+              ],
+              "label": "Trips to Seoul"
+            },
+            {
+              "to": [
+                25.2,
+                55.3
+              ],
+              "label": "Fans"
+            }
+          ]
+        }
       ]
     },
     {
@@ -549,6 +2325,127 @@
       "sources": [
         "StatCounter / InternetTrend Korea search share",
         "Coupang IPO filing (NYSE: CPNG, March 2021)"
+      ],
+      "beats": [
+        {
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            90,
+            66
+          ],
+          "spin": 60,
+          "look": [
+            30,
+            40
+          ],
+          "kicker": "Search",
+          "heading": "Google: #1 almost everywhere",
+          "highlight": [
+            {
+              "at": [
+                40,
+                -100
+              ],
+              "r": 18
+            },
+            {
+              "at": [
+                50,
+                10
+              ],
+              "r": 16
+            },
+            {
+              "at": [
+                -10,
+                -55
+              ],
+              "r": 16
+            },
+            {
+              "at": [
+                22,
+                79
+              ],
+              "r": 12
+            },
+            {
+              "at": [
+                5,
+                20
+              ],
+              "r": 20
+            }
+          ]
+        },
+        {
+          "at": "South Korea is one of the very few",
+          "scene": "network",
+          "kicker": "Homegrown",
+          "heading": "Korea built its own internet",
+          "hubs": [
+            "Naver",
+            "Kakao",
+            "Coupang",
+            "Toss"
+          ]
+        },
+        {
+          "at": "And when e-commerce company Coupang",
+          "scene": "stat",
+          "value": 4.6,
+          "decimals": 1,
+          "prefix": "$",
+          "suffix": "B",
+          "label": "raised in Coupang's 2021 NYSE IPO",
+          "sub": "among the largest US listings by an Asian firm since Alibaba"
+        },
+        {
+          "at": "Korea is one of the only",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            88,
+            64
+          ],
+          "spin": 50,
+          "look": [
+            38,
+            160
+          ],
+          "kicker": "Complete internet economies",
+          "heading": "USA · China · South Korea",
+          "highlight": [
+            {
+              "at": [
+                40,
+                -98
+              ],
+              "r": 16
+            },
+            {
+              "at": [
+                35,
+                104
+              ],
+              "r": 14
+            },
+            {
+              "at": [
+                36.5,
+                127.8
+              ],
+              "r": 2.6
+            }
+          ]
+        }
       ]
     },
     {
@@ -597,6 +2494,116 @@
       "sources": [
         "Statistics Korea (KOSTAT) birth statistics 2023–2024",
         "UN World Population Prospects"
+      ],
+      "beats": [
+        {
+          "scene": "ride",
+          "label": "Births per woman",
+          "decimals": 2,
+          "kicker": "The biggest threat",
+          "color": "red",
+          "points": [
+            {
+              "x": "1970",
+              "y": 4.53
+            },
+            {
+              "x": "1983",
+              "y": 2.06
+            },
+            {
+              "x": "2000",
+              "y": 1.48
+            },
+            {
+              "x": "2015",
+              "y": 1.24
+            },
+            {
+              "x": "2018",
+              "y": 0.98
+            },
+            {
+              "x": "2023",
+              "y": 0.72
+            }
+          ],
+          "threshold": {
+            "value": 2.1,
+            "label": "2.1 — replacement level"
+          }
+        },
+        {
+          "at": "If nothing changes",
+          "scene": "pyramid",
+          "label": "Population by age",
+          "sub": "approx., UN projections",
+          "kicker": "Ageing fast",
+          "scale": 1.6,
+          "bands": [
+            "0–9",
+            "10–19",
+            "20–29",
+            "30–39",
+            "40–49",
+            "50–59",
+            "60–69",
+            "70–79",
+            "80+"
+          ],
+          "years": [
+            {
+              "year": 1980,
+              "v": [
+                19.5,
+                21,
+                18,
+                13,
+                10,
+                8,
+                5.5,
+                3,
+                1
+              ]
+            },
+            {
+              "year": 2020,
+              "v": [
+                8,
+                9.5,
+                13,
+                13.5,
+                16,
+                16.5,
+                12.5,
+                7,
+                4
+              ]
+            },
+            {
+              "year": 2050,
+              "v": [
+                5,
+                6,
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                17
+              ]
+            }
+          ]
+        },
+        {
+          "at": "There was a small rebound",
+          "scene": "stat",
+          "value": 0.75,
+          "decimals": 2,
+          "label": "2024: the first rise in nine years",
+          "sub": "still far below 2.1"
+        }
       ]
     },
     {
@@ -618,6 +2625,103 @@
       "sources": [
         "Emirates Nuclear Energy Corporation (ENEC) Barakah data",
         "KHNP / Czech government Dukovany contract announcement (2025)"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "reactor",
+          "scale": 2,
+          "kicker": "On time, on budget",
+          "heading": "Korea builds nuclear plants",
+          "cam": {
+            "a0": -0.8,
+            "a1": 0.1,
+            "d0": 70,
+            "d1": 50,
+            "y0": 34,
+            "y1": 22,
+            "lookY": 8
+          },
+          "rays": 1
+        },
+        {
+          "at": "In the United Arab Emirates",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            70,
+            48
+          ],
+          "spin": 50,
+          "look": [
+            28,
+            80
+          ],
+          "kicker": "UAE",
+          "heading": "Barakah: the Arab world's first nuclear plant",
+          "arcs": [
+            {
+              "to": [
+                23.96,
+                52.26
+              ],
+              "label": "Barakah, UAE",
+              "sub": "4 reactors · ~25% of UAE power",
+              "delay": 1.5
+            }
+          ]
+        },
+        {
+          "at": "And in 2025",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            64,
+            44
+          ],
+          "spin": 40,
+          "look": [
+            46,
+            50
+          ],
+          "fov": 30,
+          "kicker": "2025",
+          "heading": "Beating French competition",
+          "arcs": [
+            {
+              "to": [
+                49.09,
+                16.15
+              ],
+              "label": "Dukovany, Czechia",
+              "sub": "deal signed 2025",
+              "delay": 1.2
+            }
+          ]
+        },
+        {
+          "at": "As AI data centers",
+          "scene": "model",
+          "model": "fab",
+          "scale": 1.2,
+          "kicker": "The next demand wave",
+          "heading": "AI data centers need clean power",
+          "cam": {
+            "a0": -0.5,
+            "a1": 0.4,
+            "d0": 80,
+            "d1": 62,
+            "y0": 36,
+            "y1": 26,
+            "lookY": 4
+          }
+        }
       ]
     },
     {
@@ -640,13 +2744,167 @@
       "sources": [
         "Counterpoint Research / TrendForce DRAM & HBM share reports (2025)",
         "SK hynix quarterly earnings releases"
+      ],
+      "beats": [
+        {
+          "scene": "model",
+          "model": "chip",
+          "scale": 1.6,
+          "kicker": "The AI revolution",
+          "heading": "Runs on Nvidia chips",
+          "spin": 0.1,
+          "cam": {
+            "a0": -0.8,
+            "a1": -0.3,
+            "d0": 70,
+            "d1": 52,
+            "y0": 44,
+            "y1": 34,
+            "lookY": 0
+          },
+          "labels": [
+            {
+              "text": "GPU",
+              "pos": [
+                0,
+                4,
+                0
+              ],
+              "delay": 1.2
+            }
+          ]
+        },
+        {
+          "at": "But sitting right beside",
+          "scene": "model",
+          "model": "chip",
+          "scale": 1.25,
+          "explode": true,
+          "explodeAt": 0.8,
+          "kicker": "HBM",
+          "heading": "High-bandwidth memory",
+          "cam": {
+            "a0": 0.2,
+            "a1": 0.7,
+            "d0": 70,
+            "d1": 56,
+            "y0": 34,
+            "y1": 26,
+            "lookY": 6
+          },
+          "labels": [
+            {
+              "text": "12 stacked memory dies",
+              "sub": "each thinner than paper",
+              "pos": [
+                8.8,
+                16,
+                4.6
+              ],
+              "delay": 2.4
+            },
+            {
+              "text": "Data to the GPU",
+              "pos": [
+                0,
+                6,
+                0
+              ],
+              "delay": 4
+            }
+          ]
+        },
+        {
+          "at": "Once seen as the underdog",
+          "scene": "towers",
+          "race": true,
+          "label": "DRAM revenue share (%, approx.)",
+          "suffix": "%",
+          "items": [
+            {
+              "label": "SK hynix",
+              "value": 36,
+              "from": 28,
+              "highlight": true
+            },
+            {
+              "label": "Samsung",
+              "value": 34,
+              "from": 43
+            },
+            {
+              "label": "Micron",
+              "value": 25,
+              "from": 23
+            }
+          ]
+        },
+        {
+          "at": "For all the talk",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            70,
+            46
+          ],
+          "spin": 90,
+          "look": [
+            32,
+            175
+          ],
+          "kicker": "Hiding in plain sight",
+          "heading": "The AI economy's Korean chokepoint",
+          "arcs": [
+            {
+              "to": [
+                37.35,
+                -121.95
+              ],
+              "label": "US AI chips"
+            },
+            {
+              "to": [
+                24.8,
+                121.0
+              ],
+              "label": "Taiwan foundries"
+            }
+          ]
+        }
       ]
     },
     {
       "type": "outro",
       "onscreen": "What's the economic story about YOUR country that the world gets wrong?",
       "visual": "Camera pulls back from Seoul's nighttime skyline, highway light trails stretching across the Han River. Comment prompt and subscribe animation.",
-      "voiceover": "Those are twenty facts about South Korea's economy and finances that change the whole conversation. From gold rings handed over in a crisis, to the memory inside every AI chip, Korea shows that a country without natural resources can still become an industrial superpower, as long as it never stops betting on its people. If you're watching from Korea, or anywhere in Asia, tell me in the comments: what's one thing about your country's economy that foreign media always gets wrong? Hit subscribe, share this with someone who needs the real story, and I'll see you in the next deep dive."
+      "voiceover": "Those are twenty facts about South Korea's economy and finances that change the whole conversation. From gold rings handed over in a crisis, to the memory inside every AI chip, Korea shows that a country without natural resources can still become an industrial superpower, as long as it never stops betting on its people. If you're watching from Korea, or anywhere in Asia, tell me in the comments: what's one thing about your country's economy that foreign media always gets wrong? Hit subscribe, share this with someone who needs the real story, and I'll see you in the next deep dive.",
+      "beats": [
+        {
+          "scene": "skyline",
+          "pullback": true,
+          "seed": 44
+        },
+        {
+          "at": "If you're watching from Korea",
+          "scene": "globe",
+          "focus": [
+            36.5,
+            127.8
+          ],
+          "dist": [
+            60,
+            90
+          ],
+          "spin": -40,
+          "look": [
+            30,
+            130
+          ]
+        }
+      ]
     }
   ]
 }

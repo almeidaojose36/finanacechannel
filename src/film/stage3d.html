@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="importmap">
+{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0A1128; }
+  body { font-family: 'Inter', sans-serif; color: #F8FAFC; -webkit-font-smoothing: antialiased; }
+  .display, .hero-num, .fact-num, .ft-title, .beat-head .t, .title-slam .t { font-family: 'Inter Display', 'Inter', sans-serif; }
+  canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  #overlay, .layer { position: absolute; inset: 0; pointer-events: none; }
+
+  /* 3D-anchored labels */
+  .lbl { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform; }
+  .lbl b { display: block; font-weight: 800; }
+  .lbl span { display: block; color: #94A3B8; font-weight: 600; }
+  .lbl.pin { --ax: 0%; --ay: -100%; padding: 8px 14px; border-left: 3px solid #F5A623; background: rgba(10,17,40,.72); border-radius: 0 10px 10px 0; font-size: 24px; }
+  .lbl.pin.big { font-size: 32px; padding: 12px 18px; }
+  .lbl.pin span { font-size: .75em; }
+  .lbl.val { font-size: 38px; font-weight: 900; text-shadow: 0 4px 20px rgba(0,0,0,.8); }
+  .lbl.val.hl { color: #F5A623; font-size: 46px; }
+  .lbl.name { --ay: 0%; font-size: 24px; font-weight: 700; color: #CBD5E1; text-shadow: 0 2px 10px #000; }
+  .lbl.name.hl { color: #F5A623; }
+  .lbl.year { --ay: -50%; font-size: 24px; font-weight: 700; color: #94A3B8; }
+  .lbl.warn { --ax: 0%; font-size: 28px; font-weight: 800; color: #FCA5A5; background: rgba(127,29,29,.55); padding: 8px 16px; border-radius: 8px; }
+  .lbl.center { --ay: 0%; font-size: 40px; font-weight: 900; color: #F5A623; text-shadow: 0 0 30px rgba(245,166,35,.5); }
+  .lbl.fly { font-size: 44px; font-weight: 900; letter-spacing: .04em; text-align: center; text-shadow: 0 6px 30px #000; }
+  .lbl.fly span { font-size: 24px; letter-spacing: .35em; color: #F5A623; margin-top: 6px; }
+  .lbl.card { width: 820px; white-space: normal; padding: 0 40px; transform-origin: 0 0; }
+  .lbl.card em { display: block; font-style: normal; font-size: 30px; font-weight: 900; color: #F5A623; letter-spacing: .2em; margin-bottom: 10px; }
+  .lbl.card b { font-size: 52px; line-height: 1.05; }
+  .lbl.card span { font-size: 30px; margin-top: 12px; line-height: 1.3; }
+
+  .beat-head { position: absolute; left: 96px; top: 150px; max-width: 900px; }
+  .beat-head .k { font-size: 22px; font-weight: 800; letter-spacing: .3em; color: #F5A623; text-transform: uppercase; margin-bottom: 8px; }
+  .beat-head .t { font-size: 34px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #CBD5E1; }
+  .hero-num { position: absolute; left: 96px; top: 330px; font-weight: 900; color: #F5A623; line-height: 1; letter-spacing: -.04em; text-shadow: 0 0 60px rgba(245,166,35,.35), 0 10px 40px rgba(0,0,0,.6); }
+  .hero-num.small { font-size: 150px; top: 250px; }
+  .hero-lab { position: absolute; left: 100px; top: 560px; max-width: 760px; font-size: 46px; font-weight: 800; line-height: 1.12; text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+  .hero-num.small + .hero-lab { top: 430px; }
+  .hero-lab span { display: block; font-size: 30px; color: #94A3B8; font-weight: 600; margin-top: 14px; }
+  .badge { position: absolute; left: 0; top: 0; padding: 18px 30px; border-radius: 14px; font-size: 44px; font-weight: 900; letter-spacing: .06em;
+    background: rgba(127,29,29,.5); border: 2px solid #EF4444; color: #FECACA; }
+  .badge.gold { background: rgba(120,80,10,.5); border-color: #F5A623; color: #FDE68A; }
+  .lbl.warn.emerald { color: #6EE7B7; background: rgba(6,78,59,.6); }
+  .stamp { position: absolute; left: 1180px; top: 640px; padding: 18px 34px; border: 6px solid #10B981; border-radius: 16px; color: #34D399;
+    font-size: 54px; font-weight: 900; letter-spacing: .08em; background: rgba(6,78,59,.35); box-shadow: 0 0 40px rgba(16,185,129,.4); }
+  .meter { position: absolute; left: 1280px; top: 190px; padding: 22px 30px; border-radius: 16px; background: rgba(19,32,69,.85); border: 1px solid rgba(245,166,35,.35); }
+  .meter b { display: block; font-size: 46px; font-weight: 900; color: #F5A623; }
+  .meter span { font-size: 30px; font-weight: 700; color: #34D399; }
+
+  /* HUD */
+  #bug { position: absolute; left: 64px; top: 48px; display: flex; align-items: center; gap: 16px; opacity: .92; }
+  #bug .name { font-weight: 700; font-size: 22px; letter-spacing: .18em; text-transform: uppercase; }
+  #ticks { position: absolute; right: 64px; top: 62px; display: flex; gap: 6px; align-items: flex-end; }
+  #ticks i { display: block; width: 14px; height: 6px; border-radius: 3px; background: rgba(100,116,139,.45); }
+  #ticks i.done { background: #F5A623; opacity: .55; }
+  #ticks i.now { background: #F5A623; height: 14px; box-shadow: 0 0 14px #F5A623; }
+  #captions { position: absolute; left: 0; right: 0; bottom: 56px; display: flex; justify-content: center; }
+  #captions .pill { max-width: 1400px; padding: 12px 26px; border-radius: 12px; background: rgba(10,17,40,.72); font-size: 36px; font-weight: 600; line-height: 1.25; text-align: center; }
+  #captions span { opacity: .5; } #captions span.said { opacity: 1; } #captions span.now { opacity: 1; color: #F5A623; }
+
+  /* Fact title: big on entry, then docks top-left */
+  #factTitle { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .fact-k { font-size: 26px; font-weight: 800; letter-spacing: .32em; color: #F5A623; }
+  .fact-num { font-size: 260px; font-weight: 900; line-height: .9; color: #F5A623; letter-spacing: -.04em; text-shadow: 0 0 60px rgba(245,166,35,.35); }
+  .ft-title { font-size: 76px; font-weight: 800; line-height: 1.02; letter-spacing: -.02em; max-width: 1100px; text-shadow: 0 6px 40px rgba(0,0,0,.8); }
+  #dock { position: absolute; left: 64px; top: 104px; display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 700; color: #CBD5E1; opacity: 0; }
+  #dock b { background: #F5A623; color: #0A1128; padding: 4px 12px; border-radius: 6px; font-weight: 900; }
+  #lower { position: absolute; left: 96px; bottom: 170px; max-width: 1100px; padding: 18px 28px; font-size: 34px; font-weight: 700; line-height: 1.3;
+    background: linear-gradient(90deg, rgba(10,17,40,.92), rgba(10,17,40,.6)); border-left: 6px solid #10B981; border-radius: 0 12px 12px 0; opacity: 0; }
+
+  .title-slam { position: absolute; left: 0; right: 0; top: 330px; text-align: center; opacity: 0; }
+  .title-slam .t { font-size: 230px; font-weight: 900; color: #F5A623; letter-spacing: -.03em; line-height: 1; text-shadow: 0 0 80px rgba(245,166,35,.45), 0 10px 50px #000; }
+  .title-slam .s { font-size: 56px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-top: 26px; text-shadow: 0 4px 30px #000; }
+  .chap { position: absolute; left: 0; right: 0; top: 360px; text-align: center; }
+  .chap .k { font-size: 32px; font-weight: 800; letter-spacing: .5em; color: #F5A623; }
+  .chap .t { font-size: 124px; font-weight: 900; letter-spacing: -.02em; margin: 22px 0; text-shadow: 0 8px 50px #000; }
+  .chap .r { font-size: 34px; color: #94A3B8; letter-spacing: .2em; text-transform: uppercase; }
+  #outro .head { position: absolute; left: 96px; top: 220px; width: 900px; font-size: 92px; font-weight: 900; line-height: 1.02; letter-spacing: -.02em; text-shadow: 0 8px 40px #000; }
+  #outro .comment { position: absolute; left: 96px; top: 560px; width: 860px; border-radius: 20px; padding: 30px 34px; background: rgba(19,32,69,.92); border: 1px solid rgba(248,250,252,.1); display: flex; gap: 22px; }
+  #outro .av { flex: none; width: 60px; height: 60px; border-radius: 50%; background: #10B981; }
+  #outro .who { font-size: 22px; color: #94A3B8; margin-bottom: 8px; }
+  #outro .txt { font-size: 34px; font-weight: 600; line-height: 1.25; }
+  #outro .sub { position: absolute; left: 1220px; top: 420px; width: 520px; text-align: center; }
+  #outro .btn { display: inline-block; padding: 26px 56px; border-radius: 60px; font-size: 40px; font-weight: 800; letter-spacing: .06em; background: #EF4444; color: #fff; }
+  #outro .btn.done { background: #334155; color: #CBD5E1; }
+  #outro .tag { font-size: 28px; color: #CBD5E1; margin-top: 26px; text-shadow: 0 2px 10px #000; }
+</style>
+</head>
+<body>
+<canvas id="gl" width="1920" height="1080"></canvas>
+<div id="overlay"></div>
+<div id="hud" class="layer">
+  <div id="bug"></div><div id="dock"></div><div id="ticks"></div>
+  <div id="factTitle"></div><div id="lower"></div>
+  <div id="captions"></div>
+</div>
+<script type="module">
+import { createEngine, clamp, prog, ease, lerp, esc } from './engine.js';
+import { scenes } from './scenes.js';
+
+const $ = (s) => document.querySelector(s);
+const EMBLEM = (size) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="31" fill="#132045" stroke="#F5A623" stroke-width="2"/>
+  <g fill="none" stroke="#F5A623" stroke-width="1.6" opacity=".7"><circle cx="32" cy="32" r="20"/><ellipse cx="32" cy="32" rx="9" ry="20"/><path d="M12 32h40M15 22h34M15 42h34"/></g>
+  <path d="M18 44 L28 34 L35 39 L47 24" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M41 23h7v7" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const norm = (w) => w.toLowerCase().replace(/[^a-z0-9$%]/g, '');
+
+let S, E, beats = [], chunks = [], cues = [], hudUpdate = () => {};
+const FACT_PRE = 3.4; // seconds the big fact title owns the screen before beat 1 starts animating
+
+function findPhrase(phrase) {
+  const target = phrase.split(/\s+/).map(norm).filter(Boolean), W = S.words.map((w) => norm(w.w));
+  for (let i = 0; i <= W.length - target.length; i++) if (target.every((t, k) => W[i + k] === t)) return S.words[i].start + S.leadIn;
+  console.warn('phrase not found:', phrase); return null;
+}
+
+function buildChunks(words) {
+  const out = []; let cur = [];
+  words.forEach((w, i) => { cur.push(w); const next = words[i + 1];
+    if (!next || cur.length >= 8 || (/[.,!?;:]["')]?$/.test(w.w) && cur.length >= 3) || (next && next.start - w.end > .5)) { out.push(cur); cur = []; } });
+  return out;
+}
+function drawCaptions(t) {
+  const box = $('#captions'), tt = t - S.leadIn;
+  let c = null;
+  for (let i = 0; i < chunks.length; i++) { const nx = chunks[i + 1];
+    if (tt >= chunks[i][0].start - .05 && (!nx || tt < nx[0].start - .05) && tt <= chunks[i].at(-1).end + .7) { c = chunks[i]; break; } }
+  box.innerHTML = c ? `<div class="pill">${c.map((w) => `<span class="${tt >= w.end ? 'said' : tt >= w.start ? 'now' : ''}">${esc(w.w)}</span>`).join(' ')}</div>` : '';
+}
+
+function setupBeats(seg) {
+  let specs = seg.beats || [];
+  if (seg.type === 'chapter') specs = [{ scene: 'gate' }];
+  const starts = specs.map((b, i) => (i === 0 ? 0 : (b.at ? findPhrase(b.at) : null) ?? (S.duration * i / specs.length)));
+  beats = specs.map((spec, i) => {
+    const layer = document.createElement('div'); layer.className = 'layer'; $('#overlay').appendChild(layer);
+    const t0 = starts[i], t1 = i + 1 < specs.length ? starts[i + 1] : S.duration;
+    const pre = seg.type === 'fact' && i === 0 ? FACT_PRE : 0;
+    const ctx = { dur: t1 - t0 - pre, at: (phrase, fb) => { const t = findPhrase(phrase); return t == null ? fb : Math.max(.2, t - t0 - pre); } };
+    const sc = scenes[spec.scene](spec, E, layer, ctx);
+    sc.group.visible = false; E.scene.add(sc.group);
+    for (const c of sc.cues || []) if (c.t >= 0 && c.t + pre < t1 - t0) cues.push({ t: t0 + pre + c.t, type: c.type });
+    if (i > 0) cues.push({ t: Math.max(0, t0 - .25), type: 'whoosh' });
+    return { spec, sc, layer, t0, t1, pre, dir: i % 2 ? [-1, .15] : [1, -.1] };
+  });
+}
+
+function factHud(seg) {
+  $('#ticks').innerHTML = Array.from({ length: 20 }, (_, i) => { const n = 20 - i; return `<i class="${n > seg.number ? 'done' : n === seg.number ? 'now' : ''}"></i>`; }).join('');
+  $('#factTitle').innerHTML = `<div class="fact-k">FACT</div><div class="fact-num">${seg.number}</div><div class="ft-title">${esc(seg.title)}</div>`;
+  $('#dock').innerHTML = `<b>FACT ${seg.number}</b><span>${esc(seg.title)}</span>`;
+  $('#lower').textContent = seg.onscreen || '';
+  const lowerAt = beats[1] ? beats[1].t0 + .6 : 6;
+  cues.push({ t: .25, type: 'hit' });
+  return (t) => {
+    const ft = $('#factTitle');
+    const inP = ease.back(prog(t, .15, .7)), dock = ease.inOut(prog(t, 3.2, .7));
+    ft.style.opacity = clamp(inP * 1.4) * (1 - prog(t, 3.5, .3));
+    ft.style.transform = `translate(${lerp(110, 64, dock)}px, ${lerp(220, 90, dock) + (1 - inP) * 80}px) scale(${lerp(1, .25, dock)})`;
+    $('#dock').style.opacity = ease.out(prog(t, 3.6, .5));
+    const lo = ease.out(prog(t, lowerAt, .5)) * (1 - prog(t, lowerAt + 7, .5));
+    $('#lower').style.opacity = lo; $('#lower').style.transform = `translateX(${(1 - lo) * -40}px)`;
+  };
+}
+
+function introHud(seg) {
+  const el = document.createElement('div'); el.className = 'title-slam';
+  el.innerHTML = `<div class="t">${esc(S.episode.titleCard)}</div><div class="s">${esc(S.episode.titleCardSub)}</div>`;
+  $('#hud').appendChild(el);
+  const at = findPhrase('Starting from Fact') ?? S.duration * .85;
+  cues.push({ t: at - 1.6, type: 'riser' }, { t: at, type: 'impact' });
+  return (t, fx) => {
+    const p = prog(t, at, .55);
+    el.style.opacity = t >= at ? 1 : 0;
+    el.style.transform = `scale(${1.6 - .6 * ease.back(p) + Math.max(0, t - at) * .006})`;
+    fx.flash = Math.max(fx.flash || 0, t >= at ? .5 * (1 - prog(t, at, .35)) : 0);
+    fx.blurOverride = t >= at ? 0 : null;
+  };
+}
+
+function chapterHud(seg) {
+  const el = document.createElement('div'); el.className = 'chap';
+  el.innerHTML = `<div class="k">CHAPTER ${String(seg.number).padStart(2, '0')}</div><div class="t">${esc(seg.title)}</div><div class="r">${esc(seg.range)}</div>`;
+  $('#hud').appendChild(el);
+  cues.push({ t: 0, type: 'riser_short' }, { t: .55, type: 'impact' });
+  return (t) => {
+    const p = ease.back(prog(t, .5, .6));
+    el.style.opacity = clamp(p * 1.4) * (1 - prog(t, S.duration - .5, .4));
+    el.style.transform = `scale(${1.3 - .3 * p + t * .01})`;
+  };
+}
+
+function outroHud(seg) {
+  const el = document.createElement('div'); el.id = 'outro';
+  el.innerHTML = `<div class="head">20 facts. One economy. Your turn.</div>
+    <div class="comment"><div class="av"></div><div><div class="who">Pinned · ${esc(S.channel.handle)}</div><div class="txt">${esc(seg.onscreen || '')}</div></div></div>
+    <div class="sub"><div style="margin-bottom:36px">${EMBLEM(150)}</div><div class="btn">SUBSCRIBE</div><div class="tag">${esc(S.channel.tagline)}</div></div>`;
+  $('#hud').appendChild(el);
+  const subAt = findPhrase('Hit subscribe') ?? S.duration * .8;
+  cues.push({ t: subAt + .3, type: 'pop' });
+  const parts = ['.head', '.comment', '.sub'].map((s) => el.querySelector(s)), btn = el.querySelector('.btn');
+  return (t) => {
+    parts.forEach((p, i) => { const q = ease.out(prog(t, .4 + i * .8, .7)); p.style.opacity = q; p.style.transform = `translateY(${(1 - q) * 40}px)`; });
+    const done = t >= subAt + .3; btn.classList.toggle('done', done); btn.textContent = done ? 'SUBSCRIBED ✓' : 'SUBSCRIBE';
+    btn.style.transform = `scale(${1 - .08 * Math.sin(Math.PI * prog(t, subAt + .2, .25))})`;
+  };
+}
+
+window.init = async (payload) => {
+  S = payload;
+  E = await createEngine({ canvas: $('#gl'), overlay: $('#overlay'), width: 1920, height: 1080, geo: S.geo, scale: S.renderScale ?? 1, antialias: S.antialias ?? true });
+  $('#bug').innerHTML = `${EMBLEM(44)}<span class="name">${esc(S.channel.name)}</span>`;
+  const seg = S.segment;
+  cues = [{ t: 0, type: 'whoosh' }];
+  setupBeats(seg);
+  hudUpdate = { fact: factHud, intro: introHud, chapter: chapterHud, outro: outroHud }[seg.type](seg);
+  chunks = buildChunks(S.words || []);
+  await document.fonts.ready;
+  window.renderFrame(0);
+  return true;
+};
+
+window.getCues = () => cues.filter((c) => c.t >= 0 && c.t < S.duration).sort((a, b) => a.t - b.t);
+
+window.renderFrame = (t) => {
+  let bi = 0; for (let i = 0; i < beats.length; i++) if (t >= beats[i].t0) bi = i;
+  beats.forEach((b, i) => { b.sc.group.visible = i === bi; b.layer.style.display = i === bi ? 'block' : 'none'; });
+  const b = beats[bi], lt = t - b.t0, dur = b.t1 - b.t0;
+  const env = { floor: 1, fog: .012, dust: 1, rays: 0, ...(b.sc.env || {}) };
+  E.env.floor(env.floor); E.env.fog(env.fog); E.env.dust(env.dust); E.env.rays(env.rays);
+  // twice: the first pass sets this frame's camera, the second anchors labels to it
+  b.sc.update(lt - b.pre, dur - b.pre);
+  b.sc.update(lt - b.pre, dur - b.pre);
+  b.layer.style.opacity = b.pre ? prog(lt, b.pre - .3, .4) : 1;
+  if (lt < b.pre) { // slow push-in under the fact title
+    const fwd = new E.THREE.Vector3(); E.camera.getWorldDirection(fwd);
+    E.camera.position.addScaledVector(fwd, -(b.pre - lt) * 3.5);
+  }
+  // whip-pan motion blur at beat and segment boundaries
+  const W = .32;
+  const whipIn = lt < W ? Math.pow(1 - lt / W, 2) : 0;
+  const whipOut = (dur - lt) < W ? Math.pow(1 - (dur - lt) / W, 2) : 0;
+  const fx = { blur: Math.max(whipIn, whipOut), dirX: b.dir[0], dirY: b.dir[1], flash: whipIn * .06 };
+  fx.fade = Math.min(1, prog(t, 0, .12) + .35, 1) * Math.min(1, (S.duration - t) / .1 + .35);
+  hudUpdate(t, fx);
+  if (fx.blurOverride === 0) fx.blur = 0;
+  E.render(t, fx);
+  drawCaptions(t);
+};
+</script>
+</body>
+</html>

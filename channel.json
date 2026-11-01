@@ -15,7 +15,18 @@
     "voiceId": "nPczCjzI2devNBz1zQrb",
     "voiceName": "Brian - Deep, Resonant and Comforting",
     "modelId": "eleven_multilingual_v2",
-    "settings": { "stability": 0.45, "similarity_boost": 0.8, "style": 0.15, "use_speaker_boost": true }
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.15,
+      "use_speaker_boost": true
+    }
   },
-  "video": { "width": 1920, "height": 1080, "fps": 24 }
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "renderScale": 0.75,
+    "antialias": false
+  }
 }
