@@ -5,6 +5,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 export { THREE };
 export const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -161,6 +163,7 @@ export async function createEngine({ canvas, overlay, width, height, geo, scale 
     rays: () => { rays.visible = false; }, // light cones read as lampshades; kept off
     bg: (c) => { scene.background.copy(c || C.navy); scene.fog.color.copy(c || C.navy); },
     bloom: (s = .85) => { bloom.strength = s; },
+    exposure: (x = 1.05) => { renderer.toneMappingExposure = x; },
     reset() { this.floor(1); this.fog(.012); this.dust(1); this.rays(0); this.bg(); this.bloom(); },
   };
 
@@ -173,14 +176,38 @@ export async function createEngine({ canvas, overlay, width, height, geo, scale 
   }
 
   const handheld = (t, amt) => v3(Math.sin(t * .7) * amt + Math.sin(t * 1.9) * amt * .3, Math.cos(t * .9) * amt * .6, Math.sin(t * .5 + 1) * amt * .5);
+  // `shot` re-frames whatever a scene asks for (set per shot by the stage): orbit around the target,
+  // push in or pull out, raise or lower. It gives a fresh camera angle every few seconds.
+  const shot = { yaw: 0, dist: 1, lift: 0 };
   function cam(position, target, fov = 42, t = 0, shake = .12) {
-    camera.position.copy(position).add(handheld(t, shake));
+    const off = position.clone().sub(target).applyAxisAngle(v3(0, 1, 0), shot.yaw).multiplyScalar(shot.dist);
+    off.y += shot.lift * off.length();
+    camera.position.copy(target).add(off).add(handheld(t, shake));
     camera.fov = fov; camera.updateProjectionMatrix();
     camera.lookAt(target);
   }
 
+  // Studio reflections for imported PBR models (their materials only; the hologram look stays as it is).
+  renderer.localClippingEnabled = true;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const glbCache = {};
+  async function loadGLB(name) {
+    if (!glbCache[name]) {
+      glbCache[name] = new GLTFLoader().loadAsync(`/assets/models/${name}.glb`).then((g) => {
+        g.scene.traverse((m) => {
+          if (!m.isMesh) return;
+          const mats = Array.isArray(m.material) ? m.material : [m.material];
+          mats.forEach((mat) => { mat.envMap = envTex; mat.envMapIntensity = 1.1; mat.needsUpdate = true; });
+        });
+        return g.scene;
+      });
+    }
+    return glbCache[name];
+  }
+
   return {
-    THREE, scene, camera, renderer, env, overlay, geo, width, height, project, cam, final,
+    THREE, scene, camera, renderer, env, overlay, geo, width, height, project, cam, final, shot, loadGLB, envTex, glb: {},
     render(t, fx = {}) {
       dustMat.uniforms.uTime.value = t; rayMat.uniforms.uTime.value = t;
       dustMat.uniforms.uCenter.value.copy(camera.position);
@@ -202,7 +229,8 @@ export function makeLabel(E, layer, html, cls = 'lbl') {
     el,
     place(p3, opacity = 1, dx = 0, dy = 0) {
       const s = E.project(p3);
-      el.style.opacity = s.behind ? 0 : opacity;
+      const onScreen = s.x > 30 && s.x < E.width - 30 && s.y > 70 && s.y < E.height - 20; // no labels hanging off the frame edge
+      el.style.opacity = s.behind || !onScreen ? 0 : opacity;
       el.style.transform = `translate(${s.x + dx}px, ${s.y + dy}px) translate(var(--ax, -50%), var(--ay, -100%))`;
     },
     set(html2) { el.innerHTML = html2; },

@@ -429,27 +429,50 @@
         },
         {
           "at": "the country needed a bailout package",
-          "scene": "stat",
+          "scene": "cash",
           "value": 58,
           "prefix": "$",
           "suffix": "B",
           "label": "IMF-led bailout package",
-          "sub": "one of the largest ever at the time",
-          "kicker": "December 1997"
+          "sub": "December 1997",
+          "kicker": "The rescue"
         },
         {
           "at": "Around three and a half million",
-          "scene": "flow",
+          "scene": "queue",
           "value": 3.5,
           "decimals": 1,
           "suffix": "M",
-          "label": "citizens queued to give their gold",
-          "sub": "wedding rings · medals · keys",
-          "targetLabel": "Bank vaults"
+          "label": "people queued at banks",
+          "sub": "to hand over their own gold",
+          "kicker": "January 1998",
+          "heading": "The gold-collecting campaign"
+        },
+        {
+          "at": "Wedding rings",
+          "scene": "treasures",
+          "kicker": "What they gave",
+          "items": [
+            {
+              "kind": "rings",
+              "label": "Wedding rings",
+              "at": "Wedding rings"
+            },
+            {
+              "kind": "babyring",
+              "label": "Baby rings",
+              "at": "baby rings"
+            },
+            {
+              "kind": "medal",
+              "label": "Sports medals",
+              "at": "sports medals"
+            }
+          ]
         },
         {
           "at": "Roughly two hundred and twenty-seven tonnes",
-          "scene": "stack",
+          "scene": "crucible",
           "value": 227,
           "suffix": " t",
           "label": "of gold collected",
@@ -755,31 +778,19 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "car",
-          "scale": 5,
-          "kicker": "1976",
-          "heading": "Hyundai Pony: Korea's first home-grown car",
-          "cam": {
-            "a0": -1.2,
-            "a1": -0.3,
-            "d0": 46,
-            "d1": 34,
-            "y0": 14,
-            "y1": 10,
-            "lookY": 4
-          },
-          "rays": 1,
+          "scene": "drive",
+          "glb": "Hyundai_Pony_1976",
+          "scale": 26,
           "labels": [
             {
-              "text": "Hyundai Pony",
-              "sub": "people laughed",
+              "text": "Hyundai Pony, 1976",
+              "sub": "and people laughed",
               "pos": [
-                0,
-                2.6,
-                0
+                0.0,
+                0.72,
+                0.2
               ],
-              "delay": 1.2
+              "at": "the Pony"
             }
           ]
         },
@@ -2900,5 +2911,19 @@
         }
       ]
     }
+  ],
+  "emphasis": [
+    "gold",
+    "tonnes",
+    "bailout",
+    "chaebol",
+    "jeonse",
+    "debt",
+    "exports",
+    "memory",
+    "shipyards",
+    "tankers",
+    "pension",
+    "ants"
   ]
 }

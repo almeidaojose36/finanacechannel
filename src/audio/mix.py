@@ -133,11 +133,70 @@ def sfx_crash():
     return sfx_impact()[:, :len(t)] * .8 + stereo(glass * .18)
 
 
+def sfx_clink():
+    # metal on metal: inharmonic partials with fast, uneven decays
+    t = t_axis(.6)
+    k = rng.uniform(.92, 1.08)
+    parts = [(2210, .28, .9), (3420, .16, .6), (5130, .09, .45), (7330, .05, .3), (1180, .4, .25)]
+    x = sum(a * np.sin(2 * np.pi * f * k * t + rng.uniform(0, 6)) * np.exp(-t / d) for f, d, a in parts)
+    return stereo(x * .16, rng.uniform(-.4, .4))
+
+
+def sfx_pin():
+    t = t_axis(.12)
+    click = rng.standard_normal(len(t)) * np.exp(-t / .002) * .25
+    blip = np.sin(2 * np.pi * (1650 + 500 * np.exp(-t / .02)) * t) * np.exp(-t / .035)
+    return stereo((click + blip) * .14, rng.uniform(-.3, .3))
+
+
+def sfx_engine():
+    # starter catch and a low idle that swells, then settles
+    t = t_axis(2.6)
+    f = 38 + 34 * np.exp(-((t - .9) / .35) ** 2) + 6 * np.sin(2 * np.pi * 7 * t)
+    ph = np.cumsum(f) / SR
+    saw = 2 * (ph % 1) - 1
+    body = onepole(saw + .5 * np.sin(2 * np.pi * 2 * ph), 220)
+    e = np.minimum(1, t / .25) * np.minimum(1, (2.6 - t) / .9)
+    return stereo(body / (np.abs(body).max() + 1e-9) * e * .32)
+
+
+def sfx_thud():
+    t = t_axis(.45)
+    x = np.sin(2 * np.pi * (62 + 50 * np.exp(-t / .02)) * t) * np.exp(-t / .12)
+    n = onepole(rng.standard_normal(len(t)), 900) * np.exp(-t / .03)
+    return stereo(x * .45 + n * .5 / (np.abs(n).max() + 1e-9) * .12, rng.uniform(-.3, .3))
+
+
+def sfx_crowd(sec=7.0):
+    # murmur: band-limited noise "voices" with syllable-rate amplitude movement
+    t = t_axis(sec)
+    out = np.zeros(len(t))
+    for v in range(8):
+        n = rng.standard_normal(len(t))
+        lo, hi = rng.uniform(250, 450), rng.uniform(1200, 2200)
+        band = onepole(n, hi) - onepole(n, lo)
+        rate = rng.uniform(3, 6)
+        am = np.clip(np.sin(2 * np.pi * rate * t + rng.uniform(0, 6)) * .6 + .4 + .3 * np.sin(2 * np.pi * .3 * t + v), 0, 1)
+        out += band * am
+    out /= np.abs(out).max() + 1e-9
+    e = np.minimum(1, t / 1.2) * np.minimum(1, (sec - t) / 1.5)
+    return np.stack([out * e, np.roll(out, 300) * e]) * .07
+
+
+def sfx_rise(n=0):
+    t = t_axis(.22)
+    f = 520 * 2 ** (n * 2 / 12)
+    x = (np.sin(2 * np.pi * f * t) + .25 * np.sign(np.sin(2 * np.pi * f * t))) * np.exp(-t / .07)
+    return stereo(x * .1, -.3 + .12 * n)
+
+
 BANK = {
     'whoosh': lambda: sfx_whoosh(), 'whoosh_soft': lambda: sfx_whoosh(.55, .16), 'tick': sfx_tick, 'pop': sfx_pop,
     'hit': sfx_hit, 'impact': sfx_impact, 'rumble': sfx_rumble, 'riser': lambda: sfx_riser(1.6),
     'riser_short': lambda: sfx_riser(.6), 'crash': sfx_crash,
+    'clink': sfx_clink, 'pin': sfx_pin, 'engine': sfx_engine, 'thud': sfx_thud, 'crowd': sfx_crowd,
 }
+FRESH = ('tick', 'whoosh', 'clink', 'pin', 'thud')  # vary every time; the rest are cached
 cache = {}
 
 
@@ -285,9 +344,12 @@ for s in plan['segments']:
         voice[i:i + len(v)] += v[:N - i]
     for c in s['cues']:
         typ = c['type']
-        if typ not in BANK:
+        if typ == 'rise':
+            clip = cache.setdefault(f"rise{c.get('n', 0)}", sfx_rise(c.get('n', 0)))
+        elif typ not in BANK:
             continue
-        clip = BANK[typ]() if typ in ('tick', 'whoosh') else cache.setdefault(typ, BANK[typ]())
+        else:
+            clip = BANK[typ]() if typ in FRESH else cache.setdefault(typ, BANK[typ]())
         place(fx, clip, s['start'] + c['t'])
 
 music = np.zeros((2, N))

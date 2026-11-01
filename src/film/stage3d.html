@@ -61,7 +61,7 @@
   #ticks i.now { background: #F5A623; height: 14px; box-shadow: 0 0 14px #F5A623; }
   #captions { position: absolute; left: 0; right: 0; bottom: 56px; display: flex; justify-content: center; }
   #captions .pill { max-width: 1400px; padding: 12px 26px; border-radius: 12px; background: rgba(10,17,40,.72); font-size: 36px; font-weight: 600; line-height: 1.25; text-align: center; }
-  #captions span { opacity: .5; } #captions span.said { opacity: 1; } #captions span.now { opacity: 1; color: #F5A623; }
+  #captions span { opacity: .45; } #captions span.said { opacity: 1; } #captions span.hot { color: #F5A623; }
 
   /* Fact title: big on entry, then docks top-left */
   #factTitle { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
@@ -102,6 +102,7 @@
 <script type="module">
 import { createEngine, clamp, prog, ease, lerp, esc } from './engine.js';
 import { scenes } from './scenes.js';
+import './scenes-real.js';
 
 const $ = (s) => document.querySelector(s);
 const EMBLEM = (size) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64">
@@ -112,6 +113,8 @@ const EMBLEM = (size) => `<svg width="${size}" height="${size}" viewBox="0 0 64 
 const norm = (w) => w.toLowerCase().replace(/[^a-z0-9$%]/g, '');
 
 let S, E, beats = [], chunks = [], cues = [], hudUpdate = () => {};
+const NO_COVER = new Set(['cards', 'ride', 'plunge', 'flythrough', 'gate', 'treasures']);
+const SHOTS = [{ yaw: 0, dist: 1, lift: 0 }, { yaw: .5, dist: .72, lift: .06 }, { yaw: -.42, dist: 1.08, lift: -.05 }, { yaw: .26, dist: .62, lift: .14 }, { yaw: -.2, dist: .84, lift: .02 }];
 const FACT_PRE = 3.4; // seconds the big fact title owns the screen before beat 1 starts animating
 
 function findPhrase(phrase) {
@@ -126,12 +129,24 @@ function buildChunks(words) {
     if (!next || cur.length >= 8 || (/[.,!?;:]["')]?$/.test(w.w) && cur.length >= 3) || (next && next.start - w.end > .5)) { out.push(cur); cur = []; } });
   return out;
 }
+const NUM_WORDS = /^(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|percent|half|quarter|fifth|fifths|record)(-|$)/;
+let EMPH = new Set();
+function isHot(words, i) {
+  const raw = words[i].w, w = raw.replace(/[^A-Za-z0-9$%'-]/g, '');
+  if (!w) return false;
+  if (/[0-9$%]/.test(w)) return true;
+  const lw = w.toLowerCase();
+  if (NUM_WORDS.test(lw) || EMPH.has(lw)) return true;
+  const prev = words[i - 1]?.w || '.';
+  const sentenceStart = /[.!?:]["')]?$/.test(prev) || i === 0;
+  return /^[A-Z]/.test(w) && !sentenceStart && w !== 'I';
+}
 function drawCaptions(t) {
   const box = $('#captions'), tt = t - S.leadIn;
   let c = null;
   for (let i = 0; i < chunks.length; i++) { const nx = chunks[i + 1];
     if (tt >= chunks[i][0].start - .05 && (!nx || tt < nx[0].start - .05) && tt <= chunks[i].at(-1).end + .7) { c = chunks[i]; break; } }
-  box.innerHTML = c ? `<div class="pill">${c.map((w) => `<span class="${tt >= w.end ? 'said' : tt >= w.start ? 'now' : ''}">${esc(w.w)}</span>`).join(' ')}</div>` : '';
+  box.innerHTML = c ? `<div class="pill">${c.map((w) => `<span class="${tt >= w.start ? 'said' : ''}${w.hot && tt >= w.start ? ' hot' : ''}">${esc(w.w)}</span>`).join(' ')}</div>` : '';
 }
 
 function setupBeats(seg) {
@@ -147,7 +162,10 @@ function setupBeats(seg) {
     sc.group.visible = false; E.scene.add(sc.group);
     for (const c of sc.cues || []) if (c.t >= 0 && c.t + pre < t1 - t0) cues.push({ t: t0 + pre + c.t, type: c.type });
     if (i > 0) cues.push({ t: Math.max(0, t0 - .25), type: 'whoosh' });
-    return { spec, sc, layer, t0, t1, pre, dir: i % 2 ? [-1, .15] : [1, -.1] };
+    // coverage: a new camera angle every ~5 s inside long beats (scenes with hand-built camera moves opt out)
+    const cover = spec.coverage ?? sc.coverage ?? !NO_COVER.has(spec.scene);
+    const shotLen = (t1 - t0 - pre) / Math.max(1, Math.round((t1 - t0 - pre) / 5));
+    return { spec, sc, layer, t0, t1, pre, cover, shotLen, dir: i % 2 ? [-1, .15] : [1, -.1] };
   });
 }
 
@@ -218,8 +236,12 @@ window.init = async (payload) => {
   $('#bug').innerHTML = `${EMBLEM(44)}<span class="name">${esc(S.channel.name)}</span>`;
   const seg = S.segment;
   cues = [{ t: 0, type: 'whoosh' }];
+  const glbs = [...new Set((seg.beats || []).map((b) => b.glb).filter(Boolean))];
+  await Promise.all(glbs.map(async (n) => { E.glb[n] = await E.loadGLB(n); }));
   setupBeats(seg);
   hudUpdate = { fact: factHud, intro: introHud, chapter: chapterHud, outro: outroHud }[seg.type](seg);
+  EMPH = new Set((S.episode.emphasis || []).map((x) => x.toLowerCase()));
+  (S.words || []).forEach((w, i, all) => { w.hot = isHot(all, i); });
   chunks = buildChunks(S.words || []);
   await document.fonts.ready;
   window.renderFrame(0);
@@ -233,7 +255,10 @@ window.renderFrame = (t) => {
   beats.forEach((b, i) => { b.sc.group.visible = i === bi; b.layer.style.display = i === bi ? 'block' : 'none'; });
   const b = beats[bi], lt = t - b.t0, dur = b.t1 - b.t0;
   const env = { floor: 1, fog: .012, dust: 1, rays: 0, ...(b.sc.env || {}) };
-  E.env.floor(env.floor); E.env.fog(env.fog); E.env.dust(env.dust); E.env.rays(env.rays);
+  E.env.floor(env.floor); E.env.fog(env.fog); E.env.dust(env.dust); E.env.rays(env.rays); E.env.bloom(env.bloom ?? .85); E.env.exposure(env.exposure ?? 1.05);
+  const sl = Math.max(0, lt - b.pre), k = b.cover ? Math.floor(sl / b.shotLen) % SHOTS.length : 0;
+  const yawK = b.sc.coverageYaw ?? 1;
+  Object.assign(E.shot, SHOTS[k], { yaw: SHOTS[k].yaw * yawK });
   // twice: the first pass sets this frame's camera, the second anchors labels to it
   b.sc.update(lt - b.pre, dur - b.pre);
   b.sc.update(lt - b.pre, dur - b.pre);

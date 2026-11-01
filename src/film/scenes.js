@@ -98,7 +98,8 @@ export const scenes = {
     return {
       group: g,
       env: { floor: 0, fog: .002, dust: .7, rays: 0 },
-      cues: [{ t: 0, type: 'rumble' }],
+      cues: [{ t: 0, type: 'rumble' }, ...arcs.map((a) => ({ t: a.delay + 1.4, type: 'pin' })), ...pins.map((pn) => ({ t: pn.delay, type: 'pin' }))],
+      coverageYaw: 0.25,
       update(lt, dur) {
         const p = ease.inOut(prog(lt, 0, dur));
         const lon = look[1] - spin * (1 - p) + 4 * Math.sin(lt * .2), lat = look[0] - 8 + 6 * p;
@@ -223,7 +224,7 @@ export const scenes = {
     return {
       group: g,
       env: { floor: 1, fog: .008, dust: 1, rays: .6 },
-      cues: [{ t: 0, type: 'rumble' }, ...ticks(growStart, spec.race ? 4 : growLen, spec.race ? 22 : 14)],
+      cues: [{ t: 0, type: 'rumble' }, ...(spec.race ? ticks(growStart, 4, 16) : items.map((_, i) => ({ t: growStart + i * .12 + .25, type: 'rise', n: i })))],
       update(lt, dur) {
         const raceP = spec.race ? ease.inOut(prog(lt, growStart, Math.min(dur * .6, 6))) : 1;
         const cur = bars.map((b, i) => {
@@ -264,6 +265,7 @@ export const scenes = {
     const core = new THREE.Mesh(new THREE.IcosahedronGeometry(5, 2), new THREE.MeshStandardMaterial({ color: C.gold, metalness: .9, roughness: .25, emissive: C.gold, emissiveIntensity: .35, flatShading: true }));
     g.add(core);
     const wire = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(5.6, 1)), new THREE.LineBasicMaterial({ color: glow(C.gold, 2), toneMapped: false })); g.add(wire);
+    core.visible = wire.visible = false; // the orb is retired: it stood for everything, so it meant nothing
     let obj = null;
     if (spec.object && models[spec.object]) { obj = models[spec.object]({}); obj.scale.setScalar(spec.objectScale || .6); g.add(obj); core.visible = wire.visible = false; }
     // orbiting particles
@@ -971,3 +973,5 @@ scenes.plant = (spec, E, layer) => {
     },
   };
 };
+
+export { heading, dom, glowMat, ticks, val, fadeEl, TAU };
