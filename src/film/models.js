@@ -147,10 +147,14 @@ export const models = {
   },
 
   reactor(o = {}) {
-    const g = new THREE.Group(), c = o.color || C.emerald;
-    g.add(at(holo(new THREE.CylinderGeometry(6, 6, 9, 40), { color: c }), 0, 4.5, 0));
-    g.add(at(holo(new THREE.SphereGeometry(6, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2), { color: c }), 0, 9, 0));
-    g.add(at(holo(box(10, 5, 7), { color: C.slate }), 10, 2.5, 0));
+    // o.count units in a row (Barakah has four)
+    const g = new THREE.Group(), c = o.color || C.emerald, n = o.count || 1;
+    for (let i = 0; i < n; i++) {
+      const x = (i - (n - 1) / 2) * 22;
+      g.add(at(holo(new THREE.CylinderGeometry(6, 6, 9, 18), { color: c, edge: 2.2, threshold: 1, fillOpacity: .7 }), x, 4.5, 0));
+      g.add(at(holo(new THREE.SphereGeometry(6, 18, 6, 0, Math.PI * 2, 0, Math.PI / 2), { color: c, edge: 2.2, threshold: 1, fillOpacity: .7 }), x, 9, 0));
+      g.add(at(holo(box(10, 5, 7), { color: C.slate }), x, 2.5, 10));
+    }
     return g;
   },
 

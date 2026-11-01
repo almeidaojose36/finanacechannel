@@ -2609,19 +2609,34 @@
         {
           "scene": "model",
           "model": "reactor",
-          "scale": 2,
+          "scale": 1,
           "kicker": "On time, on budget",
           "heading": "Korea builds nuclear plants",
           "cam": {
-            "a0": -0.8,
-            "a1": 0.1,
-            "d0": 70,
-            "d1": 50,
-            "y0": 34,
-            "y1": 22,
-            "lookY": 8
+            "a0": -0.7,
+            "a1": -0.1,
+            "d0": 120,
+            "d1": 90,
+            "y0": 52,
+            "y1": 38,
+            "lookY": 6
           },
-          "rays": 1
+          "rays": 1,
+          "options": {
+            "count": 4
+          },
+          "labels": [
+            {
+              "text": "4 reactors",
+              "sub": "Barakah, UAE",
+              "pos": [
+                0,
+                26,
+                0
+              ],
+              "delay": 1.5
+            }
+          ]
         },
         {
           "at": "In the United Arab Emirates",
