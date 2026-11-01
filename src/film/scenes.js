@@ -289,7 +289,7 @@ export const scenes = {
         pg.attributes.position.needsUpdate = true;
         const p = ease.out(prog(lt, .3, 2));
         const counts = !(spec.value <= 10 && !spec.decimals);
-        num.textContent = val(spec, counts ? spec.value * p : spec.value);
+        num.textContent = val(spec, counts ? lerp(spec.from ?? 0, spec.value, p) : spec.value);
         fadeEl(num, ease.out(prog(lt, .1, .5)), 40);
         fadeEl(lab, ease.out(prog(lt, 1.2, .7)));
         const q = ease.inOut(prog(lt, 0, dur));
