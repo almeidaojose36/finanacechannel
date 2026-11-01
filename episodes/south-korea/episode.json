@@ -1089,7 +1089,8 @@
                 129.42
               ],
               "label": "HD Hyundai",
-              "sub": "Ulsan"
+              "sub": "Ulsan",
+              "dx": 40
             },
             {
               "at": [
@@ -1105,7 +1106,8 @@
                 128.52
               ],
               "label": "Samsung Heavy",
-              "sub": "Geoje"
+              "sub": "Geoje",
+              "dx": -170
             }
           ]
         },
@@ -1188,13 +1190,13 @@
             127.8
           ],
           "dist": [
-            62,
-            42
+            52,
+            38
           ],
-          "spin": 60,
+          "spin": 18,
           "look": [
-            38,
-            -92
+            37,
+            -90
           ],
           "kicker": "Tens of billions invested",
           "heading": "Korean battery plants across the US",
@@ -1214,31 +1216,7 @@
                 -84.5
               ],
               "label": "Michigan",
-              "delay": 1.5
-            },
-            {
-              "at": [
-                41.1,
-                -80.7
-              ],
-              "label": "Ohio",
-              "delay": 1.9
-            },
-            {
-              "at": [
-                37.7,
-                -85.9
-              ],
-              "label": "Kentucky",
-              "delay": 2.3
-            },
-            {
-              "at": [
-                35.6,
-                -87.0
-              ],
-              "label": "Tennessee",
-              "delay": 2.7
+              "delay": 1.2
             },
             {
               "at": [
@@ -1246,15 +1224,15 @@
                 -83.5
               ],
               "label": "Georgia",
-              "delay": 3.1
+              "delay": 2.0
             },
             {
               "at": [
-                40.4,
-                -86.1
+                36.0,
+                -86.8
               ],
-              "label": "Indiana",
-              "delay": 3.5
+              "label": "Tennessee · Kentucky",
+              "delay": 2.8
             },
             {
               "at": [
@@ -1262,7 +1240,7 @@
                 -112.0
               ],
               "label": "Arizona",
-              "delay": 3.9
+              "delay": 3.6
             }
           ]
         },
