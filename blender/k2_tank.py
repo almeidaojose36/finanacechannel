@@ -14,6 +14,7 @@ FPS = int(args[3]) if mode == 'anim' and len(args) > 3 else 24
 FRAMES = int(args[2]) if mode == 'anim' else 144
 sc.render.fps = FPS
 sc.frame_start, sc.frame_end = 1, FRAMES
+sc.frame_step = int(args[4]) if mode == 'anim' and len(args) > 4 else 1  # 2 = render on twos (volumetric dust is slow)
 
 # ---------------------------------------------------------------- tank (10.8 m long including the gun)
 bpy.ops.import_scene.gltf(filepath=os.path.join(ROOT, 'assets/models/k2-tank.glb'))
@@ -30,6 +31,56 @@ for f, y in ((1, 6), (FRAMES, 6 - 2.2 * FRAMES / FPS)):
     rig.location = (0, y, 0); rig.keyframe_insert('location', frame=f)
 for fc in rig.animation_data.action.fcurves:
     for kp in fc.keyframe_points: kp.interpolation = 'LINEAR'
+
+# ---------------------------------------------------------------- dust kicked up behind each track
+puff_mat = bpy.data.materials.new('Dust'); puff_mat.use_nodes = True
+pn = puff_mat.node_tree; pn.nodes.clear()
+outn = pn.nodes.new('ShaderNodeOutputMaterial')
+vol = pn.nodes.new('ShaderNodeVolumePrincipled')
+vol.inputs['Color'].default_value = (0.55, 0.42, 0.28, 1); vol.inputs['Anisotropy'].default_value = 0.35
+pinfo = pn.nodes.new('ShaderNodeParticleInfo')
+life = pn.nodes.new('ShaderNodeMath'); life.operation = 'DIVIDE'
+pn.links.new(pinfo.outputs['Age'], life.inputs[0]); pn.links.new(pinfo.outputs['Lifetime'], life.inputs[1])
+thin = pn.nodes.new('ShaderNodeMath'); thin.operation = 'SUBTRACT'; thin.use_clamp = True; thin.inputs[0].default_value = 1.0
+pn.links.new(life.outputs[0], thin.inputs[1])
+# soft round falloff from the puff centre, broken up by noise
+geo = pn.nodes.new('ShaderNodeNewGeometry')
+objinfo = pn.nodes.new('ShaderNodeObjectInfo')
+dist = pn.nodes.new('ShaderNodeVectorMath'); dist.operation = 'DISTANCE'
+pn.links.new(geo.outputs['Position'], dist.inputs[0]); pn.links.new(objinfo.outputs['Location'], dist.inputs[1])
+scale = pn.nodes.new('ShaderNodeMath'); scale.operation = 'DIVIDE'
+pn.links.new(dist.outputs['Value'], scale.inputs[0]); pn.links.new(pinfo.outputs['Size'], scale.inputs[1])
+fall = pn.nodes.new('ShaderNodeMapRange'); fall.inputs['From Min'].default_value = 0.2; fall.inputs['From Max'].default_value = 1.0
+fall.inputs['To Min'].default_value = 1.0; fall.inputs['To Max'].default_value = 0.0
+pn.links.new(scale.outputs[0], fall.inputs['Value'])
+noise = pn.nodes.new('ShaderNodeTexNoise'); noise.inputs['Scale'].default_value = 1.2; noise.inputs['Detail'].default_value = 4
+m1 = pn.nodes.new('ShaderNodeMath'); m1.operation = 'MULTIPLY'
+pn.links.new(fall.outputs['Result'], m1.inputs[0]); pn.links.new(noise.outputs['Fac'], m1.inputs[1])
+m2 = pn.nodes.new('ShaderNodeMath'); m2.operation = 'MULTIPLY'
+pn.links.new(m1.outputs[0], m2.inputs[0]); pn.links.new(thin.outputs[0], m2.inputs[1])
+m3 = pn.nodes.new('ShaderNodeMath'); m3.operation = 'MULTIPLY'; m3.inputs[1].default_value = 1.6
+pn.links.new(m2.outputs[0], m3.inputs[0]); pn.links.new(m3.outputs[0], vol.inputs['Density'])
+pn.links.new(vol.outputs[0], outn.inputs['Volume'])
+bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1, location=(0, 0, -50)); puff = bpy.context.object
+puff.data.materials.append(puff_mat)
+tb = [tank.matrix_world @ Vector(c) for c in tank.bound_box]
+rear_y = max(v.y for v in tb) - 1.6  # just behind the drive sprockets
+for side in (-1, 1):
+    bpy.ops.mesh.primitive_plane_add(size=1, location=(side * 1.5, rear_y, 0.25)); em = bpy.context.object
+    em.scale = (0.8, 0.6, 1); em.show_instancer_for_render = False  # hide the emitter plane, keep its particles
+    # move with the tank (parenting is not followed by the particle emitter in background renders)
+    for f, y in ((1, 6), (FRAMES, 6 - 2.2 * FRAMES / FPS)):
+        em.location = (side * 1.5, rear_y + y, 0.25); em.keyframe_insert('location', frame=f)
+    for fc in em.animation_data.action.fcurves:
+        for kp in fc.keyframe_points: kp.interpolation = 'LINEAR'
+    psys = em.modifiers.new('Dust', 'PARTICLE_SYSTEM').particle_system; ps = psys.settings
+    ps.count = 420; ps.frame_start = 1; ps.frame_end = FRAMES; ps.lifetime = 46; ps.lifetime_random = 0.4
+    ps.emit_from = 'FACE'; ps.normal_factor = 1.6; ps.factor_random = 1.4
+    ps.object_align_factor = (side * 0.5, 0.7, 0.5)
+    ps.effector_weights.gravity = -0.02; ps.brownian_factor = 0.8; ps.drag_factor = 0.6
+    ps.render_type = 'OBJECT'; ps.instance_object = puff; ps.particle_size = 1.6; ps.size_random = 0.6
+    ps.use_rotations = True; ps.rotation_factor_random = 1.0
+    psys.seed = 7 if side > 0 else 13
 
 # ---------------------------------------------------------------- ground: rolling dirt with tracks of relief
 bpy.ops.mesh.primitive_plane_add(size=1200)
@@ -69,19 +120,22 @@ sc.world.mist_settings.start = 40
 # ---------------------------------------------------------------- camera: low, ahead and to the side, tracking with the tank
 bpy.ops.object.camera_add(); cam = bpy.context.object; sc.camera = cam
 cam.data.lens = 40
-target = bpy.data.objects.new('Target', None); sc.collection.objects.link(target); target.parent = rig; target.location = (0, -1.5, 1.6)
+target = bpy.data.objects.new('Target', None); sc.collection.objects.link(target); target.parent = rig; target.location = (0, 2.5, 1.5)
 c = cam.constraints.new('TRACK_TO'); c.target = target; c.track_axis = 'TRACK_NEGATIVE_Z'; c.up_axis = 'UP_Y'
 cam.data.dof.use_dof = True; cam.data.dof.focus_object = target; cam.data.dof.aperture_fstop = 4
-for f, p in ((1, Vector((11, -12, 1.4))), (FRAMES, Vector((8.5, -16 - 2.2 * FRAMES / FPS, 1.1)))):
+# beside the tank and slightly ahead, so the dust trail streams away behind it on the right of frame
+for f, p in ((1, Vector((21, 0.0, 1.7))), (FRAMES, Vector((18, 6 - 2.2 * FRAMES / FPS - 5, 1.4)))):
     cam.location = p; cam.keyframe_insert('location', frame=f)
 if mode == 'still':
-    sc.frame_set(int(args[2]) if len(args) > 2 else 72)
+    for f in range(1, (int(args[2]) if len(args) > 2 else 72) + 1): sc.frame_set(f)  # step so the dust simulates
+    dg = bpy.context.evaluated_depsgraph_get()
+    print('ALIVE', [sum(1 for p in o.evaluated_get(dg).particle_systems[0].particles if p.alive_state == 'ALIVE') for o in sc.objects if o.particle_systems])
 
 # ---------------------------------------------------------------- render (same settings as the LNG shot)
 sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'
 sc.cycles.samples = 8; sc.cycles.use_denoising = True; sc.cycles.denoiser = 'OPENIMAGEDENOISE'
 sc.cycles.adaptive_threshold = 0.05
-sc.cycles.max_bounces = 4; sc.cycles.diffuse_bounces = 2; sc.cycles.glossy_bounces = 2; sc.cycles.transmission_bounces = 2
+sc.cycles.volume_bounces = 0; sc.cycles.volume_step_rate = 6; sc.cycles.max_bounces = 4; sc.cycles.diffuse_bounces = 2; sc.cycles.glossy_bounces = 2; sc.cycles.transmission_bounces = 2
 sc.render.use_persistent_data = True
 sc.render.resolution_x, sc.render.resolution_y = 1280, 720
 sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'; sc.view_settings.exposure = -0.15
