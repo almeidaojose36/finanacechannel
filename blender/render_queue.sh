@@ -9,4 +9,5 @@ run crane container_crane.py
 run carrier car_carrier.py
 run battery ev_battery.py
 run apartments seoul_apartments.py
+run hbm hbm_package.py
 echo "=== queue finished $(date +%T)"
