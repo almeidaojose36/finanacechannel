@@ -609,29 +609,17 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "crane",
-          "scale": 1,
-          "kicker": "Busan New Port",
-          "heading": "≈ 51 million people",
-          "cam": {
-            "a0": -0.9,
-            "a1": -0.2,
-            "d0": 80,
-            "d1": 60,
-            "y0": 34,
-            "y1": 24,
-            "lookY": 12
-          },
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/crane",
+          "frames": 144,
+          "fps": 24,
           "labels": [
             {
-              "text": "Fewer people than California",
-              "pos": [
-                0,
-                30,
-                8
-              ],
-              "delay": 1.5
+              "text": "Busan New Port",
+              "sub": "Korea's main container gateway",
+              "x": 1200,
+              "y": 300,
+              "delay": 0.6
             }
           ]
         },
