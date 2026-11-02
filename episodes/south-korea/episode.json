@@ -258,7 +258,7 @@
             {
               "at": [
                 7.9,
-                -1.0
+                -1
               ],
               "r": 3.5
             }
@@ -285,7 +285,7 @@
             {
               "at": [
                 7.9,
-                -1.0
+                -1
               ],
               "label": "Ghana, 1960",
               "sub": "a similar income",
@@ -688,13 +688,13 @@
             {
               "to": [
                 38.9,
-                -77.0
+                -77
               ],
               "label": "United States"
             },
             {
               "to": [
-                21.0,
+                21,
                 105.8
               ],
               "label": "Vietnam"
@@ -742,7 +742,7 @@
           },
           {
             "label": "Volkswagen Group",
-            "value": 9.0
+            "value": 9
           },
           {
             "label": "Hyundai–Kia",
@@ -751,7 +751,7 @@
           },
           {
             "label": "GM",
-            "value": 6.0
+            "value": 6
           },
           {
             "label": "Stellantis",
@@ -774,7 +774,7 @@
               "text": "Hyundai Pony, 1976",
               "sub": "and people laughed",
               "pos": [
-                0.0,
+                0,
                 0.72,
                 0.2
               ],
@@ -797,19 +797,19 @@
             },
             {
               "label": "Volkswagen",
-              "value": 9.0,
+              "value": 9,
               "from": 8.5
             },
             {
               "label": "Hyundai–Kia",
               "value": 7.2,
-              "from": 1.0,
+              "from": 1,
               "highlight": true
             },
             {
               "label": "GM",
-              "value": 6.0,
-              "from": 8.0
+              "value": 6,
+              "from": 8
             },
             {
               "label": "Stellantis",
@@ -1213,11 +1213,11 @@
                 -83.5
               ],
               "label": "Georgia",
-              "delay": 2.0
+              "delay": 2
             },
             {
               "at": [
-                36.0,
+                36,
                 -86.8
               ],
               "label": "Tennessee · Kentucky",
@@ -1226,7 +1226,7 @@
             {
               "at": [
                 33.4,
-                -112.0
+                -112
               ],
               "label": "Arizona",
               "delay": 3.6
@@ -1356,7 +1356,7 @@
             {
               "to": [
                 52.2,
-                21.0
+                21
               ],
               "label": "Poland",
               "sub": "K2 tanks · K9 howitzers · FA-50 jets",
@@ -1398,7 +1398,7 @@
             },
             {
               "label": "2020",
-              "value": 3.0
+              "value": 3
             },
             {
               "label": "2021",
@@ -1441,7 +1441,7 @@
         "items": [
           {
             "label": "Israel",
-            "value": 6.0
+            "value": 6
           },
           {
             "label": "South Korea",
@@ -1489,7 +1489,7 @@
           "items": [
             {
               "label": "Israel",
-              "value": 6.0
+              "value": 6
             },
             {
               "label": "South Korea",
@@ -1732,7 +1732,7 @@
             {
               "to": [
                 40.7,
-                -74.0
+                -74
               ],
               "label": "New York"
             },
@@ -1988,7 +1988,7 @@
             {
               "to": [
                 40.7,
-                -74.0
+                -74
               ],
               "label": "Nasdaq",
               "sub": "Tesla · Nvidia",
@@ -2228,7 +2228,7 @@
             },
             {
               "label": "Home appliances",
-              "value": 8.0
+              "value": 8
             }
           ]
         },
@@ -2253,7 +2253,7 @@
           "arcs": [
             {
               "to": [
-                34.0,
+                34,
                 -118.2
               ],
               "label": "Cosmetics"
@@ -2731,29 +2731,16 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "chip",
-          "scale": 1.6,
-          "kicker": "The AI revolution",
-          "heading": "Runs on Nvidia chips",
-          "spin": 0.1,
-          "cam": {
-            "a0": -0.8,
-            "a1": -0.3,
-            "d0": 70,
-            "d1": 52,
-            "y0": 44,
-            "y1": 34,
-            "lookY": 0
-          },
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/hbm",
+          "frames": 144,
+          "fps": 24,
           "labels": [
             {
-              "text": "GPU",
-              "pos": [
-                0,
-                4,
-                0
-              ],
+              "text": "GPU + HBM package",
+              "sub": "the memory beside the brain",
+              "x": 1200,
+              "y": 300,
               "delay": 1.2
             }
           ]
@@ -2852,7 +2839,7 @@
             {
               "to": [
                 24.8,
-                121.0
+                121
               ],
               "label": "Taiwan foundries"
             }
