@@ -1327,21 +1327,20 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "tank",
-          "scale": 2.4,
-          "kicker": "Built under threat",
-          "heading": "K2 Black Panther",
-          "cam": {
-            "a0": -1.0,
-            "a1": -0.1,
-            "d0": 64,
-            "d1": 44,
-            "y0": 22,
-            "y1": 14,
-            "lookY": 4
-          },
-          "rays": 1
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/k2",
+          "frames": 144,
+          "fps": 24,
+          "step": 2,
+          "labels": [
+            {
+              "text": "K2 Black Panther",
+              "sub": "Hyundai Rotem",
+              "x": 1240,
+              "y": 330,
+              "delay": 0.6
+            }
+          ]
         },
         {
           "at": "When war returned to Europe",

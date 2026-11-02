@@ -460,7 +460,8 @@ scenes.footage = (spec, E, layer, ctx) => {
     update(lt) {
       // the fact pre-roll gives negative lt: the clip plays from its first frame underneath the fact title
       const f = Math.min(frames, Math.max(1, Math.floor((lt + (ctx.pre || 0)) * fps * speed) + 1));
-      const src = `/${spec.src}/f_${String(f).padStart(4, '0')}.jpg`;
+      const step = spec.step || 1; const fs = 1 + step * Math.floor((f - 1) / step); // clips rendered on twos only have every other frame
+      const src = `/${spec.src}/f_${String(fs).padStart(4, '0')}.jpg`;
       if (!img.src.endsWith(src)) { img.src = src; pending = img.decode().catch(() => {}); }
       labels.forEach((l) => {
         const p = ease.out(prog(lt, l.t, 0.5));
