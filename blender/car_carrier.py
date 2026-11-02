@@ -50,12 +50,39 @@ bump = wm.node_tree.nodes.new('ShaderNodeBump'); bump.inputs['Strength'].default
 wm.node_tree.links.new(wave.outputs['Fac'], bump.inputs['Height']); wm.node_tree.links.new(bump.outputs['Normal'], wm.node_tree.nodes['Principled BSDF'].inputs['Normal'])
 water.data.materials.append(wm)
 
+RAMP_TOP = Vector((HALF_W - 4, STERN_Y, 9.0)); RAMP_BOT = Vector((QX + 30, STERN_Y + 22, 4.0))
+# the stern-quarter door the ramp folds down from: a dark doorway on the hull surface, warm car-deck light inside
+door_frame = mat('DoorFrame', (0.10, 0.11, 0.12), 0.5, 0.7)
+deck = bpy.data.materials.new('CarDeck'); deck.use_nodes = True
+dn = deck.node_tree; db = dn.nodes['Principled BSDF']
+db.inputs['Base Color'].default_value = (0.01, 0.01, 0.012, 1)
+grad = dn.nodes.new('ShaderNodeTexGradient'); grad.gradient_type = 'QUADRATIC_SPHERE'
+tc = dn.nodes.new('ShaderNodeTexCoord'); mp = dn.nodes.new('ShaderNodeMapping'); mp.inputs['Location'].default_value = (-0.5, -0.5, 0)
+dn.links.new(tc.outputs['UV'], mp.inputs['Vector']); dn.links.new(mp.outputs['Vector'], grad.inputs['Vector'])
+em = dn.nodes.new('ShaderNodeMath'); em.operation = 'MULTIPLY'; em.inputs[1].default_value = 1.4
+dn.links.new(grad.outputs['Fac'], em.inputs[0])
+db.inputs['Emission Color'].default_value = (1.0, 0.75, 0.45, 1); dn.links.new(em.outputs[0], db.inputs['Emission Strength'])
+DOOR_W, DOOR_H = 12.0, 6.5
+DX = HALF_W * 0.42                                # door sits on the quay side of the stern
+bpy.context.view_layer.update()
+hit, loc, nrm, *_ = sc.ray_cast(bpy.context.view_layer.depsgraph, Vector((DX, 400, RAMP_TOP.z + DOOR_H / 2)), Vector((0, -1, 0)))
+fy = loc.y if hit else 100
+bpy.ops.mesh.primitive_plane_add(size=1, location=(DX, fy + 0.15, RAMP_TOP.z + DOOR_H / 2)); opening = bpy.context.object
+opening.scale = (DOOR_W, DOOR_H, 1); opening.rotation_euler = (math.radians(90), 0, 0); opening.data.materials.append(deck)
+for dz in (0, DOOR_H):   # sill and header
+    bpy.ops.mesh.primitive_cube_add(location=(DX, fy + 0.3, RAMP_TOP.z + dz)); bar = bpy.context.object
+    bar.scale = (DOOR_W / 2 + 0.4, 0.3, 0.3); bar.data.materials.append(door_frame)
+for dy in (-1, 1):       # jambs
+    bpy.ops.mesh.primitive_cube_add(location=(DX + dy * (DOOR_W / 2 + 0.2), fy + 0.3, RAMP_TOP.z + DOOR_H / 2)); jamb = bpy.context.object
+    jamb.scale = (0.3, 0.3, DOOR_H / 2 + 0.3); jamb.data.materials.append(door_frame)
+RAMP_TOP = Vector((DX, fy + 0.4, RAMP_TOP.z))       # the ramp hinges at the stern door sill
+RAMP_BOT = Vector((QX + 22, fy + 34, 4.0))           # and lands on the quay past the stern
+
 # stern quarter ramp from the ship down to the quay
 ramp_m = mat('Ramp', (0.18, 0.19, 0.2), 0.5, 0.7)
-RAMP_TOP = Vector((HALF_W - 4, STERN_Y, 9.0)); RAMP_BOT = Vector((QX + 30, STERN_Y + 22, 4.0))
 bpy.ops.mesh.primitive_cube_add(); ramp = bpy.context.object; ramp.data.materials.append(ramp_m)
 d = RAMP_BOT - RAMP_TOP; ramp.location = (RAMP_TOP + RAMP_BOT) / 2
-ramp.scale = (d.length / 2, 6, 0.4)
+ramp.scale = (d.length / 2, DOOR_W / 2 - 0.3, 0.4)
 ramp.rotation_euler = (0, -math.atan2(d.z, math.hypot(d.x, d.y)), math.atan2(d.y, d.x))
 
 # ---------------------------------------------------------------- new cars: one simple body mesh, many painted copies
@@ -78,7 +105,7 @@ for row in range(10):                       # parking lanes on the quay, waiting
     for i in range(40):
         car(QX + 45 + row * 5.2, -110 + i * 5.6)
 # a line of cars driving up the ramp into the stern
-path = [RAMP_BOT + Vector((40, 14, 0)), RAMP_BOT + Vector((12, 4, 0)), RAMP_BOT, RAMP_TOP, RAMP_TOP + Vector((-12, -2, 0))]
+path = [RAMP_BOT + Vector((40, 10, 0)), RAMP_BOT + Vector((12, 6, 0)), RAMP_BOT, RAMP_TOP, RAMP_TOP + Vector((0, -14, 0))]  # last leg disappears inside the deck
 seg = [(path[i + 1] - path[i]).length for i in range(len(path) - 1)]; total = sum(seg)
 def at(u):
     dist = u * total
