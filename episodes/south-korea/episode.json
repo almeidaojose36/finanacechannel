@@ -1577,9 +1577,19 @@
       ],
       "beats": [
         {
-          "scene": "skyline",
-          "kicker": "Seoul",
-          "heading": "Renting, the Korean way"
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/apartments",
+          "frames": 144,
+          "fps": 24,
+          "labels": [
+            {
+              "text": "Seoul apartment complex",
+              "sub": "where jeonse is a way of life",
+              "x": 1180,
+              "y": 280,
+              "delay": 0.6
+            }
+          ]
         },
         {
           "at": "You hand your landlord",
@@ -2039,10 +2049,19 @@
       ],
       "beats": [
         {
-          "scene": "skyline",
-          "kicker": "The other side",
-          "heading": "The miracle's hidden bill",
-          "seed": 33
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/apartments",
+          "frames": 144,
+          "fps": 24,
+          "labels": [
+            {
+              "text": "Seoul apartment complex",
+              "sub": "prices that drive record debt",
+              "x": 1180,
+              "y": 280,
+              "delay": 0.6
+            }
+          ]
         },
         {
           "at": "equal to roughly ninety percent",
