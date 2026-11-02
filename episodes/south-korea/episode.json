@@ -1157,21 +1157,19 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "battery",
-          "scale": 2.2,
-          "kicker": "K-battery",
-          "heading": "Cells inside America's EVs",
-          "cam": {
-            "a0": -0.7,
-            "a1": 0.2,
-            "d0": 60,
-            "d1": 42,
-            "y0": 34,
-            "y1": 22,
-            "lookY": 2
-          },
-          "rays": 1
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/battery",
+          "frames": 144,
+          "fps": 24,
+          "labels": [
+            {
+              "text": "EV battery pack",
+              "sub": "cells by LG, SK On and Samsung SDI",
+              "x": 1200,
+              "y": 260,
+              "delay": 0.6
+            }
+          ]
         },
         {
           "at": "LG Energy Solution, SK On",
