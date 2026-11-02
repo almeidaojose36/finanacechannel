@@ -1,12 +1,16 @@
 // ElevenLabs text-to-speech with word timings, cached on disk by content hash.
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const API = 'https://api.elevenlabs.io/v1';
 
-export async function synthesize(text, voice, cacheDir, { previousText, nextText } = {}) {
+export async function synthesize(text, voice, cacheDir, opts = {}) {
   mkdirSync(cacheDir, { recursive: true });
+  if (voice.engine === 'kokoro') return synthesizeKokoro(text, voice, cacheDir);
+  const { previousText, nextText } = opts;
   const key = createHash('sha1')
     .update(JSON.stringify([voice.voiceId, voice.modelId, voice.settings, text]))
     .digest('hex')
@@ -63,4 +67,17 @@ function toWords({ characters, character_start_times_seconds: s, character_end_t
   });
   if (cur) words.push(cur);
   return words;
+}
+
+// Kokoro (open source, runs locally on CPU). channel.json voice: { "engine": "kokoro", "voiceId": "am_michael", "speed": 1.0 }
+// The Python environment is taken from KOKORO_PYTHON (default /opt/kokoro-venv/bin/python).
+function synthesizeKokoro(text, voice, cacheDir) {
+  const key = createHash('sha1').update(JSON.stringify(['kokoro', voice.voiceId, voice.speed ?? 1, text])).digest('hex').slice(0, 16);
+  const wav = join(cacheDir, `${key}.wav`), meta = join(cacheDir, `${key}.json`);
+  if (existsSync(wav) && existsSync(meta)) return { mp3: wav, words: JSON.parse(readFileSync(meta, 'utf8')).words, cached: true };
+  const py = process.env.KOKORO_PYTHON || '/opt/kokoro-venv/bin/python';
+  const script = join(dirname(fileURLToPath(import.meta.url)), 'tts_kokoro.py');
+  const r = spawnSync(py, [script, JSON.stringify({ text, voice: voice.voiceId, speed: voice.speed ?? 1, wav, json: meta })], { encoding: 'utf8' });
+  if (r.status !== 0) throw new Error(`Kokoro failed: ${(r.stderr || '').slice(-1500)}`);
+  return { mp3: wav, words: JSON.parse(readFileSync(meta, 'utf8')).words, cached: false };
 }
