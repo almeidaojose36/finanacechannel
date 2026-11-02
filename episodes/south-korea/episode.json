@@ -2603,34 +2603,17 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "reactor",
-          "scale": 1,
-          "kicker": "On time, on budget",
-          "heading": "Korea builds nuclear plants",
-          "cam": {
-            "a0": -0.7,
-            "a1": -0.1,
-            "d0": 120,
-            "d1": 90,
-            "y0": 52,
-            "y1": 38,
-            "lookY": 6
-          },
-          "rays": 1,
-          "options": {
-            "count": 4
-          },
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/reactor",
+          "frames": 144,
+          "fps": 24,
           "labels": [
             {
-              "text": "4 reactors",
-              "sub": "Barakah, UAE",
-              "pos": [
-                0,
-                26,
-                0
-              ],
-              "delay": 1.5
+              "text": "Barakah, UAE",
+              "sub": "four APR1400 reactors, built by KEPCO",
+              "x": 1200,
+              "y": 300,
+              "delay": 0.6
             }
           ]
         },
