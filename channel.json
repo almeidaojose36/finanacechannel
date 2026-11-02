@@ -13,9 +13,9 @@
   },
   "voice": {
     "engine": "kokoro",
-    "voiceId": "am_fenrir",
+    "voiceId": "am_michael",
     "speed": 1.0,
-    "voiceName": "Kokoro am_fenrir (open source)"
+    "voiceName": "Kokoro am_michael (open source)"
   },
   "video": {
     "width": 1920,
