@@ -1030,44 +1030,30 @@
       ],
       "beats": [
         {
-          "scene": "model",
-          "model": "ship",
-          "options": {
-            "kind": "lng",
-            "cutaway": true
-          },
-          "scale": 1,
-          "kicker": "LNG carrier",
-          "heading": "Cargo kept at −162°C",
-          "spin": 0.06,
-          "cam": {
-            "a0": -0.9,
-            "a1": -0.3,
-            "d0": 80,
-            "d1": 56,
-            "y0": 34,
-            "y1": 22,
-            "lookY": 6
-          },
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/lng",
+          "frames": 144,
+          "fps": 24,
           "labels": [
             {
+              "text": "LNG carrier",
+              "sub": "≈ 295 m long",
+              "x": 1240,
+              "y": 330,
+              "delay": 0.6
+            },
+            {
               "text": "−162°C",
-              "sub": "liquefied natural gas",
-              "pos": [
-                -3,
-                14,
-                0
-              ],
-              "delay": 1.5
+              "sub": "liquefied natural gas in the tanks",
+              "x": 760,
+              "y": 420,
+              "at": "The gas is shipped"
             },
             {
               "text": "Tanks that cannot leak",
-              "pos": [
-                19,
-                14,
-                0
-              ],
-              "delay": 3
+              "x": 1240,
+              "y": 470,
+              "at": "tanks that cannot leak"
             }
           ]
         },

@@ -434,3 +434,41 @@ scenes.drive = (spec, E, layer, ctx) => {
     },
   };
 };
+
+// ---------------------------------------------------------------- footage: a pre-rendered Blender clip (JPEG frames) under the HUD
+// spec: { src: 'episodes/<slug>/build/hero/<shot>', frames: 144, fps: 24, fit: true, labels: [{ text, sub, x, y, at|delay }] }
+scenes.footage = (spec, E, layer, ctx) => {
+  const g = new THREE.Group();
+  const img = document.createElement('img');
+  img.className = 'footage';
+  layer.prepend(img);
+  const frames = spec.frames || 144, fps = spec.fps || 24, clipLen = frames / fps;
+  // stretch the clip to fill the beat (never slower than half speed); otherwise hold the last frame
+  const speed = spec.fit === false ? 1 : Math.max(0.5, Math.min(1, clipLen / Math.max(0.1, ctx.dur + (ctx.pre || 0))));
+  const labels = (spec.labels || []).map((l, i) => {
+    const el = dom(layer, 'lbl pin big', `<b>${esc(l.text)}</b>${l.sub ? `<span>${esc(l.sub)}</span>` : ''}`);
+    return { ...l, el, t: l.at ? ctx.at(l.at, 1 + i) : (l.delay ?? 1 + i) };
+  });
+  const head = heading(layer, spec);
+  let pending = null;
+  return {
+    group: g,
+    footage: img,
+    env: { floor: 0, fog: 0, dust: 0, bloom: 0 },
+    coverage: false,
+    cues: [{ t: 0, type: 'rumble' }, ...labels.map((l) => ({ t: l.t, type: 'pin' }))],
+    update(lt) {
+      // the fact pre-roll gives negative lt: the clip plays from its first frame underneath the fact title
+      const f = Math.min(frames, Math.max(1, Math.floor((lt + (ctx.pre || 0)) * fps * speed) + 1));
+      const src = `/${spec.src}/f_${String(f).padStart(4, '0')}.jpg`;
+      if (!img.src.endsWith(src)) { img.src = src; pending = img.decode().catch(() => {}); }
+      labels.forEach((l) => {
+        const p = ease.out(prog(lt, l.t, 0.5));
+        l.el.dataset.o = p; l.el.style.opacity = p;
+        l.el.style.transform = `translate(${l.x ?? 1250}px, ${(l.y ?? 300) + (1 - p) * 20}px) translate(0, -100%)`;
+      });
+      head(lt);
+    },
+    ready: () => pending,
+  };
+};
