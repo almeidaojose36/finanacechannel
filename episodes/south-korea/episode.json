@@ -820,13 +820,19 @@
         },
         {
           "at": "Their complex in the city of Ulsan",
-          "scene": "plant",
-          "kicker": "Ulsan",
-          "heading": "One of the largest car plants ever built",
-          "plantLabel": "Ulsan complex",
-          "plantSub": "≈ 1.5M cars a year",
-          "portLabel": "Its own port",
-          "portSub": "cars roll straight onto ships"
+          "scene": "footage",
+          "src": "episodes/south-korea/build/hero/carrier",
+          "frames": 144,
+          "fps": 24,
+          "labels": [
+            {
+              "text": "Hyundai's own port",
+              "sub": "Ulsan · cars roll straight onto ships",
+              "x": 1180,
+              "y": 300,
+              "delay": 0.6
+            }
+          ]
         },
         {
           "at": "And Hyundai's newest plant",
