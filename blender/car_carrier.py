@@ -163,4 +163,5 @@ if mode == 'still':
     sc.render.filepath = out; bpy.ops.render.render(write_still=True)
 else:
     sc.render.image_settings.file_format = 'JPEG'; sc.render.image_settings.quality = 92
+    sc.render.use_overwrite = False; sc.render.use_placeholder = True  # resumable: skip frames already rendered
     sc.render.filepath = out; bpy.ops.render.render(animation=True)
